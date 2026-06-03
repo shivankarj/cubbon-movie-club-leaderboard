@@ -385,7 +385,7 @@ export default function MovieClubApp() {
                             </span>
 
                             {/* REPLACE YOUR UNCONDITIONAL BUTTON WITH THIS EXACT LOCKED BLOCK */}
-                            {passwordInput === 'cubboncinema' && (
+                            {passwordInput === 'ADMIN_PASSWORD' && (
                               <button
                                 onClick={() =>
                                   handleDeleteLog(log.id, log.movie)
