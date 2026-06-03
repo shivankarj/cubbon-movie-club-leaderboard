@@ -96,10 +96,14 @@ export default function MovieClubApp() {
         'This film was freshly logged by the club curator. Production metadata will sync shortly.';
 
       // STEP 1: Ping the OMDb API to fetch official IMDb metadata automatically
+      // 1. Safely pull the key using the strict React production prefix
+      const secureOmdbKey = process.env.REACT_APP_OMDB_API_KEY;
+
+      // 2. Fetch the movie data using our secure key variable
       const omdbResponse = await fetch(
         `https://www.omdbapi.com/?t=${encodeURIComponent(
           movieTitle
-        )}&apikey=${OMDB_API_KEY}`
+        )}&apikey=${secureOmdbKey}`
       );
       const movieData = await omdbResponse.json();
 
