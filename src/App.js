@@ -523,3 +523,4 @@ export default function MovieClubApp() {
     </div>
   );
 }
+// Vercel deployment sync v2
