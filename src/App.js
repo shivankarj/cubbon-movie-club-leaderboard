@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// 1. Paste this import line right here:
-import { supabaseConfig } from './config';
+// 1. Create a safe fallback object so the application doesn't crash on Vercel
+let supabaseConfig = null;
+try {
+  // Try to read the file locally, but don't panic if it's missing on Vercel
+  supabaseConfig = require('./config').supabaseConfig;
+} catch (e) {
+  // Ignore the error if config.js isn't found
+}
 
-// 2. Paste these configuration setup lines right here:
+// 2. Look for the local config file first. If it's missing, use Vercel's environment variables!
 const supabaseUrl = supabaseConfig?.url || process.env.REACT_APP_SUPABASE_URL;
-const supabaseAnonKey =
-  supabaseConfig?.anonKey || process.env.REACT_APP_SUPABASE_ANON_KEY;
+const supabaseAnonKey = supabaseConfig?.anonKey || process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-// SECURE PRODUCTION CONFIGURATION
-
-const OMDB_API_KEY = 'f68dad6f';
-const ADMIN_PASSWORD = 'cubboncinema';
-
-// Initialize the live Cloud Database connector
+// 3. Initialize Supabase safely
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
 export default function MovieClubApp() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
