@@ -64,7 +64,12 @@ export default function MovieClubApp() {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    if (passwordInput === ADMIN_PASSWORD) {
+    
+    // 1. Look for Vercel's variable, or StackBlitz's variable, or use a local fallback string
+    const secretPassword = process.env.REACT_APP_ADMIN_PASSWORD || window._env_?.REACT_APP_ADMIN_PASSWORD || 'abc123_test';
+
+    // 2. Compare the user's input directly to the secret password
+    if (passwordInput === secretPassword) {
       setAuthError(false);
       setCurrentPage('admin');
     } else {
