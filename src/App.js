@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// 1. Create a safe fallback object so the application doesn't crash on Vercel
-let supabaseConfig = null;
-try {
-  // Try to read the file locally, but don't panic if it's missing on Vercel
-  supabaseConfig = require('./config').supabaseConfig;
-} catch (e) {
-  // Ignore the error if config.js isn't found
-}
+// React automatically pulls these from your .env file locally, and from Vercel's dashboard online!
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-// 2. Look for the local config file first. If it's missing, use Vercel's environment variables!
-const supabaseUrl = supabaseConfig?.url || process.env.REACT_APP_SUPABASE_URL;
-const supabaseAnonKey = supabaseConfig?.anonKey || process.env.REACT_APP_SUPABASE_ANON_KEY;
-
-// 3. Initialize Supabase safely
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 export default function MovieClubApp() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
