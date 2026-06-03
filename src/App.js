@@ -60,6 +60,8 @@ export default function MovieClubApp() {
     (a, b) => b.count - a.count
   );
 
+  const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD || 'password';
+
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
     if (passwordInput === ADMIN_PASSWORD) {
