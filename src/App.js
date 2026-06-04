@@ -341,13 +341,13 @@ export default function MovieClubApp() {
                             {log.genre}
                           </p>
                         </div>
-                        <div className="w-full max-w-md h-80 sm:h-[450px] rounded-2xl overflow-hidden bg-slate-900 border border-slate-900 shadow-2xl">
-                          <img
-                            src={log.poster}
-                            alt=""
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                        <div className="w-full max-w-md bg-slate-900 border border-slate-900 shadow-2xl"> {/* 🌟 Removed h-80, sm:h-[450px], rounded-2xl, and overflow-hidden */}
+  <img
+    src={log.poster}
+    alt=""
+    className="w-full h-auto object-contain" // 🌟 Changed h-full to h-auto, and object-cover to object-contain
+  />
+</div>
                         <div className="space-y-4 max-w-md sm:max-w-xl">
                           <div className="space-y-1 text-sm text-slate-300 font-medium">
                             <p>
