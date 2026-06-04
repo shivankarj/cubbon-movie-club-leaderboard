@@ -250,8 +250,8 @@ export default function MovieClubApp() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-white flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>HIDDEN GEMS</span>
-                <span className="text-amber-400">2025</span>
+                <span>LEADERBOARD - JUNE</span>
+                <span className="text-amber-400">HIDDEN GEMS 2025</span>
               </div>
               <p
                 className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
