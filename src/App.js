@@ -250,8 +250,8 @@ export default function MovieClubApp() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-white flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>HIDDEN GEMS</span>
-                <span className="text-amber-400">2025</span>
+                <span>JUNE 2026</span>
+                <span className="text-amber-400">THEME: HIDDEN GEMS OF 2025</span>
               </div>
               <p
                 className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
@@ -273,7 +273,7 @@ export default function MovieClubApp() {
                 {/* LEADERBOARD VIEW BLOCK */}
                 <section className="space-y-4">
                   <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
-                    LEADERBOARD (JUNE 2026)
+                    LEADERBOARD
                   </h2>
                   {leaderboard.length === 0 ? (
                     <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
