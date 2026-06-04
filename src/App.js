@@ -271,7 +271,7 @@ export default function MovieClubApp() {
             ) : (
               <>
                 {/* LEADERBOARD VIEW BLOCK */}
-                <section className="space-y-4">
+                <section className="space-y-8">
                   <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
                     LEADERBOARD
                   </h2>
