@@ -14,6 +14,7 @@ export default function MovieClubApp() {
   // Security States
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Form Submission States
   const [memberName, setMemberName] = useState('');
@@ -71,6 +72,7 @@ export default function MovieClubApp() {
     // 2. Compare the user's input directly to the secret password
     if (passwordInput === secretPassword) {
       setAuthError(false);
+      setIsAuthenticated(true); // 🌟 Add this line right here!
       setCurrentPage('admin');
     } else {
       setAuthError(true);
@@ -385,16 +387,16 @@ export default function MovieClubApp() {
                             </span>
 
                             {/* REPLACE YOUR UNCONDITIONAL BUTTON WITH THIS EXACT LOCKED BLOCK */}
-                            {currentPage === 'admin' && (
-                              <button
-                                onClick={() =>
-                                  handleDeleteLog(log.id, log.movie)
-                                }
-                                className="text-[10px] font-black tracking-widest text-rose-500 hover:text-rose-400 uppercase bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg transition-all ml-4"
-                              >
-                                Delete Row
-                              </button>
-                            )}
+                            {isAuthenticated && (
+  <button
+    onClick={() =>
+      handleDeleteLog(log.id, log.movie)
+    }
+    className="text-[10px] font-black tracking-widest text-rose-500 hover:text-rose-400 uppercase bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg transition-all ml-4"
+  >
+    Delete Row
+  </button>
+)}
 
                             <a
                               href={log.imdb}
