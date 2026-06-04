@@ -101,12 +101,21 @@ export default function MovieClubApp() {
       // 1. Safely pull the key using the strict React production prefix
       const secureOmdbKey = process.env.REACT_APP_OMDB_API_KEY;
 
-      // 2. Fetch the movie data using our secure key variable
-      const omdbResponse = await fetch(
-        `https://www.omdbapi.com/?t=${encodeURIComponent(
-          movieTitle
-        )}&apikey=${secureOmdbKey}`
-      );
+      // 2. Default to searching by Title
+      let apiUrl = `https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${secureOmdbKey}`;
+
+      // 3. If a custom IMDb link was pasted, extract the unique 'tt' ID instead!
+      if (imdbLink && imdbLink.includes('imdb.com/title/')) {
+        const matches = imdbLink.match(/tt\d+/);
+        if (matches && matches[0]) {
+          const imdbId = matches[0];
+          // Switch parameter from 't' (title) to 'i' (IMDb ID)
+          apiUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${secureOmdbKey}`;
+        }
+      }
+
+      // 4. Fetch the movie data using our smart URL
+      const omdbResponse = await fetch(apiUrl);
       const movieData = await omdbResponse.json();
 
       if (movieData && movieData.Response === 'True') {
