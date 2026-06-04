@@ -250,8 +250,8 @@ export default function MovieClubApp() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-white flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>JUNE 2026</span>
-                <span className="text-amber-400">THEME: HIDDEN GEMS OF 2025</span>
+                <span>HIDDEN GEMS</span>
+                <span className="text-amber-400">2025</span>
               </div>
               <p
                 className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
@@ -324,8 +324,8 @@ export default function MovieClubApp() {
 
                 {/* RECENTLY WATCHED FEED CORES */}
                 <section className="space-y-8 pt-4">
-                  <h2 className="text-md font-bold uppercase tracking-widest text-slate-500">
-                    Recently Watched
+                <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
+                    RECENTLY WATCHED
                   </h2>
                   <div className="divide-y divide-slate-900/60 space-y-12">
                     {logs.map((log) => (
