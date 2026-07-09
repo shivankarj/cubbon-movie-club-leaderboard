@@ -6,15 +6,19 @@ const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+
 export default function MovieClubApp() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState('public');
+  const [currentPage, setCurrentPage] = useState(localStorage.getItem('movieClubAdminSession') === 'true' ? 'admin' : 'public');
+
+  // The state manager for our pop-up visual diary modal
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Security States
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('movieClubAdminSession') === 'true');
 
   // Form Submission States
   const [memberName, setMemberName] = useState('');
@@ -22,6 +26,19 @@ export default function MovieClubApp() {
   const [imdbLink, setImdbLink] = useState('');
   const [memberReview, setMemberReview] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
+
+  // SESSION AUTO-ROUTER: Automatically navigates or keeps admin state in sync
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('movieClubAdminSession') === 'true';
+    if (isAdmin) {
+      setIsAuthenticated(true);
+      if (currentPage === 'login') {
+        setCurrentPage('admin');
+      }
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [currentPage]);
 
   // FETCH EFFECT: Pull live entries from your cloud spreadsheet on page load
   useEffect(() => {
@@ -31,13 +48,15 @@ export default function MovieClubApp() {
   async function fetchLiveLogs() {
     try {
       setLoading(true);
-      // Simply pull the rows from the cloud spreadsheet
-      const { data, error } = await supabase.from('movie_logs').select('*');
+      
+      // Point directly to July's table and pull all its contents cleanly
+      const { data, error } = await supabase
+        .from('movie_logs_july')
+        .select('*');
 
       if (error) throw error;
 
-      // Reverse the array using JavaScript so the newest entries
-      // float to the top of the feed automatically
+      // Reverse the array using JavaScript so the newest entries float to the top
       const sortedData = data ? [...data].reverse() : [];
       setLogs(sortedData);
     } catch (err) {
@@ -61,18 +80,14 @@ export default function MovieClubApp() {
     (a, b) => b.count - a.count
   );
 
-  const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD || 'password';
+  const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD || window._env_?.REACT_APP_ADMIN_PASSWORD || 'abc123_test';
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    
-    // 1. Look for Vercel's variable, or StackBlitz's variable, or use a local fallback string
-    const secretPassword = process.env.REACT_APP_ADMIN_PASSWORD || window._env_?.REACT_APP_ADMIN_PASSWORD || 'abc123_test';
-
-    // 2. Compare the user's input directly to the secret password
-    if (passwordInput === secretPassword) {
+    if (passwordInput === ADMIN_PASSWORD) {
       setAuthError(false);
-      setIsAuthenticated(true); // 🌟 Add this line right here!
+      setIsAuthenticated(true);
+      localStorage.setItem('movieClubAdminSession', 'true');
       setCurrentPage('admin');
     } else {
       setAuthError(true);
@@ -92,29 +107,22 @@ export default function MovieClubApp() {
       let fetchedDirector = 'Production Syncing';
       let fetchedStars = 'Cast Populating';
       let fetchedRating = '★ —';
-      let fetchedPoster =
-        'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600';
-      let fetchedPlot =
-        'This film was freshly logged by the club curator. Production metadata will sync shortly.';
+      let fetchedPoster = 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600';
+      let fetchedPlot = 'This film was freshly logged by the club curator. Production metadata will sync shortly.';
+      let autoImdbLink = '#';
 
-      // STEP 1: Ping the OMDb API to fetch official IMDb metadata automatically
-      // 1. Safely pull the key using the strict React production prefix
+      // Ping the OMDb API to fetch official IMDb metadata automatically
       const secureOmdbKey = process.env.REACT_APP_OMDB_API_KEY;
-
-      // 2. Default to searching by Title
       let apiUrl = `https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${secureOmdbKey}`;
 
-      // 3. If a custom IMDb link was pasted, extract the unique 'tt' ID instead!
       if (imdbLink && imdbLink.includes('imdb.com/title/')) {
         const matches = imdbLink.match(/tt\d+/);
         if (matches && matches[0]) {
           const imdbId = matches[0];
-          // Switch parameter from 't' (title) to 'i' (IMDb ID)
           apiUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${secureOmdbKey}`;
         }
       }
 
-      // 4. Fetch the movie data using our smart URL
       const omdbResponse = await fetch(apiUrl);
       const movieData = await omdbResponse.json();
 
@@ -122,18 +130,15 @@ export default function MovieClubApp() {
         fetchedGenre = movieData.Genre || fetchedGenre;
         fetchedDirector = movieData.Director || fetchedDirector;
         fetchedStars = movieData.Actors || fetchedStars;
-        fetchedRating =
-          movieData.imdbRating && movieData.imdbRating !== 'N/A'
-            ? `★ ${movieData.imdbRating}`
-            : fetchedRating;
-        fetchedPoster =
-          movieData.Poster && movieData.Poster !== 'N/A'
-            ? movieData.Poster
-            : fetchedPoster;
+        fetchedRating = movieData.imdbRating && movieData.imdbRating !== 'N/A' ? `★ ${movieData.imdbRating}` : fetchedRating;
+        fetchedPoster = movieData.Poster && movieData.Poster !== 'N/A' ? movieData.Poster : fetchedPoster;
         fetchedPlot = movieData.Plot || fetchedPlot;
+        
+        if (movieData.imdbID) {
+          autoImdbLink = `https://www.imdb.com/title/${movieData.imdbID}`;
+        }
       }
 
-      // STEP 2: Build the clean production packet
       const newLogEntry = {
         name: memberName.trim(),
         movie: movieTitle.trim(),
@@ -142,28 +147,25 @@ export default function MovieClubApp() {
         stars: fetchedStars,
         rating: fetchedRating,
         poster: fetchedPoster,
-        // DELETE THE DATE LINE THAT WAS HERE!
-        imdb:
-          imdbLink.trim() ||
-          (movieData.imdbID
-            ? `https://www.imdb.com/title/${movieData.imdbID}`
-            : '#'),
+        date_logged: new Date().toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        imdb: imdbLink.trim() || autoImdbLink,
         plot: fetchedPlot,
         review: memberReview.trim(),
       };
 
-      // STEP 3: Ship the data row directly up to your live Supabase cloud spreadsheet
-      const { error } = await supabase.from('movie_logs').insert([newLogEntry]);
-
+      const { error } = await supabase.from('movie_logs_july').insert([newLogEntry]);
       if (error) throw error;
 
-      // STEP 4: Refresh UI states
       setMovieTitle('');
       setMemberName('');
       setImdbLink('');
       setMemberReview('');
 
-      await fetchLiveLogs(); // Force reload the system components instantly
+      await fetchLiveLogs();
       setCurrentPage('public');
     } catch (err) {
       alert('Error saving log to cloud database: ' + err.message);
@@ -172,7 +174,7 @@ export default function MovieClubApp() {
     }
   };
 
-  // PASTE THE NEW DELETION FUNCTION DIRECTLY HERE:
+  // DELETION FUNCTION
   const handleDeleteLog = async (logId, movieTitle) => {
     const confirmDelete = window.confirm(
       `Are you sure you want to permanently delete "${movieTitle}" from the club logs?`
@@ -181,7 +183,7 @@ export default function MovieClubApp() {
 
     try {
       const { error } = await supabase
-        .from('movie_logs')
+        .from('movie_logs_july')
         .delete()
         .eq('id', logId);
 
@@ -195,15 +197,8 @@ export default function MovieClubApp() {
   return (
     <div className="min-h-screen bg-[#040507] text-slate-100 font-sans antialiased">
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="true"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap"
-        rel="stylesheet"
-      />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+      <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet" />
 
       {/* NAVBAR */}
       <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-slate-900 pb-6">
@@ -250,8 +245,8 @@ export default function MovieClubApp() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-white flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>HIDDEN GEMS</span>
-                <span className="text-amber-400">2025</span>
+                <span>ANIMATED MOVIES</span>
+                <span className="text-amber-400">JULY CHALLENGE</span>
               </div>
               <p
                 className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
@@ -277,8 +272,7 @@ export default function MovieClubApp() {
                   </h2>
                   {leaderboard.length === 0 ? (
                     <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
-                      No movies logged yet for this challenge season. Open the
-                      Admin portal to launch!
+                      No movies logged yet for this challenge season. Open the Admin portal to launch!
                     </div>
                   ) : (
                     <div className="bg-slate-950/40 border border-slate-900/60 rounded-2xl divide-y divide-slate-900/40 overflow-hidden shadow-2xl">
@@ -290,15 +284,17 @@ export default function MovieClubApp() {
                           <div className="flex items-center gap-4">
                             <span
                               className={`w-7 h-7 rounded flex items-center justify-center font-black text-sm ${
-                                idx === 0
-                                  ? 'bg-amber-400 text-slate-950'
-                                  : 'bg-slate-900 text-slate-500'
+                                idx === 0 ? 'bg-amber-400 text-slate-950' : 'bg-slate-900 text-slate-500'
                               }`}
                             >
                               {idx + 1}
                             </span>
                             <div>
-                              <h3 className="font-extrabold text-slate-200 text-base">
+                              <h3 
+                                onClick={() => setSelectedUser(member.name)}
+                                className="font-extrabold text-slate-200 text-base hover:underline select-none"
+                                style={{ cursor: 'pointer' }}
+                              >
                                 {member.name}
                               </h3>
                               <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
@@ -324,7 +320,7 @@ export default function MovieClubApp() {
 
                 {/* RECENTLY WATCHED FEED CORES */}
                 <section className="space-y-8 pt-4">
-                <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
+                  <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
                     RECENTLY WATCHED
                   </h2>
                   <div className="divide-y divide-slate-900/60 space-y-12">
@@ -341,13 +337,13 @@ export default function MovieClubApp() {
                             {log.genre}
                           </p>
                         </div>
-                        <div className="w-full max-w-md bg-slate-900 border border-slate-900 shadow-2xl"> {/* 🌟 Removed h-80, sm:h-[450px], rounded-2xl, and overflow-hidden */}
-  <img
-    src={log.poster}
-    alt=""
-    className="w-full h-auto object-contain" // 🌟 Changed h-full to h-auto, and object-cover to object-contain
-  />
-</div>
+                        <div className="w-full max-w-md bg-slate-900 border border-slate-900 shadow-2xl">
+                          <img
+                            src={log.poster}
+                            alt=""
+                            className="w-full h-auto object-contain"
+                          />
+                        </div>
                         <div className="space-y-4 max-w-md sm:max-w-xl">
                           <div className="space-y-1 text-sm text-slate-300 font-medium">
                             <p>
@@ -370,6 +366,14 @@ export default function MovieClubApp() {
                                 {log.rating}
                               </span>
                             </p>
+                            <p>
+                              <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                Logged On:
+                              </span>{' '}
+                              <span className="text-slate-300 font-medium">
+                                {log.date_logged || 'Prior Entry'}
+                              </span>
+                            </p>
                           </div>
                           <div className="space-y-1.5">
                             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
@@ -386,35 +390,37 @@ export default function MovieClubApp() {
                             )}
                           </div>
 
-                          {/* BUTTON FRAME BAR RIGHT HERE */}
+                          {/* BUTTON FRAME BAR */}
                           <div className="pt-2 flex items-center justify-between">
                             <span className="text-[11px] text-slate-400 font-bold tracking-wide">
                               Watched by{' '}
-                              <span className="text-white font-extrabold">
+                              <span 
+                                onClick={() => setSelectedUser(log.name)} 
+                                className="text-white font-extrabold hover:underline select-none"
+                                style={{ cursor: 'pointer' }}
+                              >
                                 {log.name}
                               </span>
                             </span>
 
-                            {/* REPLACE YOUR UNCONDITIONAL BUTTON WITH THIS EXACT LOCKED BLOCK */}
-                            {isAuthenticated && (
-  <button
-    onClick={() =>
-      handleDeleteLog(log.id, log.movie)
-    }
-    className="text-[10px] font-black tracking-widest text-rose-500 hover:text-rose-400 uppercase bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg transition-all ml-4"
-  >
-    Delete Row
-  </button>
-)}
-
-                            <a
-                              href={log.imdb}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-[11px] font-bold text-slate-500 hover:text-white flex items-center gap-0.5"
-                            >
-                              More →
-                            </a>
+                            <div className="flex items-center gap-4">
+                              {isAuthenticated && (
+                                <button
+                                  onClick={() => handleDeleteLog(log.id, log.movie)}
+                                  className="text-[10px] font-black tracking-widest text-rose-500 hover:text-rose-400 uppercase bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg transition-all"
+                                >
+                                  Delete Row
+                                </button>
+                              )}
+                              <a
+                                href={log.imdb}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-[11px] font-bold text-slate-500 hover:text-white flex items-center gap-0.5"
+                              >
+                                More →
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -520,7 +526,7 @@ export default function MovieClubApp() {
                   </label>
                   <textarea
                     rows="4"
-                    placeholder="Type custom member thoughts... (Leave completely blank to use the official plot summary fallback description)"
+                    placeholder="Type custom member thoughts..."
                     value={memberReview}
                     onChange={(e) => setMemberReview(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 resize-none"
@@ -531,16 +537,139 @@ export default function MovieClubApp() {
                   disabled={isPublishing}
                   className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-lg disabled:opacity-50"
                 >
-                  {isPublishing
-                    ? 'Publishing Link Core...'
-                    : 'Publish Watch to Live Board'}
+                  {isPublishing ? 'Publishing Link Core...' : 'Publish Watch to Live Board'}
                 </button>
               </form>
+               
+              <button
+                type="button"
+                onClick={() => {
+                  localStorage.removeItem('movieClubAdminSession');
+                  setCurrentPage('public');
+                }}
+                className="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest transition-all border border-slate-800"
+              >
+                Exit & Log Out Admin
+              </button>
             </div>
           </div>
         )}
       </main>
+
+      {/* 🍿 THE USER DIARY POP-UP MODAL */}
+      {selectedUser && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+          zIndex: 9999,
+        }}>
+          <div style={{
+            backgroundColor: '#111827',
+            color: '#fff',
+            padding: '30px',
+            borderRadius: '16px',
+            width: '90%', maxWidth: '800px',
+            maxHeight: '85vh', overflowY: 'auto',
+            position: 'relative',
+            border: '1px solid #1f2937'
+          }}>
+            <button 
+              onClick={() => setSelectedUser(null)}
+              style={{
+                position: 'absolute', top: '15px', right: '20px',
+                background: 'none', border: 'none', color: '#9ca3af',
+                fontSize: '28px', cursor: 'pointer'
+              }}
+            >
+              &times;
+            </button>
+
+            {/* Header */}
+            <h2 style={{ borderBottom: '2px solid #1f2937', paddingBottom: '12px', marginTop: 0, fontSize: '20px', fontWeight: '800' }}>
+              🎬 {selectedUser}'s Cinema Diary
+            </h2>
+
+            {/* ACCOLADES BAR */}
+            {((logs.filter(log => log.name === selectedUser).length >= 5) || (leaderboard[0] && leaderboard[0].name === selectedUser)) && (
+              <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '10px',
+                padding: '12px',
+                backgroundColor: '#0f172a',
+                borderRadius: '12px',
+                border: '1px solid #1e293b',
+                marginTop: '15px'
+              }}>
+                
+                {/* Rule 4: Leaderboard #1 Champion Badge */}
+                {leaderboard[0] && leaderboard[0].name === selectedUser && (
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '6px', 
+                    backgroundColor: 'rgba(245, 197, 24, 0.15)', 
+                    padding: '6px 14px', 
+                    borderRadius: '20px', 
+                    border: '1px solid #f5c518'
+                  }}>
+                    <span style={{ fontSize: '14px' }}>👑</span>
+                    <span style={{ fontSize: '11px', fontWeight: '900', color: '#f5c518' }}>
+                      CHAMPION
+                    </span>
+                  </div>
+                )}
+
+                {/* Rules 1-3: Medallion Tier Levels */}
+                {logs.filter(log => log.name === selectedUser).length >= 15 ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(255, 215, 0, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #ffd700' }}>
+                    <span style={{ fontSize: '14px' }}>🥇</span>
+                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#ffd700' }}>Gold</span>
+                  </div>
+                ) : logs.filter(log => log.name === selectedUser).length >= 10 ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(226, 232, 240, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #cbd5e1' }}>
+                    <span style={{ fontSize: '14px' }}>🥈</span>
+                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#e2e8f0' }}>Silver</span>
+                  </div>
+                ) : logs.filter(log => log.name === selectedUser).length >= 5 ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(205, 127, 50, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #b45309' }}>
+                    <span style={{ fontSize: '14px' }}>🥉</span>
+                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#f59e0b' }}>Bronze</span>
+                  </div>
+                ) : null}
+              </div>
+            )}
+
+            {/* Grid of Posters */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+              gap: '20px', marginTop: '25px'
+            }}>
+              {logs
+                .filter(log => log.name === selectedUser)
+                .map((log) => (
+                  <div key={`${log.movie}-${Math.random()}`} style={{ textAlign: 'center', backgroundColor: '#0f172a', padding: '12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                    <img 
+                      src={log.poster} 
+                      alt="" 
+                      style={{ width: '100%', borderRadius: '6px', aspectRatio: '2/3', objectFit: 'cover' }} 
+                    />
+                    <h4 style={{ margin: '10px 0 5px 0', fontSize: '14px', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {log.movie}
+                    </h4>
+                    <span style={{ fontSize: '12px', color: '#f5c518', fontWeight: 'bold' }}>
+                      {log.rating || '★ —'}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-// Vercel deployment sync v2
