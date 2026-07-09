@@ -246,7 +246,7 @@ export default function MovieClubApp() {
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 <span>ANIMATED MOVIES</span>
-                <span className="text-amber-400">JULY CHALLENGE</span>
+                <span className="text-amber-400">JULY</span>
               </div>
               <p
                 className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
@@ -589,7 +589,7 @@ export default function MovieClubApp() {
 
             {/* Header */}
             <h2 style={{ borderBottom: '2px solid #1f2937', paddingBottom: '12px', marginTop: 0, fontSize: '20px', fontWeight: '800' }}>
-              🎬 {selectedUser}'s Cinema Diary
+              🎬 {selectedUser}'s Log
             </h2>
 
             {/* ACCOLADES BAR */}
