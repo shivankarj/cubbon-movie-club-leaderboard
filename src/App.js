@@ -1,21 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { toJpeg } from 'html-to-image';
 
-// React automatically pulls these from your .env file locally, and from Vercel's dashboard online!
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
+
+// 🤖 LOCKED & DETERMINISTIC SCI-FI ROBOT AVATAR HELPER (DICEBEAR BOTTTS)
+const getMemberAvatar = (name) => {
+  const safeSeed = name ? name.trim().toLowerCase() : 'cubbon';
+  return `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(safeSeed)}&backgroundColor=0f172a,020617&radius=50`;
+};
+
+// Smart Poster Fallback Helper Component
+const MoviePoster = ({ src, title, className, style }) => {
+  const [imgError, setImgError] = useState(false);
+
+  if (!src || src === 'N/A' || imgError) {
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          backgroundColor: '#0f172a',
+          border: '1px solid #1e293b',
+          borderRadius: '8px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '12px',
+          textAlign: 'center',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ fontSize: '24px', marginBottom: '6px' }}>🎬</span>
+        <span style={{ fontSize: '11px', fontWeight: '800', color: '#00FF41', lineHeight: '1.2' }}>
+          {title}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={title}
+      className={className}
+      style={style}
+      onError={() => setImgError(true)}
+    />
+  );
+};
 
 export default function MovieClubApp() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(localStorage.getItem('movieClubAdminSession') === 'true' ? 'admin' : 'public');
 
-  // The state manager for our pop-up visual diary modal
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Security States
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('movieClubAdminSession') === 'true');
@@ -23,11 +68,21 @@ export default function MovieClubApp() {
   // Form Submission States
   const [memberName, setMemberName] = useState('');
   const [movieTitle, setMovieTitle] = useState('');
+  const [customPosterUrl, setCustomPosterUrl] = useState('');
   const [imdbLink, setImdbLink] = useState('');
   const [memberReview, setMemberReview] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
 
-  // SESSION AUTO-ROUTER: Automatically navigates or keeps admin state in sync
+  // 🍿 FILTER & SORT STATES
+  const [selectedMemberFilter, setSelectedMemberFilter] = useState('');
+  const [sortByRating, setSortByRating] = useState(false);
+
+  // 📸 EXPORTER REFS & STATES
+  const exportCardRef = useRef(null);
+  const memberExportCardRef = useRef(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isMemberExporting, setIsMemberExporting] = useState(false);
+
   useEffect(() => {
     const isAdmin = localStorage.getItem('movieClubAdminSession') === 'true';
     if (isAdmin) {
@@ -40,23 +95,21 @@ export default function MovieClubApp() {
     }
   }, [currentPage]);
 
-  // FETCH EFFECT: Pull live entries from your cloud spreadsheet on page load
   useEffect(() => {
     fetchLiveLogs();
   }, []);
 
+  // 🛰️ FETCH LOGS FROM SEPTEMBER TABLE
   async function fetchLiveLogs() {
     try {
       setLoading(true);
       
-      // Point directly to July's table and pull all its contents cleanly
       const { data, error } = await supabase
-        .from('movie_logs_july')
+        .from('movie_logs_september')
         .select('*');
 
       if (error) throw error;
 
-      // Reverse the array using JavaScript so the newest entries float to the top
       const sortedData = data ? [...data].reverse() : [];
       setLogs(sortedData);
     } catch (err) {
@@ -66,19 +119,139 @@ export default function MovieClubApp() {
     }
   }
 
-  // Calculate dynamic statistics from the live database rows
+  // 📺 TMDB WATCH PROVIDERS FETCHER
+  const fetchWatchProviders = async (imdbId) => {
+    const tmdbApiKey = process.env.REACT_APP_TMDB_API_KEY;
+    if (!tmdbApiKey || !imdbId) return [];
+
+    try {
+      const findRes = await fetch(
+        `https://api.themoviedb.org/3/find/${imdbId}?api_key=${tmdbApiKey}&external_source=imdb_id`
+      );
+      const findData = await findRes.json();
+      const tmdbMovie = findData.movie_results?.[0];
+
+      if (!tmdbMovie) return [];
+
+      const providerRes = await fetch(
+        `https://api.themoviedb.org/3/movie/${tmdbMovie.id}/watch/providers?api_key=${tmdbApiKey}`
+      );
+      const providerData = await providerRes.json();
+      
+      const resultsIN = providerData.results?.IN || providerData.results?.US;
+      if (!resultsIN) return [];
+
+      const streamingOnly = [
+        ...(resultsIN.flatrate || []),
+        ...(resultsIN.free || []),
+        ...(resultsIN.ads || [])
+      ];
+
+      const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w92';
+      const providerList = [];
+      const seenNames = new Set();
+
+      for (const item of streamingOnly) {
+        if (!seenNames.has(item.provider_name)) {
+          seenNames.add(item.provider_name);
+          providerList.push(
+            JSON.stringify({
+              name: item.provider_name,
+              logo: item.logo_path ? `${TMDB_IMAGE_BASE}${item.logo_path}` : null,
+            })
+          );
+        }
+      }
+
+      return providerList;
+    } catch (err) {
+      console.error('Error fetching TMDb Watch Providers:', err);
+      return [];
+    }
+  };
+
   const memberStats = logs.reduce((acc, log) => {
     if (!acc[log.name]) {
       acc[log.name] = { name: log.name, count: 0, movies: [] };
     }
     acc[log.name].count += 1;
-    acc[log.name].movies.push({ title: log.movie, poster: log.poster });
+    acc[log.name].movies.push({ title: log.movie, poster: log.poster, rating: log.rating });
     return acc;
   }, {});
 
   const leaderboard = Object.values(memberStats).sort(
     (a, b) => b.count - a.count
   );
+
+  const uniqueMembers = [...new Set(logs.map((log) => log.name))].sort();
+
+  // FILTER & SORT LOGIC FOR LOGGED FEED
+  const processedLogs = logs
+    .filter((log) => (selectedMemberFilter ? log.name === selectedMemberFilter : true))
+    .sort((a, b) => {
+      if (!sortByRating) return 0;
+      const parseRating = (r) => {
+        if (!r) return 0;
+        const val = parseFloat(r.replace(/[^0-9.]/g, ''));
+        return isNaN(val) ? 0 : val;
+      };
+      return parseRating(b.rating) - parseRating(a.rating);
+    });
+
+  // 📸 EXPORT LEADERBOARD JPG VIA HTML-TO-IMAGE
+  const handleDownloadLeaderboardImage = async () => {
+    if (!exportCardRef.current || isExporting || logs.length === 0) return;
+
+    try {
+      setIsExporting(true);
+
+      const dataUrl = await toJpeg(exportCardRef.current, {
+        quality: 0.95,
+        backgroundColor: '#040507',
+        pixelRatio: 2,
+      });
+
+      const dateTag = new Date().toISOString().split('T')[0];
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `Cubbon-Leaderboard-September-${dateTag}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Image Generation Error:', err);
+      alert('Failed to generate leaderboard image.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // 📸 EXPORT MEMBER PROFILE BADGE JPG VIA HTML-TO-IMAGE
+  const handleDownloadMemberImage = async () => {
+    if (!memberExportCardRef.current || isMemberExporting || !selectedUser) return;
+
+    try {
+      setIsMemberExporting(true);
+
+      const dataUrl = await toJpeg(memberExportCardRef.current, {
+        quality: 0.95,
+        backgroundColor: '#040507',
+        pixelRatio: 2,
+      });
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `${selectedUser}-Cubbon-Movie-Stats-September.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Member Image Generation Error:', err);
+      alert('Failed to generate personal card.');
+    } finally {
+      setIsMemberExporting(false);
+    }
+  };
 
   const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD || window._env_?.REACT_APP_ADMIN_PASSWORD || 'abc123_test';
 
@@ -94,7 +267,7 @@ export default function MovieClubApp() {
     }
   };
 
-  // AUTOMATED COMPLETED PUBLISHING SYSTEM
+  // 📝 PUBLISH WATCH TO SEPTEMBER TABLE
   const handleLogMovie = async (e) => {
     e.preventDefault();
     if (!memberName || !movieTitle || isPublishing) return;
@@ -102,24 +275,23 @@ export default function MovieClubApp() {
     try {
       setIsPublishing(true);
 
-      // Default placeholder fields if data isn't matched
-      let fetchedGenre = '2025 Selection';
+      let fetchedGenre = 'September Selection';
       let fetchedDirector = 'Production Syncing';
       let fetchedStars = 'Cast Populating';
       let fetchedRating = '★ —';
-      let fetchedPoster = 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600';
+      let fetchedPoster = customPosterUrl.trim() || '';
       let fetchedPlot = 'This film was freshly logged by the club curator. Production metadata will sync shortly.';
       let autoImdbLink = '#';
+      let detectedImdbId = null;
 
-      // Ping the OMDb API to fetch official IMDb metadata automatically
       const secureOmdbKey = process.env.REACT_APP_OMDB_API_KEY;
       let apiUrl = `https://www.omdbapi.com/?t=${encodeURIComponent(movieTitle)}&apikey=${secureOmdbKey}`;
 
       if (imdbLink && imdbLink.includes('imdb.com/title/')) {
         const matches = imdbLink.match(/tt\d+/);
         if (matches && matches[0]) {
-          const imdbId = matches[0];
-          apiUrl = `https://www.omdbapi.com/?i=${imdbId}&apikey=${secureOmdbKey}`;
+          detectedImdbId = matches[0];
+          apiUrl = `https://www.omdbapi.com/?i=${detectedImdbId}&apikey=${secureOmdbKey}`;
         }
       }
 
@@ -131,13 +303,32 @@ export default function MovieClubApp() {
         fetchedDirector = movieData.Director || fetchedDirector;
         fetchedStars = movieData.Actors || fetchedStars;
         fetchedRating = movieData.imdbRating && movieData.imdbRating !== 'N/A' ? `★ ${movieData.imdbRating}` : fetchedRating;
-        fetchedPoster = movieData.Poster && movieData.Poster !== 'N/A' ? movieData.Poster : fetchedPoster;
+        
+        if (customPosterUrl.trim()) {
+          fetchedPoster = customPosterUrl.trim();
+        } else if (movieData.Poster && movieData.Poster !== 'N/A') {
+          fetchedPoster = movieData.Poster;
+        } else {
+          alert(`⚠️ OMDb could not find a poster for "${movieTitle}". Please paste a direct image link in the "Custom Poster Image URL" field to proceed.`);
+          setIsPublishing(false);
+          return;
+        }
+        
         fetchedPlot = movieData.Plot || fetchedPlot;
         
         if (movieData.imdbID) {
+          detectedImdbId = movieData.imdbID;
           autoImdbLink = `https://www.imdb.com/title/${movieData.imdbID}`;
         }
+      } else {
+        if (!customPosterUrl.trim()) {
+          alert(`⚠️ Could not find "${movieTitle}" on IMDb/OMDb. Please enter a Custom Poster Image URL to publish.`);
+          setIsPublishing(false);
+          return;
+        }
       }
+
+      const watchProviders = await fetchWatchProviders(detectedImdbId);
 
       const newLogEntry = {
         name: memberName.trim(),
@@ -155,13 +346,15 @@ export default function MovieClubApp() {
         imdb: imdbLink.trim() || autoImdbLink,
         plot: fetchedPlot,
         review: memberReview.trim(),
+        watch_providers: watchProviders,
       };
 
-      const { error } = await supabase.from('movie_logs_july').insert([newLogEntry]);
+      const { error } = await supabase.from('movie_logs_september').insert([newLogEntry]);
       if (error) throw error;
 
       setMovieTitle('');
       setMemberName('');
+      setCustomPosterUrl('');
       setImdbLink('');
       setMemberReview('');
 
@@ -174,16 +367,16 @@ export default function MovieClubApp() {
     }
   };
 
-  // DELETION FUNCTION
+  // 🗑️ DELETE LOG FROM SEPTEMBER TABLE
   const handleDeleteLog = async (logId, movieTitle) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to permanently delete "${movieTitle}" from the club logs?`
+      `Are you sure you want to permanently delete "${movieTitle}" from the September club logs?`
     );
     if (!confirmDelete) return;
 
     try {
       const { error } = await supabase
-        .from('movie_logs_july')
+        .from('movie_logs_september')
         .delete()
         .eq('id', logId);
 
@@ -193,6 +386,8 @@ export default function MovieClubApp() {
       alert('Error deleting entry: ' + err.message);
     }
   };
+
+  const selectedMemberLogs = logs.filter((log) => log.name === selectedUser);
 
   return (
     <div className="min-h-screen bg-[#040507] text-slate-100 font-sans antialiased">
@@ -208,11 +403,23 @@ export default function MovieClubApp() {
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
             <span className="text-white">CUBBON</span>
-            <span className="text-amber-400">MOVIE</span>
+            <span className="text-[#00FF41]">MOVIE</span>
             <span className="text-white">CLUB</span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-xl">
-            🎥
+          {/* 🤖 MATRIX VECTOR ROBOT NAVBAR ICON */}
+          <div className="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-2.5 shadow-sm">
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle cx="50" cy="20" r="4" fill="#00FF41" />
+              <rect x="48" y="22" width="4" height="10" fill="#00FF41" />
+              <rect x="20" y="32" width="60" height="46" rx="12" fill="#00FF41" />
+              <rect x="12" y="46" width="8" height="18" rx="3" fill="#00FF41" />
+              <rect x="80" y="46" width="8" height="18" rx="3" fill="#00FF41" />
+              <rect x="30" y="42" width="14" height="14" rx="4" fill="#040507" />
+              <rect x="56" y="42" width="14" height="14" rx="4" fill="#040507" />
+              <circle cx="37" cy="49" r="3" fill="#00FF41" />
+              <circle cx="63" cy="49" r="3" fill="#00FF41" />
+              <rect x="34" y="64" width="32" height="6" rx="2" fill="#040507" />
+            </svg>
           </div>
         </div>
         {currentPage === 'public' ? (
@@ -222,7 +429,7 @@ export default function MovieClubApp() {
               setAuthError(false);
               setCurrentPage('login');
             }}
-            className="text-[10px] font-bold tracking-widest uppercase text-slate-500 hover:text-amber-400 border border-slate-900 bg-slate-900/10 px-3 py-1.5 rounded-xl transition-all"
+            className="text-[10px] font-bold tracking-widest uppercase text-slate-500 hover:text-[#00FF41] border border-slate-900 bg-slate-900/10 px-3 py-1.5 rounded-xl transition-all"
           >
             ADMIN
           </button>
@@ -240,16 +447,17 @@ export default function MovieClubApp() {
       <main className="max-w-4xl mx-auto p-4 md:p-8">
         {currentPage === 'public' && (
           <div className="space-y-16">
+            {/* 🗓️ SEPTEMBER THEME HEADER BANNER */}
             <div className="text-left py-4 border-b border-slate-900">
               <div
-                className="text-2xl md:text-4xl font-bold tracking-widest uppercase text-white flex flex-col gap-1 leading-none"
+                className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>ANIMATED MOVIES</span>
-                <span className="text-amber-400">JULY</span>
+                <span className="text-[#00FF41]">SCI-FI & FANTASY MOVIES</span>
+                <span className="text-white">SEPTEMBER</span>
               </div>
               <p
-                className="text-[10px] font-bold tracking-widest text-amber-500/80 mt-3 uppercase"
+                className="text-[10px] font-bold tracking-widest text-[#00FF41] mt-3 uppercase"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 GET. SET. LOG.
@@ -261,39 +469,60 @@ export default function MovieClubApp() {
                 className="text-center py-12 text-xs font-bold tracking-widest text-slate-600 uppercase"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                📡 Accessing Cloud Core...
+                📡 Accessing Matrix Core...
               </div>
             ) : (
               <>
                 {/* LEADERBOARD VIEW BLOCK */}
                 <section className="space-y-8">
-                  <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
-                    LEADERBOARD
-                  </h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#00FF41] pl-3">
+                      LEADERBOARD
+                    </h2>
+
+                    {isAuthenticated && (
+                      <button
+                        onClick={handleDownloadLeaderboardImage}
+                        disabled={isExporting || leaderboard.length === 0}
+                        className="text-[10px] font-extrabold tracking-widest uppercase text-[#00FF41] hover:text-emerald-300 bg-[#00FF41]/10 border border-[#00FF41]/30 px-3 py-1.5 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
+                      >
+                        <span className="text-sm">📸</span>
+                        <span>{isExporting ? 'Generating HD Card...' : 'Save JPG for WhatsApp'}</span>
+                      </button>
+                    )}
+                  </div>
+
                   {leaderboard.length === 0 ? (
                     <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
                       No movies logged yet for this challenge season. Open the Admin portal to launch!
                     </div>
                   ) : (
-                    <div className="bg-slate-950/40 border border-slate-900/60 rounded-2xl divide-y divide-slate-900/40 overflow-hidden shadow-2xl">
+                    <div className="bg-slate-950/40 border border-slate-900/60 rounded-2xl divide-y divide-slate-900/40 overflow-hidden">
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
                           className="p-5 flex items-center justify-between hover:bg-slate-900/10 transition-colors"
                         >
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3.5">
                             <span
-                              className={`w-7 h-7 rounded flex items-center justify-center font-black text-sm ${
-                                idx === 0 ? 'bg-amber-400 text-slate-950' : 'bg-slate-900 text-slate-500'
+                              className={`w-7 h-7 rounded flex items-center justify-center font-black text-sm shrink-0 ${
+                                idx === 0 ? 'bg-[#00FF41] text-slate-950' : 'bg-slate-900 text-slate-500'
                               }`}
                             >
                               {idx + 1}
                             </span>
+                            
+                            {/* 🤖 BOTTTS AVATAR */}
+                            <img
+                              src={getMemberAvatar(member.name)}
+                              alt={member.name}
+                              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 p-0.5 object-cover shrink-0"
+                            />
+
                             <div>
                               <h3 
                                 onClick={() => setSelectedUser(member.name)}
-                                className="font-extrabold text-slate-200 text-base hover:underline select-none"
-                                style={{ cursor: 'pointer' }}
+                                className="font-extrabold text-slate-200 text-base hover:underline hover:text-[#00FF41] select-none cursor-pointer"
                               >
                                 {member.name}
                               </h3>
@@ -304,11 +533,11 @@ export default function MovieClubApp() {
                           </div>
                           <div className="flex -space-x-2 overflow-hidden p-0.5">
                             {member.movies.map((mov, i) => (
-                              <img
+                              <MoviePoster
                                 key={i}
                                 src={mov.poster}
-                                alt=""
-                                className="w-8 h-12 object-cover rounded border border-slate-950 shadow-xl"
+                                title={mov.title}
+                                className="w-8 h-12 object-cover rounded border border-slate-950"
                               />
                             ))}
                           </div>
@@ -318,92 +547,187 @@ export default function MovieClubApp() {
                   )}
                 </section>
 
-                {/* RECENTLY WATCHED FEED CORES */}
+                {/* 🎬 LOGGED (X MOVIES) SECTION */}
                 <section className="space-y-8 pt-4">
-                  <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-amber-400 pl-3">
-                    RECENTLY WATCHED
-                  </h2>
-                  <div className="divide-y divide-slate-900/60 space-y-12">
-                    {logs.map((log) => (
-                      <div
-                        key={`${log.name}-${log.movie}-${Math.random()}`}
-                        className="flex flex-col space-y-5 pt-10 first:pt-0"
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-900 pb-5">
+                    <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#00FF41] pl-3">
+                      LOGGED ({logs.length} MOVIE{logs.length !== 1 ? 'S' : ''})
+                    </h2>
+
+                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full sm:w-auto">
+                      {/* ⭐ LIST BY RATING SORT TOGGLE BUTTON */}
+                      <button
+                        onClick={() => setSortByRating(!sortByRating)}
+                        className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 shrink-0 ${
+                          sortByRating
+                            ? 'bg-[#00FF41] text-slate-950 border-[#00FF41]'
+                            : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'
+                        }`}
                       >
-                        <div>
-                          <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                            {log.movie}
-                          </h3>
-                          <p className="text-xs font-semibold text-amber-400/90 tracking-wide mt-1">
-                            {log.genre}
-                          </p>
+                        <span>★</span>
+                        <span>{sortByRating ? 'Sorted by Rating' : 'List by Rating'}</span>
+                      </button>
+
+                      {/* 👤 MEMBER FILTER DROPDOWN */}
+                      <div className="relative w-full sm:w-48">
+                        <select
+                          value={selectedMemberFilter}
+                          onChange={(e) => setSelectedMemberFilter(e.target.value)}
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-[#00FF41] font-medium cursor-pointer appearance-none"
+                        >
+                          <option value="">List By Member</option>
+                          {uniqueMembers.map((name) => (
+                            <option key={name} value={name} className="bg-slate-900 text-white">
+                              {name}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+                          ▼
                         </div>
-                        <div className="w-full max-w-md bg-slate-900 border border-slate-900 shadow-2xl">
-                          <img
-                            src={log.poster}
-                            alt=""
-                            className="w-full h-auto object-contain"
-                          />
-                        </div>
-                        <div className="space-y-4 max-w-md sm:max-w-xl">
-                          <div className="space-y-1 text-sm text-slate-300 font-medium">
-                            <p>
-                              <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
-                                Director:
-                              </span>{' '}
-                              {log.director}
-                            </p>
-                            <p>
-                              <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
-                                Stars:
-                              </span>{' '}
-                              {log.stars}
-                            </p>
-                            <p>
-                              <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
-                                Rating:
-                              </span>{' '}
-                              <span className="text-amber-400 font-bold">
-                                {log.rating}
-                              </span>
-                            </p>
-                            <p>
-                              <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
-                                Logged On:
-                              </span>{' '}
-                              <span className="text-slate-300 font-medium">
-                                {log.date_logged || 'Prior Entry'}
-                              </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {processedLogs.length === 0 ? (
+                    <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
+                      {selectedMemberFilter ? `No watched entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-slate-900/60 space-y-12">
+                      {processedLogs.map((log) => (
+                        <div
+                          key={`${log.name}-${log.movie}-${Math.random()}`}
+                          className="flex flex-col space-y-4 pt-10 first:pt-0"
+                        >
+                          {/* 1. TITLE & GENRE */}
+                          <div>
+                            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                              {log.movie}
+                            </h3>
+                            <p className="text-xs font-semibold text-[#00FF41]/90 tracking-wide mt-1">
+                              {log.genre}
                             </p>
                           </div>
-                          <div className="space-y-1.5">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                              {log.review ? 'Review' : 'Plot Summary'}
+
+                          {/* 2. 🌟 PROMINENT "LOGGED BY" HIGHLIGHT BADGE WITH BOTTTS ROBOT AVATAR */}
+                          <div className="flex items-center gap-2 pt-0.5">
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                              Logged by:
                             </span>
-                            {log.review ? (
-                              <p className="text-sm text-slate-200 leading-relaxed bg-slate-950/40 p-4 rounded-xl border border-slate-900/50 italic border-l-2 border-amber-400/40">
-                                "{log.review}"
-                              </p>
-                            ) : (
-                              <p className="text-sm text-slate-400 leading-relaxed bg-slate-950/40 p-4 rounded-xl border border-slate-900/50">
-                                {log.plot}
-                              </p>
-                            )}
+                            <button
+                              onClick={() => setSelectedUser(log.name)}
+                              className="inline-flex items-center gap-2 bg-[#00FF41]/10 border border-[#00FF41]/30 hover:border-[#00FF41]/60 text-[#00FF41] hover:text-emerald-300 text-xs font-extrabold px-3 py-1 rounded-full transition-all shadow-sm group"
+                            >
+                              <img
+                                src={getMemberAvatar(log.name)}
+                                alt={log.name}
+                                className="w-5 h-5 rounded-full bg-slate-900 border border-[#00FF41]/40 p-0.5 object-cover group-hover:scale-110 transition-transform"
+                              />
+                              <span className="tracking-wide">{log.name}</span>
+                            </button>
                           </div>
 
-                          {/* BUTTON FRAME BAR */}
-                          <div className="pt-2 flex items-center justify-between">
-                            <span className="text-[11px] text-slate-400 font-bold tracking-wide">
-                              Watched by{' '}
-                              <span 
-                                onClick={() => setSelectedUser(log.name)} 
-                                className="text-white font-extrabold hover:underline select-none"
-                                style={{ cursor: 'pointer' }}
-                              >
-                                {log.name}
+                          {/* 3. 📺 OTT / STREAMING PROVIDERS BADGES */}
+                          {log.watch_providers && log.watch_providers.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-2 py-0.5">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mr-1">
+                                Stream on:
                               </span>
-                            </span>
+                              {log.watch_providers.slice(0, 4).map((provider, idx) => {
+                                let providerObj = provider;
 
-                            <div className="flex items-center gap-4">
+                                if (typeof provider === 'string') {
+                                  try {
+                                    providerObj = JSON.parse(provider);
+                                  } catch (e) {
+                                    providerObj = { name: provider, logo: null };
+                                  }
+                                }
+
+                                const providerName = providerObj?.name || 'Platform';
+                                const providerLogo = providerObj?.logo || null;
+
+                                return (
+                                  <span
+                                    key={idx}
+                                    className="bg-slate-900 border border-slate-800 text-slate-200 text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5"
+                                  >
+                                    {providerLogo ? (
+                                      <img
+                                        src={providerLogo}
+                                        alt={providerName}
+                                        className="w-3.5 h-3.5 rounded object-cover"
+                                      />
+                                    ) : (
+                                      <span>📺</span>
+                                    )}
+                                    <span>{providerName}</span>
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {/* 4. MOVIE POSTER */}
+                          <div className="w-full max-w-md bg-slate-900 border border-slate-900">
+                            <MoviePoster
+                              src={log.poster}
+                              title={log.movie}
+                              className="w-full h-auto object-contain min-h-[300px]"
+                            />
+                          </div>
+
+                          {/* 5. DETAILS, RATING & REVIEWS */}
+                          <div className="space-y-4 max-w-md sm:max-w-xl">
+                            <div className="space-y-1 text-sm text-slate-300 font-medium">
+                              <p>
+                                <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                  Director:
+                                </span>{' '}
+                                {log.director}
+                              </p>
+                              <p>
+                                <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                  Stars:
+                                </span>{' '}
+                                {log.stars}
+                              </p>
+                              <p>
+                                <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                  Rating:
+                                </span>{' '}
+                                <span className="text-[#00FF41] font-bold">
+                                  {log.rating}
+                                </span>
+                              </p>
+                              <p>
+                                <span className="text-slate-500 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                  Logged On:
+                                </span>{' '}
+                                <span className="text-slate-300 font-medium">
+                                  {log.date_logged || 'Prior Entry'}
+                                </span>
+                              </p>
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                {log.review ? 'Review' : 'Plot Summary'}
+                              </span>
+                              {log.review ? (
+                                <p className="text-sm text-slate-200 leading-relaxed bg-slate-950/40 p-4 rounded-xl border border-slate-900/50 italic border-l-2 border-[#00FF41]/60 whitespace-pre-line">
+                                  "{log.review}"
+                                </p>
+                              ) : (
+                                <p className="text-sm text-slate-400 leading-relaxed bg-slate-950/40 p-4 rounded-xl border border-slate-900/50 whitespace-pre-line">
+                                  {log.plot}
+                                </p>
+                              )}
+                            </div>
+
+                            {/* FOOTER ACTIONS */}
+                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-slate-900/60">
                               {isAuthenticated && (
                                 <button
                                   onClick={() => handleDeleteLog(log.id, log.movie)}
@@ -423,18 +747,17 @@ export default function MovieClubApp() {
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                 </section>
               </>
             )}
           </div>
         )}
 
-        {/* SECURITY PROMPT VIEW */}
         {currentPage === 'login' && (
-          <div className="max-w-md mx-auto mt-16 bg-slate-950/40 border border-slate-900 rounded-2xl p-6 shadow-2xl">
+          <div className="max-w-md mx-auto mt-16 bg-slate-950/40 border border-slate-900 rounded-2xl p-6">
             <h2 className="text-lg font-black text-white tracking-tight">
               Curator Gate
             </h2>
@@ -447,7 +770,7 @@ export default function MovieClubApp() {
                 placeholder="Enter Passkey"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#00FF41]"
               />
               {authError && (
                 <p className="text-xs text-rose-500 font-semibold mt-1.5">
@@ -456,7 +779,7 @@ export default function MovieClubApp() {
               )}
               <button
                 type="submit"
-                className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors"
+                className="w-full bg-[#00FF41] hover:bg-emerald-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors"
               >
                 Unlock Panel
               </button>
@@ -467,7 +790,7 @@ export default function MovieClubApp() {
         {/* SECURE ADMIN ENTRY PANEL */}
         {currentPage === 'admin' && (
           <div className="space-y-12">
-            <div className="max-w-xl mx-auto bg-slate-950 border border-slate-900 rounded-2xl p-6 shadow-2xl">
+            <div className="max-w-xl mx-auto bg-slate-950 border border-slate-900 rounded-2xl p-6">
               <div className="border-b border-slate-900 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-white tracking-tight">
@@ -477,7 +800,7 @@ export default function MovieClubApp() {
                     Add watches to update leaderboard rankings.
                   </p>
                 </div>
-                <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-[#00FF41] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Authenticated
                 </span>
               </div>
@@ -492,7 +815,7 @@ export default function MovieClubApp() {
                     placeholder="Who watched it? (e.g., Ananya)"
                     value={memberName}
                     onChange={(e) => setMemberName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#00FF41]"
                   />
                 </div>
                 <div>
@@ -502,12 +825,26 @@ export default function MovieClubApp() {
                   <input
                     required
                     type="text"
-                    placeholder="Enter film title (e.g., Mickey 17)"
+                    placeholder="Enter film title (e.g., Dune: Part Two)"
                     value={movieTitle}
                     onChange={(e) => setMovieTitle(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#00FF41]"
                   />
                 </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">
+                    Custom Poster Image URL (Optional - For Missing IMDb Posters)
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="Paste direct image link (e.g., https://.../poster.jpg)"
+                    value={customPosterUrl}
+                    onChange={(e) => setCustomPosterUrl(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#00FF41]"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">
                     Custom IMDb URL Override (Optional)
@@ -517,7 +854,7 @@ export default function MovieClubApp() {
                     placeholder="Leave empty to use OMDb auto-matching link"
                     value={imdbLink}
                     onChange={(e) => setImdbLink(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#00FF41]"
                   />
                 </div>
                 <div>
@@ -529,15 +866,15 @@ export default function MovieClubApp() {
                     placeholder="Type custom member thoughts..."
                     value={memberReview}
                     onChange={(e) => setMemberReview(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-amber-400 resize-none"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#00FF41] resize-none"
                   ></textarea>
                 </div>
                 <button
                   type="submit"
                   disabled={isPublishing}
-                  className="w-full bg-amber-400 hover:bg-amber-500 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-lg disabled:opacity-50"
+                  className="w-full bg-[#00FF41] hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all disabled:opacity-50"
                 >
-                  {isPublishing ? 'Publishing Link Core...' : 'Publish Watch to Live Board'}
+                  {isPublishing ? 'Querying OTT Info & Publishing...' : 'Publish Watch to Live Board'}
                 </button>
               </form>
                
@@ -561,20 +898,20 @@ export default function MovieClubApp() {
         <div style={{
           position: 'fixed',
           top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          backgroundColor: 'rgba(0, 0, 0, 0.88)',
           backdropFilter: 'blur(8px)',
           display: 'flex', justifyContent: 'center', alignItems: 'center',
           zIndex: 9999,
         }}>
           <div style={{
-            backgroundColor: '#111827',
+            backgroundColor: '#090d16',
             color: '#fff',
             padding: '30px',
             borderRadius: '16px',
             width: '90%', maxWidth: '800px',
             maxHeight: '85vh', overflowY: 'auto',
             position: 'relative',
-            border: '1px solid #1f2937'
+            border: '1px solid #1e293b'
           }}>
             <button 
               onClick={() => setSelectedUser(null)}
@@ -587,13 +924,39 @@ export default function MovieClubApp() {
               &times;
             </button>
 
-            {/* Header */}
-            <h2 style={{ borderBottom: '2px solid #1f2937', paddingBottom: '12px', marginTop: 0, fontSize: '20px', fontWeight: '800' }}>
-              🎬 {selectedUser}'s Log
-            </h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', borderBottom: '2px solid #1e293b', paddingBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img
+                  src={getMemberAvatar(selectedUser)}
+                  alt={selectedUser}
+                  style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#0f172a', border: '1px solid #374151', padding: '2px' }}
+                />
+                <h2 style={{ margin: 0, fontSize: '20px', fontWeight: '800' }}>
+                  🎬 {selectedUser}'s Log
+                </h2>
+              </div>
 
-            {/* ACCOLADES BAR */}
-            {((logs.filter(log => log.name === selectedUser).length >= 5) || (leaderboard[0] && leaderboard[0].name === selectedUser)) && (
+              <button
+                onClick={handleDownloadMemberImage}
+                disabled={isMemberExporting}
+                style={{
+                  backgroundColor: 'rgba(0, 255, 65, 0.1)',
+                  border: '1px solid rgba(0, 255, 65, 0.3)',
+                  color: '#00FF41',
+                  padding: '6px 14px',
+                  borderRadius: '12px',
+                  fontSize: '11px',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {isMemberExporting ? 'Generating...' : '📸 Download Profile Badge'}
+              </button>
+            </div>
+
+            {((selectedMemberLogs.length >= 5) || (leaderboard[0] && leaderboard[0].name === selectedUser)) && (
               <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -604,37 +967,24 @@ export default function MovieClubApp() {
                 border: '1px solid #1e293b',
                 marginTop: '15px'
               }}>
-                
-                {/* Rule 4: Leaderboard #1 Champion Badge */}
                 {leaderboard[0] && leaderboard[0].name === selectedUser && (
-                  <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '6px', 
-                    backgroundColor: 'rgba(245, 197, 24, 0.15)', 
-                    padding: '6px 14px', 
-                    borderRadius: '20px', 
-                    border: '1px solid #f5c518'
-                  }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(0, 255, 65, 0.15)', padding: '6px 14px', borderRadius: '20px', border: '1px solid #00FF41' }}>
                     <span style={{ fontSize: '14px' }}>👑</span>
-                    <span style={{ fontSize: '11px', fontWeight: '900', color: '#f5c518' }}>
-                      CHAMPION
-                    </span>
+                    <span style={{ fontSize: '11px', fontWeight: '900', color: '#00FF41' }}>CHAMPION</span>
                   </div>
                 )}
 
-                {/* Rules 1-3: Medallion Tier Levels */}
-                {logs.filter(log => log.name === selectedUser).length >= 15 ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(255, 215, 0, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #ffd700' }}>
+                {selectedMemberLogs.length >= 15 ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(0, 255, 65, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #00FF41' }}>
                     <span style={{ fontSize: '14px' }}>🥇</span>
-                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#ffd700' }}>Gold</span>
+                    <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#00FF41' }}>Gold</span>
                   </div>
-                ) : logs.filter(log => log.name === selectedUser).length >= 10 ? (
+                ) : selectedMemberLogs.length >= 10 ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(226, 232, 240, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #cbd5e1' }}>
                     <span style={{ fontSize: '14px' }}>🥈</span>
                     <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#e2e8f0' }}>Silver</span>
                   </div>
-                ) : logs.filter(log => log.name === selectedUser).length >= 5 ? (
+                ) : selectedMemberLogs.length >= 5 ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(205, 127, 50, 0.1)', padding: '6px 12px', borderRadius: '20px', border: '1px solid #b45309' }}>
                     <span style={{ fontSize: '14px' }}>🥉</span>
                     <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#f59e0b' }}>Bronze</span>
@@ -643,29 +993,402 @@ export default function MovieClubApp() {
               </div>
             )}
 
-            {/* Grid of Posters */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
               gap: '20px', marginTop: '25px'
             }}>
-              {logs
-                .filter(log => log.name === selectedUser)
-                .map((log) => (
-                  <div key={`${log.movie}-${Math.random()}`} style={{ textAlign: 'center', backgroundColor: '#0f172a', padding: '12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
-                    <img 
-                      src={log.poster} 
-                      alt="" 
-                      style={{ width: '100%', borderRadius: '6px', aspectRatio: '2/3', objectFit: 'cover' }} 
-                    />
-                    <h4 style={{ margin: '10px 0 5px 0', fontSize: '14px', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {log.movie}
-                    </h4>
-                    <span style={{ fontSize: '12px', color: '#f5c518', fontWeight: 'bold' }}>
-                      {log.rating || '★ —'}
-                    </span>
+              {selectedMemberLogs.map((log) => (
+                <div key={`${log.movie}-${Math.random()}`} style={{ textAlign: 'center', backgroundColor: '#0f172a', padding: '12px', borderRadius: '8px', border: '1px solid #1e293b' }}>
+                  <MoviePoster 
+                    src={log.poster} 
+                    title={log.movie}
+                    style={{ width: '100%', borderRadius: '6px', aspectRatio: '2/3', objectFit: 'cover' }} 
+                  />
+                  <h4 style={{ margin: '10px 0 5px 0', fontSize: '14px', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {log.movie}
+                  </h4>
+                  <span style={{ fontSize: '12px', color: '#00FF41', fontWeight: 'bold' }}>
+                    {log.rating || '★ —'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🖼️ OFF-SCREEN LEADERBOARD EXPORT CANVAS */}
+      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+        <div
+          ref={exportCardRef}
+          style={{
+            width: '1080px',
+            backgroundColor: '#040507',
+            color: '#ffffff',
+            padding: '60px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={{ marginBottom: '32px' }}>
+            <div
+              style={{
+                fontFamily: "'Syncopate', sans-serif",
+                fontWeight: '700',
+                fontSize: '28px',
+                letterSpacing: '3px',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <span>CUBBON</span>
+              <span style={{ color: '#00FF41' }}>MOVIE</span>
+              <span>CLUB</span>
+            </div>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: '#0a0d14',
+              border: '1px solid #1e293b',
+              borderRadius: '24px',
+              padding: '28px 36px',
+              marginBottom: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              boxSizing: 'border-box',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "'Syncopate', sans-serif",
+                fontWeight: '700',
+                fontSize: '32px',
+                letterSpacing: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+              }}
+            >
+              <span style={{ color: '#00FF41' }}>
+                SCI-FI & FANTASY MOVIES
+              </span>
+              <span style={{ color: '#ffffff' }}>
+                SEPTEMBER
+              </span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
+            <div style={{ width: '6px', height: '30px', backgroundColor: '#00FF41', borderRadius: '3px' }} />
+            <div
+              style={{
+                fontSize: '26px',
+                fontWeight: '900',
+                letterSpacing: '1px',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              LEADERBOARD
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            {leaderboard.map((member, idx) => (
+              <div
+                key={member.name}
+                style={{
+                  backgroundColor: '#0f172a',
+                  border: idx === 0 ? '1.5px solid rgba(0, 255, 65, 0.5)' : '1px solid #1e293b',
+                  borderRadius: '20px',
+                  padding: '24px 28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ width: '44px', height: '44px', position: 'relative' }}>
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                      <rect
+                        width="44"
+                        height="44"
+                        rx="12"
+                        fill={idx === 0 ? '#00FF41' : idx === 1 ? '#e2e8f0' : idx === 2 ? '#cd7f32' : '#1e293b'}
+                      />
+                      <text
+                        x="50%"
+                        y="50%"
+                        dominantBaseline="central"
+                        textAnchor="middle"
+                        fill={idx === 0 ? '#000000' : idx === 1 ? '#0f172a' : idx === 2 ? '#ffffff' : '#64748b'}
+                        fontSize="20"
+                        fontWeight="900"
+                        fontFamily="sans-serif"
+                      >
+                        {idx + 1}
+                      </text>
+                    </svg>
                   </div>
-                ))}
+
+                  <img
+                    src={getMemberAvatar(member.name)}
+                    alt={member.name}
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      backgroundColor: '#020617',
+                      border: '1px solid #334155',
+                      padding: '2px',
+                      objectFit: 'cover',
+                    }}
+                  />
+
+                  <div>
+                    <div style={{ fontSize: '22px', fontWeight: '800', color: '#f8fafc', display: 'flex', alignItems: 'center' }}>
+                      {member.name}
+                      {idx === 0 && <span style={{ marginLeft: '10px', fontSize: '18px' }}>👑</span>}
+                    </div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginTop: '4px' }}>
+                      {member.count} Film{member.count > 1 ? 's' : ''} Watched
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {member.movies.slice(0, 5).map((mov, i) => (
+                    <MoviePoster
+                      key={i}
+                      src={mov.poster}
+                      title={mov.title}
+                      style={{
+                        width: '48px',
+                        height: '72px',
+                        objectFit: 'cover',
+                        borderRadius: '6px',
+                        border: '1px solid #0f172a',
+                      }}
+                    />
+                  ))}
+                  {member.movies.length > 5 && (
+                    <div
+                      style={{
+                        width: '48px',
+                        height: '72px',
+                        backgroundColor: '#1e293b',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        fontWeight: '800',
+                        color: '#94a3b8',
+                      }}
+                    >
+                      +{member.movies.length - 5}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 🖼️ OFF-SCREEN PERSONAL MEMBER STATS EXPORT CANVAS */}
+      {selectedUser && (
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
+          <div
+            ref={memberExportCardRef}
+            style={{
+              width: '1080px',
+              backgroundColor: '#040507',
+              color: '#ffffff',
+              padding: '50px 50px 60px 50px',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+              boxSizing: 'border-box',
+              display: 'block',
+            }}
+          >
+            {/* BRANDING WITH THEME SUBTITLE */}
+            <div style={{ marginBottom: '28px' }}>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '26px',
+                  letterSpacing: '3px',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                <span>CUBBON</span>
+                <span style={{ color: '#00FF41' }}>MOVIE</span>
+                <span>CLUB</span>
+              </div>
+              
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  color: '#00FF41',
+                  letterSpacing: '2px',
+                  marginTop: '8px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                SCI-FI & FANTASY MOVIES
+              </div>
+            </div>
+
+            {/* MEMBER PROFILE BANNER */}
+            <div
+              style={{
+                backgroundColor: '#0a0d14',
+                border: '1px solid #1e293b',
+                borderRadius: '24px',
+                padding: '28px 32px',
+                marginBottom: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                boxSizing: 'border-box',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <img
+                  src={getMemberAvatar(selectedUser)}
+                  alt={selectedUser}
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    backgroundColor: '#0f172a',
+                    border: '2px solid #00FF41',
+                    padding: '3px',
+                    objectFit: 'cover',
+                  }}
+                />
+                <div>
+                  <div style={{ fontSize: '34px', fontWeight: '900', color: '#ffffff' }}>
+                    {selectedUser}
+                  </div>
+                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#00FF41', marginTop: '4px' }}>
+                    {selectedMemberLogs.length} Film{selectedMemberLogs.length > 1 ? 's' : ''} Logged
+                  </div>
+                </div>
+              </div>
+
+              {/* SVG DEAD-CENTERED BADGE PILLS */}
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {leaderboard[0] && leaderboard[0].name === selectedUser && (
+                  <div style={{ width: '130px', height: '42px', position: 'relative' }}>
+                    <svg width="130" height="42" viewBox="0 0 130 42">
+                      <rect width="130" height="42" rx="21" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        👑 CHAMPION
+                      </text>
+                    </svg>
+                  </div>
+                )}
+                {selectedMemberLogs.length >= 15 ? (
+                  <div style={{ width: '100px', height: '42px', position: 'relative' }}>
+                    <svg width="100" height="42" viewBox="0 0 100 42">
+                      <rect width="100" height="42" rx="21" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥇 GOLD
+                      </text>
+                    </svg>
+                  </div>
+                ) : selectedMemberLogs.length >= 10 ? (
+                  <div style={{ width: '100px', height: '42px', position: 'relative' }}>
+                    <svg width="100" height="42" viewBox="0 0 100 42">
+                      <rect width="100" height="42" rx="21" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="1" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#e2e8f0" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥈 SILVER
+                      </text>
+                    </svg>
+                  </div>
+                ) : selectedMemberLogs.length >= 5 ? (
+                  <div style={{ width: '110px', height: '42px', position: 'relative' }}>
+                    <svg width="110" height="42" viewBox="0 0 110 42">
+                      <rect width="110" height="42" rx="21" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="1" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥉 BRONZE
+                      </text>
+                    </svg>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* FLEX WRAP CENTERED GRID (AUTO-CENTERS INCOMPLETE LAST ROW) */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                gap: '20px',
+                width: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              {selectedMemberLogs.map((log) => (
+                <div
+                  key={`${log.movie}-${Math.random()}`}
+                  style={{
+                    backgroundColor: '#0f172a',
+                    border: '1px solid #1e293b',
+                    borderRadius: '16px',
+                    padding: '14px',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    minHeight: '310px',
+                    width: '225px',
+                    flexShrink: 0,
+                  }}
+                >
+                  <MoviePoster
+                    src={log.poster}
+                    title={log.movie}
+                    style={{ width: '100%', borderRadius: '10px', aspectRatio: '2/3', objectFit: 'cover' }}
+                  />
+                  
+                  <div
+                    style={{
+                      marginTop: '10px',
+                      marginBottom: '6px',
+                      fontSize: '13px',
+                      fontWeight: '800',
+                      color: '#ffffff',
+                      lineHeight: '1.3',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minHeight: '42px',
+                      padding: '0 4px',
+                    }}
+                  >
+                    {log.movie}
+                  </div>
+
+                  <div style={{ fontSize: '12px', color: '#00FF41', fontWeight: '800' }}>
+                    {log.rating || '★ —'}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
