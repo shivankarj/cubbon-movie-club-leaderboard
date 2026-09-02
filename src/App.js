@@ -388,6 +388,7 @@ export default function MovieClubApp() {
   };
 
   const selectedMemberLogs = logs.filter((log) => log.name === selectedUser);
+  const isHighVolumeMember = selectedMemberLogs.length >= 12;
 
   return (
     <div className="min-h-screen bg-[#040507] text-slate-100 font-sans antialiased">
@@ -475,7 +476,8 @@ export default function MovieClubApp() {
               <>
                 {/* LEADERBOARD VIEW BLOCK */}
                 <section className="space-y-8">
-                  <div className="flex items-center justify-between">
+                  {/* ISSUE 1 FIX: Clean flex spacing between title & Save JPG button on mobile */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#00FF41] pl-3">
                       LEADERBOARD
                     </h2>
@@ -484,7 +486,7 @@ export default function MovieClubApp() {
                       <button
                         onClick={handleDownloadLeaderboardImage}
                         disabled={isExporting || leaderboard.length === 0}
-                        className="text-[10px] font-extrabold tracking-widest uppercase text-[#00FF41] hover:text-emerald-300 bg-[#00FF41]/10 border border-[#00FF41]/30 px-3 py-1.5 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
+                        className="text-[10px] font-extrabold tracking-widest uppercase text-[#00FF41] hover:text-emerald-300 bg-[#00FF41]/10 border border-[#00FF41]/30 px-3.5 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 self-start sm:self-auto"
                       >
                         <span className="text-sm">📸</span>
                         <span>{isExporting ? 'Generating HD Card...' : 'Save JPG for WhatsApp'}</span>
@@ -501,11 +503,12 @@ export default function MovieClubApp() {
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
-                          className="p-5 flex items-center justify-between hover:bg-slate-900/10 transition-colors"
+                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-slate-900/10 transition-colors gap-3"
                         >
-                          <div className="flex items-center gap-3.5">
+                          {/* ISSUE 3 FIX: Dedicated gap between avatar/name group & posters */}
+                          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0 mr-1 sm:mr-3">
                             <span
-                              className={`w-7 h-7 rounded flex items-center justify-center font-black text-sm shrink-0 ${
+                              className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0 ? 'bg-[#00FF41] text-slate-950' : 'bg-slate-900 text-slate-500'
                               }`}
                             >
@@ -516,28 +519,28 @@ export default function MovieClubApp() {
                             <img
                               src={getMemberAvatar(member.name)}
                               alt={member.name}
-                              className="w-9 h-9 rounded-full bg-slate-900 border border-slate-800 p-0.5 object-cover shrink-0"
+                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900 border border-slate-800 p-0.5 object-cover shrink-0"
                             />
 
                             <div>
                               <h3 
                                 onClick={() => setSelectedUser(member.name)}
-                                className="font-extrabold text-slate-200 text-base hover:underline hover:text-[#00FF41] select-none cursor-pointer"
+                                className="font-extrabold text-slate-200 text-sm sm:text-base hover:underline hover:text-[#00FF41] select-none cursor-pointer leading-snug"
                               >
                                 {member.name}
                               </h3>
-                              <p className="text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
+                              <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
                                 {member.count} Film{member.count > 1 ? 's' : ''}
                               </p>
                             </div>
                           </div>
-                          <div className="flex -space-x-2 overflow-hidden p-0.5">
+                          <div className="flex -space-x-1.5 sm:-space-x-2 overflow-hidden p-0.5 shrink-0">
                             {member.movies.map((mov, i) => (
                               <MoviePoster
                                 key={i}
                                 src={mov.poster}
                                 title={mov.title}
-                                className="w-8 h-12 object-cover rounded border border-slate-950"
+                                className="w-7 h-10 sm:w-8 sm:h-12 object-cover rounded border border-slate-950"
                               />
                             ))}
                           </div>
@@ -554,18 +557,19 @@ export default function MovieClubApp() {
                       LOGGED ({logs.length} MOVIE{logs.length !== 1 ? 'S' : ''})
                     </h2>
 
-                    <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full sm:w-auto">
+                    {/* ISSUE 2 FIX: Grid container forces side-by-side equal width on mobile */}
+                    <div className="grid grid-cols-2 gap-2.5 w-full sm:flex sm:w-auto items-center">
                       {/* ⭐ LIST BY RATING SORT TOGGLE BUTTON */}
                       <button
                         onClick={() => setSortByRating(!sortByRating)}
-                        className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center gap-1.5 shrink-0 ${
+                        className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
                             ? 'bg-[#00FF41] text-slate-950 border-[#00FF41]'
                             : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'
                         }`}
                       >
                         <span>★</span>
-                        <span>{sortByRating ? 'Sorted by Rating' : 'List by Rating'}</span>
+                        <span className="truncate">{sortByRating ? 'Sorted by Rating' : 'List by Rating'}</span>
                       </button>
 
                       {/* 👤 MEMBER FILTER DROPDOWN */}
@@ -573,16 +577,16 @@ export default function MovieClubApp() {
                         <select
                           value={selectedMemberFilter}
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-[#00FF41] font-medium cursor-pointer appearance-none"
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 pr-7 text-xs text-white focus:outline-none focus:border-[#00FF41] font-medium cursor-pointer appearance-none truncate"
                         >
-                          <option value="">List By Member</option>
+                          <option value="">List by Member</option>
                           {uniqueMembers.map((name) => (
                             <option key={name} value={name} className="bg-slate-900 text-white">
                               {name}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[10px]">
                           ▼
                         </div>
                       </div>
@@ -628,44 +632,46 @@ export default function MovieClubApp() {
                             </button>
                           </div>
 
-                          {/* 3. 📺 OTT / STREAMING PROVIDERS BADGES */}
+                          {/* 3. 📺 OTT / STREAMING PROVIDERS BADGES (ALIGNED & MULTI-LINE PROOF) */}
                           {log.watch_providers && log.watch_providers.length > 0 && (
-                            <div className="flex flex-wrap items-center gap-2 py-0.5">
-                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mr-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 pt-0.5">
+                              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest shrink-0 self-start sm:self-auto pt-1 sm:pt-0">
                                 Stream on:
                               </span>
-                              {log.watch_providers.slice(0, 4).map((provider, idx) => {
-                                let providerObj = provider;
+                              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                {log.watch_providers.slice(0, 4).map((provider, idx) => {
+                                  let providerObj = provider;
 
-                                if (typeof provider === 'string') {
-                                  try {
-                                    providerObj = JSON.parse(provider);
-                                  } catch (e) {
-                                    providerObj = { name: provider, logo: null };
+                                  if (typeof provider === 'string') {
+                                    try {
+                                      providerObj = JSON.parse(provider);
+                                    } catch (e) {
+                                      providerObj = { name: provider, logo: null };
+                                    }
                                   }
-                                }
 
-                                const providerName = providerObj?.name || 'Platform';
-                                const providerLogo = providerObj?.logo || null;
+                                  const providerName = providerObj?.name || 'Platform';
+                                  const providerLogo = providerObj?.logo || null;
 
-                                return (
-                                  <span
-                                    key={idx}
-                                    className="bg-slate-900 border border-slate-800 text-slate-200 text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1.5"
-                                  >
-                                    {providerLogo ? (
-                                      <img
-                                        src={providerLogo}
-                                        alt={providerName}
-                                        className="w-3.5 h-3.5 rounded object-cover"
-                                      />
-                                    ) : (
-                                      <span>📺</span>
-                                    )}
-                                    <span>{providerName}</span>
-                                  </span>
-                                );
-                              })}
+                                  return (
+                                    <span
+                                      key={idx}
+                                      className="inline-flex items-center gap-1.5 h-6 bg-slate-900 border border-slate-800/80 text-slate-200 text-[10px] font-bold px-2.5 rounded-lg shadow-sm shrink-0 leading-none select-none"
+                                    >
+                                      {providerLogo ? (
+                                        <img
+                                          src={providerLogo}
+                                          alt={providerName}
+                                          className="w-3.5 h-3.5 rounded object-cover shrink-0"
+                                        />
+                                      ) : (
+                                        <span className="text-[11px]">📺</span>
+                                      )}
+                                      <span className="truncate max-w-[110px] sm:max-w-none">{providerName}</span>
+                                    </span>
+                                  );
+                                })}
+                              </div>
                             </div>
                           )}
 
@@ -1018,7 +1024,7 @@ export default function MovieClubApp() {
         </div>
       )}
 
-      {/* 🖼️ OFF-SCREEN LEADERBOARD EXPORT CANVAS */}
+      {/* 🖼️ OFF-SCREEN LEADERBOARD EXPORT CANVAS (ISSUE 4 FIX: High legibility for mobile WhatsApp) */}
       <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
         <div
           ref={exportCardRef}
@@ -1036,7 +1042,7 @@ export default function MovieClubApp() {
               style={{
                 fontFamily: "'Syncopate', sans-serif",
                 fontWeight: '700',
-                fontSize: '28px',
+                fontSize: '32px',
                 letterSpacing: '3px',
                 color: '#ffffff',
                 display: 'flex',
@@ -1066,7 +1072,7 @@ export default function MovieClubApp() {
               style={{
                 fontFamily: "'Syncopate', sans-serif",
                 fontWeight: '700',
-                fontSize: '32px',
+                fontSize: '34px',
                 letterSpacing: '2px',
                 display: 'flex',
                 alignItems: 'center',
@@ -1082,11 +1088,11 @@ export default function MovieClubApp() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '24px' }}>
-            <div style={{ width: '6px', height: '30px', backgroundColor: '#00FF41', borderRadius: '3px' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '28px' }}>
+            <div style={{ width: '8px', height: '36px', backgroundColor: '#00FF41', borderRadius: '4px' }} />
             <div
               style={{
-                fontSize: '26px',
+                fontSize: '32px',
                 fontWeight: '900',
                 letterSpacing: '1px',
                 color: '#ffffff',
@@ -1098,13 +1104,13 @@ export default function MovieClubApp() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {leaderboard.map((member, idx) => (
               <div
                 key={member.name}
                 style={{
                   backgroundColor: '#0f172a',
-                  border: idx === 0 ? '1.5px solid rgba(0, 255, 65, 0.5)' : '1px solid #1e293b',
+                  border: idx === 0 ? '2px solid rgba(0, 255, 65, 0.7)' : '1px solid #1e293b',
                   borderRadius: '20px',
                   padding: '24px 28px',
                   display: 'flex',
@@ -1112,13 +1118,13 @@ export default function MovieClubApp() {
                   justifyContent: 'space-between',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                  <div style={{ width: '44px', height: '44px', position: 'relative' }}>
-                    <svg width="44" height="44" viewBox="0 0 44 44">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+                  <div style={{ width: '52px', height: '52px', position: 'relative' }}>
+                    <svg width="52" height="52" viewBox="0 0 52 52">
                       <rect
-                        width="44"
-                        height="44"
-                        rx="12"
+                        width="52"
+                        height="52"
+                        rx="14"
                         fill={idx === 0 ? '#00FF41' : idx === 1 ? '#e2e8f0' : idx === 2 ? '#cd7f32' : '#1e293b'}
                       />
                       <text
@@ -1127,7 +1133,7 @@ export default function MovieClubApp() {
                         dominantBaseline="central"
                         textAnchor="middle"
                         fill={idx === 0 ? '#000000' : idx === 1 ? '#0f172a' : idx === 2 ? '#ffffff' : '#64748b'}
-                        fontSize="20"
+                        fontSize="24"
                         fontWeight="900"
                         fontFamily="sans-serif"
                       >
@@ -1140,22 +1146,22 @@ export default function MovieClubApp() {
                     src={getMemberAvatar(member.name)}
                     alt={member.name}
                     style={{
-                      width: '44px',
-                      height: '44px',
+                      width: '56px',
+                      height: '56px',
                       borderRadius: '50%',
                       backgroundColor: '#020617',
-                      border: '1px solid #334155',
+                      border: '2px solid #334155',
                       padding: '2px',
                       objectFit: 'cover',
                     }}
                   />
 
                   <div>
-                    <div style={{ fontSize: '22px', fontWeight: '800', color: '#f8fafc', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ fontSize: '28px', fontWeight: '900', color: '#f8fafc', display: 'flex', alignItems: 'center' }}>
                       {member.name}
-                      {idx === 0 && <span style={{ marginLeft: '10px', fontSize: '18px' }}>👑</span>}
+                      {idx === 0 && <span style={{ marginLeft: '10px', fontSize: '22px' }}>👑</span>}
                     </div>
-                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginTop: '4px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', marginTop: '4px' }}>
                       {member.count} Film{member.count > 1 ? 's' : ''} Watched
                     </div>
                   </div>
@@ -1168,10 +1174,10 @@ export default function MovieClubApp() {
                       src={mov.poster}
                       title={mov.title}
                       style={{
-                        width: '48px',
-                        height: '72px',
+                        width: '56px',
+                        height: '84px',
                         objectFit: 'cover',
-                        borderRadius: '6px',
+                        borderRadius: '8px',
                         border: '1px solid #0f172a',
                       }}
                     />
@@ -1179,14 +1185,14 @@ export default function MovieClubApp() {
                   {member.movies.length > 5 && (
                     <div
                       style={{
-                        width: '48px',
-                        height: '72px',
+                        width: '56px',
+                        height: '84px',
                         backgroundColor: '#1e293b',
-                        borderRadius: '6px',
+                        borderRadius: '8px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
+                        fontSize: '16px',
                         fontWeight: '800',
                         color: '#94a3b8',
                       }}
@@ -1201,7 +1207,7 @@ export default function MovieClubApp() {
         </div>
       </div>
 
-      {/* 🖼️ OFF-SCREEN PERSONAL MEMBER STATS EXPORT CANVAS */}
+      {/* 🖼️ OFF-SCREEN PERSONAL MEMBER STATS EXPORT CANVAS (ISSUE 5 FIX: Option C Multi-column Collage Grid) */}
       {selectedUser && (
         <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
           <div
@@ -1222,7 +1228,7 @@ export default function MovieClubApp() {
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '700',
-                  fontSize: '26px',
+                  fontSize: '28px',
                   letterSpacing: '3px',
                   color: '#ffffff',
                   display: 'flex',
@@ -1238,7 +1244,7 @@ export default function MovieClubApp() {
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
-                  fontSize: '12px',
+                  fontSize: '14px',
                   fontWeight: '700',
                   color: '#00FF41',
                   letterSpacing: '2px',
@@ -1269,8 +1275,8 @@ export default function MovieClubApp() {
                   src={getMemberAvatar(selectedUser)}
                   alt={selectedUser}
                   style={{
-                    width: '64px',
-                    height: '64px',
+                    width: '68px',
+                    height: '68px',
                     borderRadius: '50%',
                     backgroundColor: '#0f172a',
                     border: '2px solid #00FF41',
@@ -1279,10 +1285,10 @@ export default function MovieClubApp() {
                   }}
                 />
                 <div>
-                  <div style={{ fontSize: '34px', fontWeight: '900', color: '#ffffff' }}>
+                  <div style={{ fontSize: '36px', fontWeight: '900', color: '#ffffff' }}>
                     {selectedUser}
                   </div>
-                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#00FF41', marginTop: '4px' }}>
+                  <div style={{ fontSize: '16px', fontWeight: '800', color: '#00FF41', marginTop: '4px' }}>
                     {selectedMemberLogs.length} Film{selectedMemberLogs.length > 1 ? 's' : ''} Logged
                   </div>
                 </div>
@@ -1291,9 +1297,9 @@ export default function MovieClubApp() {
               {/* SVG DEAD-CENTERED BADGE PILLS */}
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 {leaderboard[0] && leaderboard[0].name === selectedUser && (
-                  <div style={{ width: '130px', height: '42px', position: 'relative' }}>
-                    <svg width="130" height="42" viewBox="0 0 130 42">
-                      <rect width="130" height="42" rx="21" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1" />
+                  <div style={{ width: '140px', height: '44px', position: 'relative' }}>
+                    <svg width="140" height="44" viewBox="0 0 140 44">
+                      <rect width="140" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1.5" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         👑 CHAMPION
                       </text>
@@ -1301,27 +1307,27 @@ export default function MovieClubApp() {
                   </div>
                 )}
                 {selectedMemberLogs.length >= 15 ? (
-                  <div style={{ width: '100px', height: '42px', position: 'relative' }}>
-                    <svg width="100" height="42" viewBox="0 0 100 42">
-                      <rect width="100" height="42" rx="21" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1" />
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1.5" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥇 GOLD
                       </text>
                     </svg>
                   </div>
                 ) : selectedMemberLogs.length >= 10 ? (
-                  <div style={{ width: '100px', height: '42px', position: 'relative' }}>
-                    <svg width="100" height="42" viewBox="0 0 100 42">
-                      <rect width="100" height="42" rx="21" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="1" />
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="1.5" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#e2e8f0" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥈 SILVER
                       </text>
                     </svg>
                   </div>
                 ) : selectedMemberLogs.length >= 5 ? (
-                  <div style={{ width: '110px', height: '42px', position: 'relative' }}>
-                    <svg width="110" height="42" viewBox="0 0 110 42">
-                      <rect width="110" height="42" rx="21" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="1" />
+                  <div style={{ width: '110px', height: '44px', position: 'relative' }}>
+                    <svg width="110" height="44" viewBox="0 0 110 44">
+                      <rect width="110" height="44" rx="22" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="1.5" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥉 BRONZE
                       </text>
@@ -1331,13 +1337,13 @@ export default function MovieClubApp() {
               </div>
             </div>
 
-            {/* FLEX WRAP CENTERED GRID (AUTO-CENTERS INCOMPLETE LAST ROW) */}
+            {/* OPTION C COLLAGE GRID: Dynamic miniature poster scaling when 12+ movies logged */}
             <div
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'center',
-                gap: '20px',
+                gap: isHighVolumeMember ? '12px' : '20px',
                 width: '100%',
                 boxSizing: 'border-box',
               }}
@@ -1348,43 +1354,43 @@ export default function MovieClubApp() {
                   style={{
                     backgroundColor: '#0f172a',
                     border: '1px solid #1e293b',
-                    borderRadius: '16px',
-                    padding: '14px',
+                    borderRadius: isHighVolumeMember ? '12px' : '16px',
+                    padding: isHighVolumeMember ? '10px' : '14px',
                     textAlign: 'center',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    minHeight: '310px',
-                    width: '225px',
+                    minHeight: isHighVolumeMember ? '250px' : '310px',
+                    width: isHighVolumeMember ? '170px' : '225px',
                     flexShrink: 0,
                   }}
                 >
                   <MoviePoster
                     src={log.poster}
                     title={log.movie}
-                    style={{ width: '100%', borderRadius: '10px', aspectRatio: '2/3', objectFit: 'cover' }}
+                    style={{ width: '100%', borderRadius: '8px', aspectRatio: '2/3', objectFit: 'cover' }}
                   />
                   
                   <div
                     style={{
-                      marginTop: '10px',
-                      marginBottom: '6px',
-                      fontSize: '13px',
+                      marginTop: isHighVolumeMember ? '6px' : '10px',
+                      marginBottom: '4px',
+                      fontSize: isHighVolumeMember ? '11px' : '13px',
                       fontWeight: '800',
                       color: '#ffffff',
-                      lineHeight: '1.3',
+                      lineHeight: '1.2',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      minHeight: '42px',
-                      padding: '0 4px',
+                      minHeight: isHighVolumeMember ? '32px' : '42px',
+                      padding: '0 2px',
                     }}
                   >
                     {log.movie}
                   </div>
 
-                  <div style={{ fontSize: '12px', color: '#00FF41', fontWeight: '800' }}>
+                  <div style={{ fontSize: isHighVolumeMember ? '11px' : '12px', color: '#00FF41', fontWeight: '800' }}>
                     {log.rating || '★ —'}
                   </div>
                 </div>
