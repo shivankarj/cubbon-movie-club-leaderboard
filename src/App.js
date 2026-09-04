@@ -78,8 +78,10 @@ export default function MovieClubApp() {
   const [sortByRating, setSortByRating] = useState(false);
 
   // 📸 EXPORTER REFS & STATES
-  const exportCardRef = useRef(null);
-  const memberExportCardRef = useRef(null);
+  const exportCardRefPart1 = useRef(null);
+  const exportCardRefPart2 = useRef(null);
+  const memberExportCardRefPart1 = useRef(null);
+  const memberExportCardRefPart2 = useRef(null);
   const [isExporting, setIsExporting] = useState(false);
   const [isMemberExporting, setIsMemberExporting] = useState(false);
 
@@ -198,53 +200,92 @@ export default function MovieClubApp() {
       return parseRating(b.rating) - parseRating(a.rating);
     });
 
-  // 📸 EXPORT LEADERBOARD JPG VIA HTML-TO-IMAGE
+  // 📸 DYNAMIC EXPORT LEADERBOARD OPTION B (1 OR 2 IMAGES BASED ON MEMBER COUNT)
   const handleDownloadLeaderboardImage = async () => {
-    if (!exportCardRef.current || isExporting || logs.length === 0) return;
+    if (isExporting || leaderboard.length === 0) return;
 
     try {
       setIsExporting(true);
-
-      const dataUrl = await toJpeg(exportCardRef.current, {
-        quality: 0.95,
-        backgroundColor: '#040507',
-        pixelRatio: 2,
-      });
-
       const dateTag = new Date().toISOString().split('T')[0];
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `Cubbon-Leaderboard-September-${dateTag}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+
+      // Download Part 1 (Ranks 1-10)
+      if (exportCardRefPart1.current) {
+        const dataUrl1 = await toJpeg(exportCardRefPart1.current, {
+          quality: 0.95,
+          backgroundColor: '#040507',
+          pixelRatio: 2,
+        });
+        const link1 = document.createElement('a');
+        link1.href = dataUrl1;
+        link1.download = `Cubbon-Leaderboard-Sept-${dateTag}-Part1.jpg`;
+        document.body.appendChild(link1);
+        link1.click();
+        document.body.removeChild(link1);
+      }
+
+      // Download Part 2 (Ranks 11-20) ONLY IF members exceed 10
+      if (leaderboard.length > 10 && exportCardRefPart2.current) {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        const dataUrl2 = await toJpeg(exportCardRefPart2.current, {
+          quality: 0.95,
+          backgroundColor: '#040507',
+          pixelRatio: 2,
+        });
+        const link2 = document.createElement('a');
+        link2.href = dataUrl2;
+        link2.download = `Cubbon-Leaderboard-Sept-${dateTag}-Part2.jpg`;
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+      }
     } catch (err) {
-      console.error('Image Generation Error:', err);
-      alert('Failed to generate leaderboard image.');
+      console.error('Multi-Slide Generation Error:', err);
+      alert('Failed to generate story slide series.');
     } finally {
       setIsExporting(false);
     }
   };
 
-  // 📸 EXPORT MEMBER PROFILE BADGE JPG VIA HTML-TO-IMAGE
+  // 📸 DYNAMIC EXPORT MEMBER PROFILE BADGE JPG (1 OR 2 SLIDES ACCORDING TO USER'S ACTUAL LOGS)
   const handleDownloadMemberImage = async () => {
-    if (!memberExportCardRef.current || isMemberExporting || !selectedUser) return;
+    const userLogs = selectedMemberLogs;
+    if (isMemberExporting || !selectedUser || userLogs.length === 0) return;
 
     try {
       setIsMemberExporting(true);
 
-      const dataUrl = await toJpeg(memberExportCardRef.current, {
-        quality: 0.95,
-        backgroundColor: '#040507',
-        pixelRatio: 2,
-      });
+      // Part 1 (Movies 1-9)
+      if (memberExportCardRefPart1.current) {
+        const dataUrl1 = await toJpeg(memberExportCardRefPart1.current, {
+          quality: 0.95,
+          backgroundColor: '#040507',
+          pixelRatio: 2,
+        });
+        const link1 = document.createElement('a');
+        link1.href = dataUrl1;
+        link1.download = `${selectedUser}-Cubbon-Movie-Stats-Sept-Part1.jpg`;
+        document.body.appendChild(link1);
+        link1.click();
+        document.body.removeChild(link1);
+      }
 
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `${selectedUser}-Cubbon-Movie-Stats-September.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // Part 2 (Movies 10-18) ONLY IF user has logged more than 9 movies
+      if (userLogs.length > 9 && memberExportCardRefPart2.current) {
+        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        const dataUrl2 = await toJpeg(memberExportCardRefPart2.current, {
+          quality: 0.95,
+          backgroundColor: '#040507',
+          pixelRatio: 2,
+        });
+        const link2 = document.createElement('a');
+        link2.href = dataUrl2;
+        link2.download = `${selectedUser}-Cubbon-Movie-Stats-Sept-Part2.jpg`;
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+      }
     } catch (err) {
       console.error('Member Image Generation Error:', err);
       alert('Failed to generate personal card.');
@@ -388,16 +429,26 @@ export default function MovieClubApp() {
   };
 
   const selectedMemberLogs = logs.filter((log) => log.name === selectedUser);
-  const isHighVolumeMember = selectedMemberLogs.length >= 12;
 
   return (
-    <div className="min-h-screen bg-[#040507] text-slate-100 font-sans antialiased">
+    <div 
+      className="min-h-screen text-slate-100 font-sans antialiased"
+      style={{
+        backgroundColor: '#040507',
+        backgroundImage: `
+          linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px)
+        `,
+        backgroundSize: '32px 32px',
+        backgroundAttachment: 'fixed',
+      }}
+    >
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
       <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet" />
 
       {/* NAVBAR */}
-      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-slate-900 pb-6">
+      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-slate-900/80 pb-6">
         <div className="flex items-center gap-5">
           <div
             className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
@@ -449,7 +500,7 @@ export default function MovieClubApp() {
         {currentPage === 'public' && (
           <div className="space-y-16">
             {/* 🗓️ SEPTEMBER THEME HEADER BANNER */}
-            <div className="text-left py-4 border-b border-slate-900">
+            <div className="text-left py-4 border-b border-slate-900/80">
               <div
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
@@ -476,7 +527,6 @@ export default function MovieClubApp() {
               <>
                 {/* LEADERBOARD VIEW BLOCK */}
                 <section className="space-y-8">
-                  {/* ISSUE 1 FIX: Clean flex spacing between title & Save JPG button on mobile */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#00FF41] pl-3">
                       LEADERBOARD
@@ -489,23 +539,26 @@ export default function MovieClubApp() {
                         className="text-[10px] font-extrabold tracking-widest uppercase text-[#00FF41] hover:text-emerald-300 bg-[#00FF41]/10 border border-[#00FF41]/30 px-3.5 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 self-start sm:self-auto"
                       >
                         <span className="text-sm">📸</span>
-                        <span>{isExporting ? 'Generating HD Card...' : 'Save JPG for WhatsApp'}</span>
+                        <span>
+                          {isExporting
+                            ? 'Exporting Live Series...'
+                            : `Save Leaderboard JPGs (${leaderboard.length > 10 ? '2 Slides' : '1 Slide'})`}
+                        </span>
                       </button>
                     )}
                   </div>
 
                   {leaderboard.length === 0 ? (
-                    <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
+                    <div className="text-sm text-slate-500 bg-slate-950/40 border border-slate-900 p-6 rounded-xl text-center">
                       No movies logged yet for this challenge season. Open the Admin portal to launch!
                     </div>
                   ) : (
-                    <div className="bg-slate-950/40 border border-slate-900/60 rounded-2xl divide-y divide-slate-900/40 overflow-hidden">
+                    <div className="bg-slate-950/60 border border-slate-900/80 rounded-2xl divide-y divide-slate-900/60 overflow-hidden backdrop-blur-sm">
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
-                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-slate-900/10 transition-colors gap-3"
+                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-slate-900/20 transition-colors gap-3"
                         >
-                          {/* ISSUE 3 FIX: Dedicated gap between avatar/name group & posters */}
                           <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0 mr-1 sm:mr-3">
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
@@ -552,12 +605,11 @@ export default function MovieClubApp() {
 
                 {/* 🎬 LOGGED (X MOVIES) SECTION */}
                 <section className="space-y-8 pt-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-900 pb-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-900/80 pb-5">
                     <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#00FF41] pl-3">
                       LOGGED ({logs.length} MOVIE{logs.length !== 1 ? 'S' : ''})
                     </h2>
 
-                    {/* ISSUE 2 FIX: Grid container forces side-by-side equal width on mobile */}
                     <div className="grid grid-cols-2 gap-2.5 w-full sm:flex sm:w-auto items-center">
                       {/* ⭐ LIST BY RATING SORT TOGGLE BUTTON */}
                       <button
@@ -594,7 +646,7 @@ export default function MovieClubApp() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-slate-500 bg-slate-950/20 border border-slate-900 p-6 rounded-xl text-center">
+                    <div className="text-sm text-slate-500 bg-slate-950/40 border border-slate-900 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No watched entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
@@ -632,7 +684,7 @@ export default function MovieClubApp() {
                             </button>
                           </div>
 
-                          {/* 3. 📺 OTT / STREAMING PROVIDERS BADGES (ALIGNED & MULTI-LINE PROOF) */}
+                          {/* 3. 📺 OTT / STREAMING PROVIDERS BADGES */}
                           {log.watch_providers && log.watch_providers.length > 0 && (
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 pt-0.5">
                               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest shrink-0 self-start sm:self-auto pt-1 sm:pt-0">
@@ -763,7 +815,7 @@ export default function MovieClubApp() {
         )}
 
         {currentPage === 'login' && (
-          <div className="max-w-md mx-auto mt-16 bg-slate-950/40 border border-slate-900 rounded-2xl p-6">
+          <div className="max-w-md mx-auto mt-16 bg-slate-950/60 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
             <h2 className="text-lg font-black text-white tracking-tight">
               Curator Gate
             </h2>
@@ -796,7 +848,7 @@ export default function MovieClubApp() {
         {/* SECURE ADMIN ENTRY PANEL */}
         {currentPage === 'admin' && (
           <div className="space-y-12">
-            <div className="max-w-xl mx-auto bg-slate-950 border border-slate-900 rounded-2xl p-6">
+            <div className="max-w-xl mx-auto bg-slate-950/80 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
               <div className="border-b border-slate-900 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-white tracking-tight">
@@ -944,7 +996,7 @@ export default function MovieClubApp() {
 
               <button
                 onClick={handleDownloadMemberImage}
-                disabled={isMemberExporting}
+                disabled={isMemberExporting || selectedMemberLogs.length === 0}
                 style={{
                   backgroundColor: 'rgba(0, 255, 65, 0.1)',
                   border: '1px solid rgba(0, 255, 65, 0.3)',
@@ -958,7 +1010,7 @@ export default function MovieClubApp() {
                   textTransform: 'uppercase',
                 }}
               >
-                {isMemberExporting ? 'Generating...' : '📸 Download Profile Badge'}
+                {isMemberExporting ? 'Generating...' : `📸 Download Profile Badge (${selectedMemberLogs.length > 9 ? '2 JPGs' : '1 JPG'})`}
               </button>
             </div>
 
@@ -1024,282 +1076,396 @@ export default function MovieClubApp() {
         </div>
       )}
 
-      {/* 🖼️ OFF-SCREEN LEADERBOARD EXPORT CANVAS (ISSUE 4 FIX: High legibility for mobile WhatsApp) */}
+      {/* 📱 DYNAMIC OPTION B LEADERBOARD EXPORT: SLIDE 1 OF 2 (RANKS 1 TO 10) */}
       <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
         <div
-          ref={exportCardRef}
+          ref={exportCardRefPart1}
           style={{
             width: '1080px',
+            height: '1920px',
             backgroundColor: '#040507',
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: '28px 28px',
             color: '#ffffff',
-            padding: '60px',
+            padding: '90px 70px 60px 70px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
+            border: '12px solid #00FF41',
+            boxShadow: '0 0 60px rgba(0, 255, 65, 0.35) inset, 0 0 30px rgba(0, 255, 65, 0.4)',
+            borderRadius: '0px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
           }}
         >
-          <div style={{ marginBottom: '32px' }}>
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '700',
-                fontSize: '32px',
-                letterSpacing: '3px',
-                color: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-              }}
-            >
-              <span>CUBBON</span>
-              <span style={{ color: '#00FF41' }}>MOVIE</span>
-              <span>CLUB</span>
-            </div>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: '#0a0d14',
-              border: '1px solid #1e293b',
-              borderRadius: '24px',
-              padding: '28px 36px',
-              marginBottom: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              boxSizing: 'border-box',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '700',
-                fontSize: '34px',
-                letterSpacing: '2px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-              }}
-            >
-              <span style={{ color: '#00FF41' }}>
-                SCI-FI & FANTASY MOVIES
-              </span>
-              <span style={{ color: '#ffffff' }}>
-                SEPTEMBER
-              </span>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '28px' }}>
-            <div style={{ width: '8px', height: '36px', backgroundColor: '#00FF41', borderRadius: '4px' }} />
-            <div
-              style={{
-                fontSize: '32px',
-                fontWeight: '900',
-                letterSpacing: '1px',
-                color: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              LEADERBOARD
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {leaderboard.map((member, idx) => (
+          {/* TOP SECTION */}
+          <div>
+            <div style={{ marginBottom: '32px' }}>
               <div
-                key={member.name}
                 style={{
-                  backgroundColor: '#0f172a',
-                  border: idx === 0 ? '2px solid rgba(0, 255, 65, 0.7)' : '1px solid #1e293b',
-                  borderRadius: '20px',
-                  padding: '24px 28px',
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '42px',
+                  letterSpacing: '4px',
+                  color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
+                  gap: '16px',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                  <div style={{ width: '52px', height: '52px', position: 'relative' }}>
-                    <svg width="52" height="52" viewBox="0 0 52 52">
-                      <rect
-                        width="52"
-                        height="52"
-                        rx="14"
-                        fill={idx === 0 ? '#00FF41' : idx === 1 ? '#e2e8f0' : idx === 2 ? '#cd7f32' : '#1e293b'}
-                      />
-                      <text
-                        x="50%"
-                        y="50%"
-                        dominantBaseline="central"
-                        textAnchor="middle"
-                        fill={idx === 0 ? '#000000' : idx === 1 ? '#0f172a' : idx === 2 ? '#ffffff' : '#64748b'}
-                        fontSize="24"
-                        fontWeight="900"
-                        fontFamily="sans-serif"
-                      >
-                        {idx + 1}
-                      </text>
-                    </svg>
-                  </div>
+                <span>CUBBON</span>
+                <span style={{ color: '#00FF41', textShadow: '0 0 16px rgba(0, 255, 65, 0.7)' }}>MOVIE</span>
+                <span>CLUB</span>
+              </div>
+            </div>
 
-                  <img
-                    src={getMemberAvatar(member.name)}
-                    alt={member.name}
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '50%',
-                      backgroundColor: '#020617',
-                      border: '2px solid #334155',
-                      padding: '2px',
-                      objectFit: 'cover',
-                    }}
-                  />
+            <div
+              style={{
+                backgroundColor: '#0a0d14',
+                border: '3px solid #00FF41',
+                borderRadius: '0px',
+                padding: '28px 36px',
+                marginBottom: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                boxSizing: 'border-box',
+                boxShadow: '0 0 30px rgba(0, 255, 65, 0.2)',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '32px',
+                  letterSpacing: '2px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                <span style={{ color: '#00FF41' }}>
+                  SCI-FI & FANTASY MOVIES
+                </span>
+                <span style={{ color: '#ffffff' }}>
+                  SEPTEMBER
+                </span>
+              </div>
+            </div>
 
-                  <div>
-                    <div style={{ fontSize: '28px', fontWeight: '900', color: '#f8fafc', display: 'flex', alignItems: 'center' }}>
-                      {member.name}
-                      {idx === 0 && <span style={{ marginLeft: '10px', fontSize: '22px' }}>👑</span>}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
+              <div style={{ width: '10px', height: '38px', backgroundColor: '#00FF41', borderRadius: '0px', boxShadow: '0 0 12px #00FF41' }} />
+              <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                LEADERBOARD
+              </div>
+            </div>
+
+            {/* LIVE DATABASE RANKS 1 TO 10 ROWS */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {leaderboard.slice(0, 10).map((member, idx) => (
+                <div
+                  key={member.name}
+                  style={{
+                    backgroundColor: '#0f172a',
+                    border: idx === 0 ? '3px solid #00FF41' : '2px solid #1e293b',
+                    boxShadow: idx === 0 ? '0 0 25px rgba(0, 255, 65, 0.3)' : 'none',
+                    borderRadius: '14px',
+                    padding: '18px 28px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
+                      <svg width="100%" height="100%" viewBox="0 0 64 64">
+                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#00FF41' : idx === 1 ? '#e2e8f0' : idx === 2 ? '#cd7f32' : '#1e293b'} />
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 ? '#000000' : idx === 1 ? '#0f172a' : idx === 2 ? '#ffffff' : '#64748b'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                          {idx + 1}
+                        </text>
+                      </svg>
                     </div>
-                    <div style={{ fontSize: '16px', fontWeight: '800', color: '#64748b', textTransform: 'uppercase', marginTop: '4px' }}>
-                      {member.count} Film{member.count > 1 ? 's' : ''} Watched
-                    </div>
-                  </div>
-                </div>
 
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  {member.movies.slice(0, 5).map((mov, i) => (
-                    <MoviePoster
-                      key={i}
-                      src={mov.poster}
-                      title={mov.title}
+                    <img
+                      src={getMemberAvatar(member.name)}
+                      alt={member.name}
                       style={{
-                        width: '56px',
-                        height: '84px',
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                        border: '1px solid #0f172a',
+                        width: '58px', height: '58px', borderRadius: '50%',
+                        backgroundColor: '#020617', border: '2px solid #00FF41',
+                        padding: '2px', objectFit: 'cover', flexShrink: 0
                       }}
                     />
-                  ))}
-                  {member.movies.length > 5 && (
-                    <div
-                      style={{
-                        width: '56px',
-                        height: '84px',
-                        backgroundColor: '#1e293b',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '16px',
-                        fontWeight: '800',
-                        color: '#94a3b8',
-                      }}
-                    >
-                      +{member.movies.length - 5}
+
+                    <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span>{member.name}</span>
+                      {idx === 0 && <span style={{ fontSize: '24px' }}>👑</span>}
                     </div>
-                  )}
+                  </div>
+
+                  <div style={{ backgroundColor: idx === 0 ? 'rgba(0, 255, 65, 0.15)' : '#020617', border: idx === 0 ? '2px solid #00FF41' : '1px solid #334155', padding: '8px 20px', borderRadius: '24px', fontSize: '18px', fontWeight: '900', color: idx === 0 ? '#00FF41' : '#e2e8f0', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                    {member.count} Film{member.count > 1 ? 's' : ''}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(0, 255, 65, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#00FF41', letterSpacing: '3px', textShadow: '0 0 14px rgba(0, 255, 65, 0.6)' }}>
+            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
       </div>
 
-      {/* 🖼️ OFF-SCREEN PERSONAL MEMBER STATS EXPORT CANVAS (ISSUE 5 FIX: Option C Multi-column Collage Grid) */}
-      {selectedUser && (
-        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
-          <div
-            ref={memberExportCardRef}
-            style={{
-              width: '1080px',
-              backgroundColor: '#040507',
-              color: '#ffffff',
-              padding: '50px 50px 60px 50px',
-              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-              boxSizing: 'border-box',
-              display: 'block',
-            }}
-          >
-            {/* BRANDING WITH THEME SUBTITLE */}
-            <div style={{ marginBottom: '28px' }}>
+      {/* 📱 DYNAMIC OPTION B LEADERBOARD EXPORT: SLIDE 2 OF 2 (RANKS 11 TO 20) */}
+      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+        <div
+          ref={exportCardRefPart2}
+          style={{
+            width: '1080px',
+            height: '1920px',
+            backgroundColor: '#040507',
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: '28px 28px',
+            color: '#ffffff',
+            padding: '90px 70px 60px 70px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            boxSizing: 'border-box',
+            border: '12px solid #00FF41',
+            boxShadow: '0 0 60px rgba(0, 255, 65, 0.35) inset, 0 0 30px rgba(0, 255, 65, 0.4)',
+            borderRadius: '0px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          {/* TOP SECTION */}
+          <div>
+            <div style={{ marginBottom: '32px' }}>
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '700',
-                  fontSize: '28px',
-                  letterSpacing: '3px',
+                  fontSize: '42px',
+                  letterSpacing: '4px',
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
+                  gap: '16px',
                 }}
               >
                 <span>CUBBON</span>
-                <span style={{ color: '#00FF41' }}>MOVIE</span>
+                <span style={{ color: '#00FF41', textShadow: '0 0 16px rgba(0, 255, 65, 0.7)' }}>MOVIE</span>
                 <span>CLUB</span>
               </div>
-              
+            </div>
+
+            <div
+              style={{
+                backgroundColor: '#0a0d14',
+                border: '3px solid #00FF41',
+                borderRadius: '0px',
+                padding: '28px 36px',
+                marginBottom: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                boxSizing: 'border-box',
+                boxShadow: '0 0 30px rgba(0, 255, 65, 0.2)',
+              }}
+            >
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
-                  fontSize: '14px',
+                  fontWeight: '700',
+                  fontSize: '32px',
+                  letterSpacing: '2px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                <span style={{ color: '#00FF41' }}>
+                  SCI-FI & FANTASY MOVIES
+                </span>
+                <span style={{ color: '#ffffff' }}>
+                  SEPTEMBER
+                </span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
+              <div style={{ width: '10px', height: '38px', backgroundColor: '#00FF41', borderRadius: '0px', boxShadow: '0 0 12px #00FF41' }} />
+              <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                LEADERBOARD
+              </div>
+            </div>
+
+            {/* LIVE DATABASE RANKS 11 TO 20 ROWS */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+              {leaderboard.slice(10, 20).map((member, idx) => (
+                <div
+                  key={member.name}
+                  style={{
+                    backgroundColor: '#0f172a',
+                    border: '2px solid #1e293b',
+                    borderRadius: '14px',
+                    padding: '18px 28px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
+                      <svg width="100%" height="100%" viewBox="0 0 64 64">
+                        <rect width="64" height="64" rx="12" fill="#1e293b" />
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#64748b" fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                          {idx + 11}
+                        </text>
+                      </svg>
+                    </div>
+
+                    <img
+                      src={getMemberAvatar(member.name)}
+                      alt={member.name}
+                      style={{
+                        width: '58px', height: '58px', borderRadius: '50%',
+                        backgroundColor: '#020617', border: '2px solid #00FF41',
+                        padding: '2px', objectFit: 'cover', flexShrink: 0
+                      }}
+                    />
+
+                    <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc' }}>
+                      {member.name}
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: '#020617', border: '1px solid #334155', padding: '8px 20px', borderRadius: '24px', fontSize: '18px', fontWeight: '900', color: '#e2e8f0', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                    {member.count} Film{member.count > 1 ? 's' : ''}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(0, 255, 65, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#00FF41', letterSpacing: '3px', textShadow: '0 0 14px rgba(0, 255, 65, 0.6)' }}>
+            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
+          </div>
+        </div>
+      </div>
+
+      {/* 🖼️ DYNAMIC MEMBER BADGE EXPORT: SLIDE 1 OF 2 (PERFECT 3x3 GRID - MOVIES 1 TO 9) */}
+      {selectedUser && (
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
+          <div
+            ref={memberExportCardRefPart1}
+            style={{
+              width: '1080px',
+              height: '1920px',
+              backgroundColor: '#040507',
+              backgroundImage: `
+                linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px)
+              `,
+              backgroundSize: '28px 28px',
+              color: '#ffffff',
+              padding: '60px 60px 40px 60px',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+              boxSizing: 'border-box',
+              border: '12px solid #00FF41',
+              boxShadow: '0 0 60px rgba(0, 255, 65, 0.35) inset, 0 0 30px rgba(0, 255, 65, 0.4)',
+              borderRadius: '0px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* BRANDING HEADER */}
+            <div style={{ height: '70px', display: 'flex', flexDirection: 'column', justifyContent: 'center', boxSizing: 'border-box' }}>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '36px',
+                  letterSpacing: '4px',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  lineHeight: '1',
+                }}
+              >
+                <span>CUBBON</span>
+                <span style={{ color: '#00FF41', textShadow: '0 0 16px rgba(0, 255, 65, 0.7)' }}>MOVIE</span>
+                <span>CLUB</span>
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontSize: '16px',
                   fontWeight: '700',
                   color: '#00FF41',
                   letterSpacing: '2px',
-                  marginTop: '8px',
+                  marginTop: '6px',
                   textTransform: 'uppercase',
+                  lineHeight: '1',
                 }}
               >
                 SCI-FI & FANTASY MOVIES
               </div>
             </div>
 
-            {/* MEMBER PROFILE BANNER */}
+            {/* DYNAMIC MEMBER PROFILE BANNER */}
             <div
               style={{
+                height: '110px',
+                marginTop: '10px',
+                marginBottom: '20px',
                 backgroundColor: '#0a0d14',
-                border: '1px solid #1e293b',
-                borderRadius: '24px',
-                padding: '28px 32px',
-                marginBottom: '36px',
+                border: '3px solid #00FF41',
+                borderRadius: '0px',
+                padding: '0 24px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 boxSizing: 'border-box',
+                boxShadow: '0 0 20px rgba(0, 255, 65, 0.15)',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
                 <img
                   src={getMemberAvatar(selectedUser)}
                   alt={selectedUser}
                   style={{
-                    width: '68px',
-                    height: '68px',
+                    width: '64px',
+                    height: '64px',
                     borderRadius: '50%',
                     backgroundColor: '#0f172a',
-                    border: '2px solid #00FF41',
+                    border: '3px solid #00FF41',
                     padding: '3px',
                     objectFit: 'cover',
                   }}
                 />
                 <div>
-                  <div style={{ fontSize: '36px', fontWeight: '900', color: '#ffffff' }}>
+                  <div style={{ fontSize: '32px', fontWeight: '900', color: '#ffffff', lineHeight: '1.1' }}>
                     {selectedUser}
                   </div>
                   <div style={{ fontSize: '16px', fontWeight: '800', color: '#00FF41', marginTop: '4px' }}>
-                    {selectedMemberLogs.length} Film{selectedMemberLogs.length > 1 ? 's' : ''} Logged
+                    {selectedMemberLogs.length} Film{selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </div>
                 </div>
               </div>
 
-              {/* SVG DEAD-CENTERED BADGE PILLS */}
+              {/* DYNAMIC BADGE PILLS FROM DATABASE */}
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 {leaderboard[0] && leaderboard[0].name === selectedUser && (
                   <div style={{ width: '140px', height: '44px', position: 'relative' }}>
                     <svg width="140" height="44" viewBox="0 0 140 44">
-                      <rect width="140" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1.5" />
+                      <rect width="140" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="2" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         👑 CHAMPION
                       </text>
@@ -1309,7 +1475,7 @@ export default function MovieClubApp() {
                 {selectedMemberLogs.length >= 15 ? (
                   <div style={{ width: '100px', height: '44px', position: 'relative' }}>
                     <svg width="100" height="44" viewBox="0 0 100 44">
-                      <rect width="100" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="1.5" />
+                      <rect width="100" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="2" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥇 GOLD
                       </text>
@@ -1318,16 +1484,16 @@ export default function MovieClubApp() {
                 ) : selectedMemberLogs.length >= 10 ? (
                   <div style={{ width: '100px', height: '44px', position: 'relative' }}>
                     <svg width="100" height="44" viewBox="0 0 100 44">
-                      <rect width="100" height="44" rx="22" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="1.5" />
+                      <rect width="100" height="44" rx="22" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="2" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#e2e8f0" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥈 SILVER
                       </text>
                     </svg>
                   </div>
                 ) : selectedMemberLogs.length >= 5 ? (
-                  <div style={{ width: '110px', height: '44px', position: 'relative' }}>
-                    <svg width="110" height="44" viewBox="0 0 110 44">
-                      <rect width="110" height="44" rx="22" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="1.5" />
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="2" />
                       <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="900" fontFamily="sans-serif">
                         🥉 BRONZE
                       </text>
@@ -1337,64 +1503,314 @@ export default function MovieClubApp() {
               </div>
             </div>
 
-            {/* OPTION C COLLAGE GRID: Dynamic miniature poster scaling when 12+ movies logged */}
+            {/* 🎬 3x3 POSTER GRID (LIVE DATABASE MOVIES 1 TO 9) */}
             <div
               style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                gap: isHighVolumeMember ? '12px' : '20px',
+                height: '1440px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gridTemplateRows: 'repeat(3, 460px)',
+                gap: '24px',
                 width: '100%',
                 boxSizing: 'border-box',
               }}
             >
-              {selectedMemberLogs.map((log) => (
+              {selectedMemberLogs.slice(0, 9).map((log, idx) => (
                 <div
-                  key={`${log.movie}-${Math.random()}`}
+                  key={`${log.movie}-${idx}`}
                   style={{
                     backgroundColor: '#0f172a',
-                    border: '1px solid #1e293b',
-                    borderRadius: isHighVolumeMember ? '12px' : '16px',
-                    padding: isHighVolumeMember ? '10px' : '14px',
+                    border: '2px solid #1e293b',
+                    borderRadius: '14px',
+                    padding: '16px',
                     textAlign: 'center',
                     boxSizing: 'border-box',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    minHeight: isHighVolumeMember ? '250px' : '310px',
-                    width: isHighVolumeMember ? '170px' : '225px',
-                    flexShrink: 0,
+                    height: '460px',
                   }}
                 >
                   <MoviePoster
                     src={log.poster}
                     title={log.movie}
-                    style={{ width: '100%', borderRadius: '8px', aspectRatio: '2/3', objectFit: 'cover' }}
+                    style={{ width: '100%', borderRadius: '10px', height: '330px', objectFit: 'cover' }}
                   />
                   
                   <div
                     style={{
-                      marginTop: isHighVolumeMember ? '6px' : '10px',
-                      marginBottom: '4px',
-                      fontSize: isHighVolumeMember ? '11px' : '13px',
+                      fontSize: '16px',
                       fontWeight: '800',
                       color: '#ffffff',
                       lineHeight: '1.2',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      minHeight: isHighVolumeMember ? '32px' : '42px',
-                      padding: '0 2px',
+                      height: '42px',
+                      overflow: 'hidden',
+                      padding: '0 4px',
                     }}
                   >
                     {log.movie}
                   </div>
 
-                  <div style={{ fontSize: isHighVolumeMember ? '11px' : '12px', color: '#00FF41', fontWeight: '800' }}>
+                  <div style={{ fontSize: '15px', color: '#00FF41', fontWeight: '800' }}>
                     {log.rating || '★ —'}
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* TERMINAL FOOTER */}
+            <div
+              style={{
+                height: '100px',
+                marginTop: '10px',
+                borderTop: '3px solid rgba(0, 255, 65, 0.3)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                fontSize: '28px',
+                fontWeight: '800',
+                fontFamily: 'monospace',
+                color: '#00FF41',
+                letterSpacing: '3px',
+                textShadow: '0 0 14px rgba(0, 255, 65, 0.6)',
+                boxSizing: 'border-box',
+              }}
+            >
+              STATUS: ONLINE // ARCHIVE:{' '}
+              {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🖼️ DYNAMIC MEMBER BADGE EXPORT: SLIDE 2 OF 2 (PERFECT 3x3 GRID - MOVIES 10 TO 18) */}
+      {selectedUser && selectedMemberLogs.length > 9 && (
+        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
+          <div
+            ref={memberExportCardRefPart2}
+            style={{
+              width: '1080px',
+              height: '1920px',
+              backgroundColor: '#040507',
+              backgroundImage: `
+                linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px)
+              `,
+              backgroundSize: '28px 28px',
+              color: '#ffffff',
+              padding: '60px 60px 40px 60px',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+              boxSizing: 'border-box',
+              border: '12px solid #00FF41',
+              boxShadow: '0 0 60px rgba(0, 255, 65, 0.35) inset, 0 0 30px rgba(0, 255, 65, 0.4)',
+              borderRadius: '0px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* BRANDING HEADER */}
+            <div style={{ height: '70px', display: 'flex', flexDirection: 'column', justifyContent: 'center', boxSizing: 'border-box' }}>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '36px',
+                  letterSpacing: '4px',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  lineHeight: '1',
+                }}
+              >
+                <span>CUBBON</span>
+                <span style={{ color: '#00FF41', textShadow: '0 0 16px rgba(0, 255, 65, 0.7)' }}>MOVIE</span>
+                <span>CLUB</span>
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  color: '#00FF41',
+                  letterSpacing: '2px',
+                  marginTop: '6px',
+                  textTransform: 'uppercase',
+                  lineHeight: '1',
+                }}
+              >
+                SCI-FI & FANTASY MOVIES
+              </div>
+            </div>
+
+            {/* DYNAMIC MEMBER PROFILE BANNER */}
+            <div
+              style={{
+                height: '110px',
+                marginTop: '10px',
+                marginBottom: '20px',
+                backgroundColor: '#0a0d14',
+                border: '3px solid #00FF41',
+                borderRadius: '0px',
+                padding: '0 24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                boxSizing: 'border-box',
+                boxShadow: '0 0 20px rgba(0, 255, 65, 0.15)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
+                <img
+                  src={getMemberAvatar(selectedUser)}
+                  alt={selectedUser}
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    backgroundColor: '#0f172a',
+                    border: '3px solid #00FF41',
+                    padding: '3px',
+                    objectFit: 'cover',
+                  }}
+                />
+                <div>
+                  <div style={{ fontSize: '32px', fontWeight: '900', color: '#ffffff', lineHeight: '1.1' }}>
+                    {selectedUser}
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: '800', color: '#00FF41', marginTop: '4px' }}>
+                    {selectedMemberLogs.length} Film{selectedMemberLogs.length !== 1 ? 's' : ''} Logged
+                  </div>
+                </div>
+              </div>
+
+              {/* DYNAMIC BADGE PILLS FROM DATABASE */}
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {leaderboard[0] && leaderboard[0].name === selectedUser && (
+                  <div style={{ width: '140px', height: '44px', position: 'relative' }}>
+                    <svg width="140" height="44" viewBox="0 0 140 44">
+                      <rect width="140" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="2" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        👑 CHAMPION
+                      </text>
+                    </svg>
+                  </div>
+                )}
+                {selectedMemberLogs.length >= 15 ? (
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(0, 255, 65, 0.15)" stroke="#00FF41" strokeWidth="2" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#00FF41" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥇 GOLD
+                      </text>
+                    </svg>
+                  </div>
+                ) : selectedMemberLogs.length >= 10 ? (
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(226, 232, 240, 0.15)" stroke="#cbd5e1" strokeWidth="2" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#e2e8f0" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥈 SILVER
+                      </text>
+                    </svg>
+                  </div>
+                ) : selectedMemberLogs.length >= 5 ? (
+                  <div style={{ width: '100px', height: '44px', position: 'relative' }}>
+                    <svg width="100" height="44" viewBox="0 0 100 44">
+                      <rect width="100" height="44" rx="22" fill="rgba(205, 127, 50, 0.15)" stroke="#b45309" strokeWidth="2" />
+                      <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="900" fontFamily="sans-serif">
+                        🥉 BRONZE
+                      </text>
+                    </svg>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* 🎬 3x3 POSTER GRID (LIVE DATABASE MOVIES 10 TO 18) */}
+            <div
+              style={{
+                height: '1440px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gridTemplateRows: 'repeat(3, 460px)',
+                gap: '24px',
+                width: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              {selectedMemberLogs.slice(9, 18).map((log, idx) => (
+                <div
+                  key={`${log.movie}-${idx + 9}`}
+                  style={{
+                    backgroundColor: '#0f172a',
+                    border: '2px solid #1e293b',
+                    borderRadius: '14px',
+                    padding: '16px',
+                    textAlign: 'center',
+                    boxSizing: 'border-box',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: '460px',
+                  }}
+                >
+                  <MoviePoster
+                    src={log.poster}
+                    title={log.movie}
+                    style={{ width: '100%', borderRadius: '10px', height: '330px', objectFit: 'cover' }}
+                  />
+                  
+                  <div
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: '800',
+                      color: '#ffffff',
+                      lineHeight: '1.2',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '42px',
+                      overflow: 'hidden',
+                      padding: '0 4px',
+                    }}
+                  >
+                    {log.movie}
+                  </div>
+
+                  <div style={{ fontSize: '15px', color: '#00FF41', fontWeight: '800' }}>
+                    {log.rating || '★ —'}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* TERMINAL FOOTER */}
+            <div
+              style={{
+                height: '100px',
+                marginTop: '10px',
+                borderTop: '3px solid rgba(0, 255, 65, 0.3)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                fontSize: '28px',
+                fontWeight: '800',
+                fontFamily: 'monospace',
+                color: '#00FF41',
+                letterSpacing: '3px',
+                textShadow: '0 0 14px rgba(0, 255, 65, 0.6)',
+                boxSizing: 'border-box',
+              }}
+            >
+              STATUS: ONLINE // ARCHIVE:{' '}
+              {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
             </div>
           </div>
         </div>
