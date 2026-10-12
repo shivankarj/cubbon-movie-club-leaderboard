@@ -337,6 +337,28 @@ export default function App() {
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
+      // Set Halloween Page Title
+      document.title = 'Cubbon Movie Club | Fright Nights October 💀';
+
+      // Perfectly centered Jack-o'-lantern with padding so edges never get clipped
+      const pumpkinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="54%" dominant-baseline="central" text-anchor="middle" font-size="76">🎃</text></svg>`;
+      const faviconUrl = `data:image/svg+xml,${encodeURIComponent(pumpkinSvg)}`;
+
+      const icons = document.querySelectorAll("link[rel*='icon']");
+      if (icons.length > 0) {
+        icons.forEach((icon) => {
+          icon.type = 'image/svg+xml';
+          icon.href = faviconUrl;
+        });
+      } else {
+        const favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        favicon.type = 'image/svg+xml';
+        favicon.href = faviconUrl;
+        document.head.appendChild(favicon);
+      }
+
+      // Inject club typography
       const fontId = 'cubbon-google-fonts';
       if (!document.getElementById(fontId)) {
         const link = document.createElement('link');
@@ -1264,7 +1286,7 @@ export default function App() {
 
                   {leaderboard.length === 0 ? (
                     <div className="text-sm text-slate-500 bg-red-950/10 border border-red-950 p-8 rounded-xl text-center">
-                      The crypt is empty. Login to start adding movies.
+                      The Halloween crypt is silent. Unlock the Admin gate to log October horror films!
                     </div>
                   ) : (
                     <div className="bg-slate-950/80 border border-red-950/80 rounded-2xl divide-y divide-red-950/60 overflow-hidden backdrop-blur-sm shadow-xl">
