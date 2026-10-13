@@ -203,9 +203,9 @@ const isForeignCinema = (languageStr = '', countryStr = '', originalLanguage = '
 
 export const HALLOWEEN_TIERS = {
   ELDER_GOD: { label: 'ELDER GOD', icon: '👁️', min: 20, color: '#c084fc', border: '#7e22ce', bg: 'rgba(126, 34, 206, 0.2)' },
-  IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#FF5500', border: '#FF5500', bg: 'rgba(255, 85, 0, 0.2)' },
+  IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#FF3300', border: '#FF3300', bg: 'rgba(255, 51, 0, 0.2)' },
   UNDEAD: { label: 'UNDEAD', icon: '🧟', min: 10, color: '#4ade80', border: '#15803d', bg: 'rgba(34, 197, 94, 0.2)' },
-  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#FF7700', border: '#FF7700', bg: 'rgba(255, 119, 0, 0.2)' },
+  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#FF6600', border: '#FF6600', bg: 'rgba(255, 102, 0, 0.2)' },
   MORTAL: { label: 'MORTAL', icon: '🕯️', min: 0, color: '#94a3b8', border: '#475569', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
@@ -2561,125 +2561,68 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#050203',
+            backgroundColor: '#040507',
             backgroundImage: `
-              radial-gradient(circle at 50% 120px, rgba(255, 85, 0, 0.18), transparent 600px),
-              linear-gradient(rgba(255, 85, 0, 0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 85, 0, 0.06) 1px, transparent 1px)
+              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
             `,
-            backgroundSize: '100% 100%, 28px 28px, 28px 28px',
+            backgroundSize: '28px 28px',
             color: '#ffffff',
             padding: '90px 70px 60px 70px',
-            fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF5500',
-            boxShadow: '0 0 70px rgba(255, 85, 0, 0.4) inset, 0 0 35px rgba(255, 85, 0, 0.45)',
+            border: '12px solid #FF3300',
+            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
         >
           <div>
-            {/* CLUB LOGO HEADER */}
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '800',
-                fontSize: '44px',
-                letterSpacing: '5px',
-                lineHeight: '1.1',
-                textTransform: 'uppercase',
-                color: '#ffffff',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
-                marginBottom: '26px',
-                textAlign: 'center',
-              }}
-            >
-              CUBBON <span style={{ color: '#FF5500', textShadow: '0 0 28px #FF5500, 0 0 60px rgba(255, 85, 0, 0.9)' }}>MOVIE</span> CLUB
-            </div>
-
-            {/* SLEEK REDESIGNED FRIGHT NIGHTS OCTOBER PILL BANNER */}
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(25, 6, 8, 0.95), rgba(12, 3, 5, 0.98))',
-                border: '2px solid #FF5500',
-                borderRadius: '20px',
-                padding: '24px 32px',
-                marginBottom: '38px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 40px rgba(255, 85, 0, 0.25), inset 0 0 30px rgba(255, 85, 0, 0.15)',
-              }}
-            >
+            {/* MATCHING PROFILE STORY HEADER STYLE */}
+            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '800',
-                  fontSize: '34px',
-                  letterSpacing: '2px',
+                  fontSize: '46px',
+                  letterSpacing: '4px',
+                  lineHeight: '1.1',
+                  textTransform: 'uppercase',
                   color: '#ffffff',
-                  textAlign: 'center',
-                  lineHeight: '1.2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '14px',
-                  flexWrap: 'nowrap',
+                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                <span
-                  style={{
-                    color: '#FF5500',
-                    textShadow: '0 0 20px #FF5500, 0 0 45px rgba(255, 85, 0, 0.9)',
-                  }}
-                >
-                  FRIGHT NIGHTS
-                </span>
-                <span style={{ color: '#FFA028', opacity: 0.8 }}>//</span>
-                <span style={{ color: '#ffffff', textShadow: '0 0 16px rgba(255, 255, 255, 0.6)' }}>
-                  OCTOBER
-                </span>
-                <span style={{ fontSize: '32px' }}>💀</span>
+                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
-                  fontSize: '13px',
-                  fontWeight: '800',
-                  letterSpacing: '4px',
-                  textTransform: 'uppercase',
-                  color: '#FF8800',
-                  marginTop: '8px',
                   fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '24px',
+                  letterSpacing: '3px',
+                  marginTop: '10px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
                 }}
               >
-                HALLOWEEN CINEMA MARATHON
+                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
               </div>
             </div>
 
             {/* LEADERBOARD TITLE ROW */}
             <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '36px', backgroundColor: '#FF5500', boxShadow: '0 0 14px #FF5500', borderRadius: '4px' }} />
-                <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
-                  LEADERBOARD
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                  <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                  <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                    LEADERBOARD
+                  </div>
                 </div>
-              </div>
-              <div
-                style={{
-                  fontSize: '15px',
-                  fontWeight: '800',
-                  color: '#FF8800',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  backgroundColor: 'rgba(255, 85, 0, 0.15)',
-                  border: '1px solid rgba(255, 85, 0, 0.4)',
-                  padding: '6px 16px',
-                  borderRadius: '30px',
-                }}
-              >
-                🔥 BY POINTS (TOP 10)
+                <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+                  Ranked by Points
+                </div>
               </div>
             </div>
 
@@ -2690,8 +2633,8 @@ export default function App() {
                   key={member.name}
                   style={{
                     backgroundColor: '#0f0305',
-                    border: idx === 0 ? '3px solid #FF5500' : '2px solid #2a080c',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 85, 0, 0.35)' : 'none',
+                    border: idx === 0 ? '3px solid #FF3300' : '2px solid #2a080c',
+                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 51, 0, 0.35)' : 'none',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -2702,7 +2645,7 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF5500' : idx === 1 ? '#FF7700' : idx === 2 ? '#cd7f32' : '#2a080c'} />
+                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF3300' : idx === 1 ? '#FF6600' : idx === 2 ? '#cd7f32' : '#2a080c'} />
                         <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 1}
                         </text>
@@ -2717,7 +2660,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF5500',
+                        border: '2px solid #FF3300',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -2733,7 +2676,7 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF5500' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
                       {member.points} POINTS
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
@@ -2745,7 +2688,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 85, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF5500', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 85, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -2758,123 +2701,65 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#050203',
+            backgroundColor: '#040507',
             backgroundImage: `
-              radial-gradient(circle at 50% 120px, rgba(255, 85, 0, 0.18), transparent 600px),
-              linear-gradient(rgba(255, 85, 0, 0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 85, 0, 0.06) 1px, transparent 1px)
+              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
             `,
-            backgroundSize: '100% 100%, 28px 28px, 28px 28px',
+            backgroundSize: '28px 28px',
             color: '#ffffff',
             padding: '90px 70px 60px 70px',
-            fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF5500',
-            boxShadow: '0 0 70px rgba(255, 85, 0, 0.4) inset, 0 0 35px rgba(255, 85, 0, 0.45)',
+            border: '12px solid #FF3300',
+            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
         >
           <div>
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '800',
-                fontSize: '44px',
-                letterSpacing: '5px',
-                lineHeight: '1.1',
-                textTransform: 'uppercase',
-                color: '#ffffff',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
-                marginBottom: '26px',
-                textAlign: 'center',
-              }}
-            >
-              CUBBON <span style={{ color: '#FF5500', textShadow: '0 0 28px #FF5500, 0 0 60px rgba(255, 85, 0, 0.9)' }}>MOVIE</span> CLUB
-            </div>
-
-            {/* SLEEK REDESIGNED FRIGHT NIGHTS OCTOBER PILL BANNER (PART 2) */}
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(25, 6, 8, 0.95), rgba(12, 3, 5, 0.98))',
-                border: '2px solid #FF5500',
-                borderRadius: '20px',
-                padding: '24px 32px',
-                marginBottom: '38px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 40px rgba(255, 85, 0, 0.25), inset 0 0 30px rgba(255, 85, 0, 0.15)',
-              }}
-            >
+            {/* MATCHING PROFILE STORY HEADER STYLE (PART 2) */}
+            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '800',
-                  fontSize: '34px',
-                  letterSpacing: '2px',
-                  color: '#ffffff',
-                  textAlign: 'center',
-                  lineHeight: '1.2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '14px',
-                  flexWrap: 'nowrap',
-                }}
-              >
-                <span
-                  style={{
-                    color: '#FF5500',
-                    textShadow: '0 0 20px #FF5500, 0 0 45px rgba(255, 85, 0, 0.9)',
-                  }}
-                >
-                  FRIGHT NIGHTS
-                </span>
-                <span style={{ color: '#FFA028', opacity: 0.8 }}>//</span>
-                <span style={{ color: '#ffffff', textShadow: '0 0 16px rgba(255, 255, 255, 0.6)' }}>
-                  OCTOBER
-                </span>
-                <span style={{ fontSize: '32px' }}>💀</span>
-              </div>
-              <div
-                style={{
-                  fontSize: '13px',
-                  fontWeight: '800',
+                  fontSize: '46px',
                   letterSpacing: '4px',
+                  lineHeight: '1.1',
                   textTransform: 'uppercase',
-                  color: '#FF8800',
-                  marginTop: '8px',
-                  fontFamily: "'Syncopate', sans-serif",
+                  color: '#ffffff',
+                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                PART 2 • RANKS 11 TO 20
+                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '24px',
+                  letterSpacing: '3px',
+                  marginTop: '10px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                }}
+              >
+                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
               </div>
             </div>
 
-            <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '36px', backgroundColor: '#FF5500', boxShadow: '0 0 14px #FF5500', borderRadius: '4px' }} />
-                <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div
-                style={{
-                  fontSize: '15px',
-                  fontWeight: '800',
-                  color: '#FF8800',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  backgroundColor: 'rgba(255, 85, 0, 0.15)',
-                  border: '1px solid rgba(255, 85, 0, 0.4)',
-                  padding: '6px 16px',
-                  borderRadius: '30px',
-                }}
-              >
-                🔥 BY POINTS (11-20)
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+                Ranked by Points (Ranks 11-20)
               </div>
             </div>
 
@@ -2896,7 +2781,7 @@ export default function App() {
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
                         <rect width="64" height="64" rx="12" fill="#2a080c" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff7700" fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff4d4d" fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 11}
                         </text>
                       </svg>
@@ -2910,7 +2795,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF5500',
+                        border: '2px solid #FF3300',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -2925,7 +2810,7 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF5500' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
                       {member.points} POINTS
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
@@ -2937,7 +2822,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 85, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF5500', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 85, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -2950,123 +2835,65 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#050203',
+            backgroundColor: '#040507',
             backgroundImage: `
-              radial-gradient(circle at 50% 120px, rgba(255, 85, 0, 0.18), transparent 600px),
-              linear-gradient(rgba(255, 85, 0, 0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 85, 0, 0.06) 1px, transparent 1px)
+              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
             `,
-            backgroundSize: '100% 100%, 28px 28px, 28px 28px',
+            backgroundSize: '28px 28px',
             color: '#ffffff',
             padding: '90px 70px 60px 70px',
-            fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF5500',
-            boxShadow: '0 0 70px rgba(255, 85, 0, 0.4) inset, 0 0 35px rgba(255, 85, 0, 0.45)',
+            border: '12px solid #FF3300',
+            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
         >
           <div>
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '800',
-                fontSize: '44px',
-                letterSpacing: '5px',
-                lineHeight: '1.1',
-                textTransform: 'uppercase',
-                color: '#ffffff',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
-                marginBottom: '26px',
-                textAlign: 'center',
-              }}
-            >
-              CUBBON <span style={{ color: '#FF5500', textShadow: '0 0 28px #FF5500, 0 0 60px rgba(255, 85, 0, 0.9)' }}>MOVIE</span> CLUB
-            </div>
-
-            {/* SLEEK REDESIGNED FRIGHT NIGHTS OCTOBER PILL BANNER (FILMS 1) */}
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(25, 6, 8, 0.95), rgba(12, 3, 5, 0.98))',
-                border: '2px solid #FF5500',
-                borderRadius: '20px',
-                padding: '24px 32px',
-                marginBottom: '38px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 40px rgba(255, 85, 0, 0.25), inset 0 0 30px rgba(255, 85, 0, 0.15)',
-              }}
-            >
+            {/* MATCHING PROFILE STORY HEADER STYLE (FILMS 1) */}
+            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '800',
-                  fontSize: '34px',
-                  letterSpacing: '2px',
-                  color: '#ffffff',
-                  textAlign: 'center',
-                  lineHeight: '1.2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '14px',
-                  flexWrap: 'nowrap',
-                }}
-              >
-                <span
-                  style={{
-                    color: '#FF5500',
-                    textShadow: '0 0 20px #FF5500, 0 0 45px rgba(255, 85, 0, 0.9)',
-                  }}
-                >
-                  FRIGHT NIGHTS
-                </span>
-                <span style={{ color: '#FFA028', opacity: 0.8 }}>//</span>
-                <span style={{ color: '#ffffff', textShadow: '0 0 16px rgba(255, 255, 255, 0.6)' }}>
-                  OCTOBER
-                </span>
-                <span style={{ fontSize: '32px' }}>💀</span>
-              </div>
-              <div
-                style={{
-                  fontSize: '13px',
-                  fontWeight: '800',
+                  fontSize: '46px',
                   letterSpacing: '4px',
+                  lineHeight: '1.1',
                   textTransform: 'uppercase',
-                  color: '#FF8800',
-                  marginTop: '8px',
-                  fontFamily: "'Syncopate', sans-serif",
+                  color: '#ffffff',
+                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                RANKED BY FILMS WATCHED
+                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '24px',
+                  letterSpacing: '3px',
+                  marginTop: '10px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                }}
+              >
+                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
               </div>
             </div>
 
-            <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '36px', backgroundColor: '#FF5500', boxShadow: '0 0 14px #FF5500', borderRadius: '4px' }} />
-                <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div
-                style={{
-                  fontSize: '15px',
-                  fontWeight: '800',
-                  color: '#FF8800',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  backgroundColor: 'rgba(255, 85, 0, 0.15)',
-                  border: '1px solid rgba(255, 85, 0, 0.4)',
-                  padding: '6px 16px',
-                  borderRadius: '30px',
-                }}
-              >
-                🎞️ BY FILMS (TOP 10)
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+                Ranked by Films
               </div>
             </div>
 
@@ -3076,8 +2903,8 @@ export default function App() {
                   key={member.name}
                   style={{
                     backgroundColor: '#0f0305',
-                    border: idx === 0 ? '3px solid #FF5500' : '2px solid #2a080c',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 85, 0, 0.35)' : 'none',
+                    border: idx === 0 ? '3px solid #FF3300' : '2px solid #2a080c',
+                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 51, 0, 0.35)' : 'none',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -3088,7 +2915,7 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF5500' : idx === 1 ? '#FF7700' : idx === 2 ? '#cd7f32' : '#2a080c'} />
+                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF3300' : idx === 1 ? '#FF6600' : idx === 2 ? '#cd7f32' : '#2a080c'} />
                         <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 1}
                         </text>
@@ -3103,7 +2930,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF5500',
+                        border: '2px solid #FF3300',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -3119,7 +2946,7 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF5500' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
                       {member.count} FILM{member.count > 1 ? 'S' : ''}
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
@@ -3131,7 +2958,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 85, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF5500', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 85, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -3144,123 +2971,65 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#050203',
+            backgroundColor: '#040507',
             backgroundImage: `
-              radial-gradient(circle at 50% 120px, rgba(255, 85, 0, 0.18), transparent 600px),
-              linear-gradient(rgba(255, 85, 0, 0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 85, 0, 0.06) 1px, transparent 1px)
+              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
             `,
-            backgroundSize: '100% 100%, 28px 28px, 28px 28px',
+            backgroundSize: '28px 28px',
             color: '#ffffff',
             padding: '90px 70px 60px 70px',
-            fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF5500',
-            boxShadow: '0 0 70px rgba(255, 85, 0, 0.4) inset, 0 0 35px rgba(255, 85, 0, 0.45)',
+            border: '12px solid #FF3300',
+            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
         >
           <div>
-            <div
-              style={{
-                fontFamily: "'Syncopate', sans-serif",
-                fontWeight: '800',
-                fontSize: '44px',
-                letterSpacing: '5px',
-                lineHeight: '1.1',
-                textTransform: 'uppercase',
-                color: '#ffffff',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
-                marginBottom: '26px',
-                textAlign: 'center',
-              }}
-            >
-              CUBBON <span style={{ color: '#FF5500', textShadow: '0 0 28px #FF5500, 0 0 60px rgba(255, 85, 0, 0.9)' }}>MOVIE</span> CLUB
-            </div>
-
-            {/* SLEEK REDESIGNED FRIGHT NIGHTS OCTOBER PILL BANNER (FILMS 2) */}
-            <div
-              style={{
-                background: 'linear-gradient(135deg, rgba(25, 6, 8, 0.95), rgba(12, 3, 5, 0.98))',
-                border: '2px solid #FF5500',
-                borderRadius: '20px',
-                padding: '24px 32px',
-                marginBottom: '38px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 10px 40px rgba(255, 85, 0, 0.25), inset 0 0 30px rgba(255, 85, 0, 0.15)',
-              }}
-            >
+            {/* MATCHING PROFILE STORY HEADER STYLE (FILMS 2) */}
+            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
               <div
                 style={{
                   fontFamily: "'Syncopate', sans-serif",
                   fontWeight: '800',
-                  fontSize: '34px',
-                  letterSpacing: '2px',
-                  color: '#ffffff',
-                  textAlign: 'center',
-                  lineHeight: '1.2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '14px',
-                  flexWrap: 'nowrap',
-                }}
-              >
-                <span
-                  style={{
-                    color: '#FF5500',
-                    textShadow: '0 0 20px #FF5500, 0 0 45px rgba(255, 85, 0, 0.9)',
-                  }}
-                >
-                  FRIGHT NIGHTS
-                </span>
-                <span style={{ color: '#FFA028', opacity: 0.8 }}>//</span>
-                <span style={{ color: '#ffffff', textShadow: '0 0 16px rgba(255, 255, 255, 0.6)' }}>
-                  OCTOBER
-                </span>
-                <span style={{ fontSize: '32px' }}>💀</span>
-              </div>
-              <div
-                style={{
-                  fontSize: '13px',
-                  fontWeight: '800',
+                  fontSize: '46px',
                   letterSpacing: '4px',
+                  lineHeight: '1.1',
                   textTransform: 'uppercase',
-                  color: '#FF8800',
-                  marginTop: '8px',
-                  fontFamily: "'Syncopate', sans-serif",
+                  color: '#ffffff',
+                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                PART 2 • RANKS 11 TO 20
+                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+              </div>
+              <div
+                style={{
+                  fontFamily: "'Syncopate', sans-serif",
+                  fontWeight: '700',
+                  fontSize: '24px',
+                  letterSpacing: '3px',
+                  marginTop: '10px',
+                  textTransform: 'uppercase',
+                  color: '#ffffff',
+                }}
+              >
+                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
               </div>
             </div>
 
-            <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '36px', backgroundColor: '#FF5500', boxShadow: '0 0 14px #FF5500', borderRadius: '4px' }} />
-                <div style={{ fontSize: '38px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div
-                style={{
-                  fontSize: '15px',
-                  fontWeight: '800',
-                  color: '#FF8800',
-                  letterSpacing: '2px',
-                  textTransform: 'uppercase',
-                  backgroundColor: 'rgba(255, 85, 0, 0.15)',
-                  border: '1px solid rgba(255, 85, 0, 0.4)',
-                  padding: '6px 16px',
-                  borderRadius: '30px',
-                }}
-              >
-                🎞️ BY FILMS (11-20)
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+                Ranked by Films (Ranks 11-20)
               </div>
             </div>
 
@@ -3282,7 +3051,7 @@ export default function App() {
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
                         <rect width="64" height="64" rx="12" fill="#2a080c" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff7700" fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff4d4d" fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 11}
                         </text>
                       </svg>
@@ -3296,7 +3065,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF5500',
+                        border: '2px solid #FF3300',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -3311,7 +3080,7 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF5500' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
                       {member.count} FILM{member.count > 1 ? 'S' : ''}
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
@@ -3323,7 +3092,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 85, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF5500', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 85, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
