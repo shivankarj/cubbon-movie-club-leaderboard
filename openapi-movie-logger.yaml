@@ -1,0 +1,75 @@
+openapi: 3.1.0
+info:
+  title: Cubbon Movie Club Movie Logger
+  version: 1.0.0
+  description: Publish a movie review to the Cubbon Movie Club film log. Only call this after the user explicitly confirms they want to publish.
+servers:
+  - url: https://cubbon-movie-club-fright-nights.vercel.app
+paths:
+  /api/movie-logs:
+    post:
+      operationId: publishMovieReview
+      summary: Publish a movie review
+      description: Looks up the movie from its IMDb URL, calculates eligible scoring bonuses, and publishes the review to the club film log. Returns a conflict if that IMDb title is already logged.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - memberName
+                - imdbUrl
+                - review
+              properties:
+                memberName:
+                  type: string
+                  minLength: 1
+                  maxLength: 80
+                  description: Club member name exactly as it should appear in the log.
+                imdbUrl:
+                  type: string
+                  format: uri
+                  description: IMDb title URL, such as https://www.imdb.com/title/tt0073747/.
+                review:
+                  type: string
+                  maxLength: 5000
+                  description: Review text to publish.
+      responses:
+        "201":
+          description: Movie review published.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  movie:
+                    type: string
+                  memberName:
+                    type: string
+                  points:
+                    type: integer
+                  bonuses:
+                    type: array
+                    items:
+                      type: string
+        "400":
+          description: Invalid request.
+        "401":
+          description: Missing or invalid API key.
+        "404":
+          description: IMDb title could not be matched to a movie.
+        "409":
+          description: This IMDb title is already in the film log.
+        "500":
+          description: Server configuration or publishing error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
