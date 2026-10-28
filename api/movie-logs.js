@@ -48,7 +48,7 @@ module.exports = async function handler(req, res) {
     return json(res, 405, { error: "Use POST with memberName, imdbUrl, and review." });
   }
 
-  const expectedKey = process.env.MOVIE_LOG_API_KEY;
+  const expectedKey = process.env.MOVIE_LOG_API_KEY_TEST;
   const auth = req.headers.authorization || "";
   if (!expectedKey || auth !== "Bearer " + expectedKey) {
     return json(res, 401, { error: "Unauthorized." });
@@ -63,7 +63,7 @@ module.exports = async function handler(req, res) {
   if (!name || name.length > 80) return json(res, 400, { error: "memberName is required and must be 80 characters or fewer." });
   if (!match) return json(res, 400, { error: "imdbUrl must contain a valid IMDb title ID, such as tt0073747." });
   if (cleanReview.length > 5000) return json(res, 400, { error: "Review must be 5,000 characters or fewer." });
-  if (!process.env.TMDB_API_KEY) return json(res, 500, { error: "Server is missing TMDb API configuration." });
+  if (!process.env.TMDB_API_KEY_TEST) return json(res, 500, { error: "Server is missing TMDB_API_KEY_TEST configuration." });
 
   const imdbId = match[0];
   const canonicalImdb = "https://www.imdb.com/title/" + imdbId + "/";
@@ -71,7 +71,7 @@ module.exports = async function handler(req, res) {
   try {
     // Dry run only: no Supabase connection and no database writes.
 
-    const tmdbKey = process.env.TMDB_API_KEY;
+    const tmdbKey = process.env.TMDB_API_KEY_TEST;
     const findData = await tmdb("/find/" + imdbId + "?external_source=imdb_id", tmdbKey);
     const hit = findData.movie_results && findData.movie_results[0];
     if (!hit) return json(res, 404, { error: "Could not find a movie for that IMDb ID." });
