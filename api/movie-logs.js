@@ -1,4 +1,4 @@
-const ALLOWED_ORIGIN = process.env.CHATGPT_ACTION_ORIGIN || "";
+// Preview-safe endpoint: only looks up metadata and estimates points. It never writes to Supabase.
 
 const INDIAN_ALLOWED_PLATFORMS = [
   "hotstar", "jiohotstar", "disney+ hotstar", "jiocinema", "jio cinema",
@@ -63,34 +63,13 @@ module.exports = async function handler(req, res) {
   if (!name || name.length > 80) return json(res, 400, { error: "memberName is required and must be 80 characters or fewer." });
   if (!match) return json(res, 400, { error: "imdbUrl must contain a valid IMDb title ID, such as tt0073747." });
   if (cleanReview.length > 5000) return json(res, 400, { error: "Review must be 5,000 characters or fewer." });
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    return json(res, 500, { error: "Server is missing Supabase configuration." });
-  }
   if (!process.env.TMDB_API_KEY) return json(res, 500, { error: "Server is missing TMDb API configuration." });
 
   const imdbId = match[0];
   const canonicalImdb = "https://www.imdb.com/title/" + imdbId + "/";
 
   try {
-    const supabaseUrl = process.env.SUPABASE_URL.replace(/\/+$/, "");
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    const headers = { apikey: serviceKey, Authorization: "Bearer " + serviceKey, "Content-Type": "application/json" };
-
-    // Prevent accidental duplicate submissions of the same IMDb title.
-    const duplicateUrl = new URL(supabaseUrl + "/rest/v1/movie_logs_october");
-    duplicateUrl.searchParams.set("select", "imdb,movie,name");
-    duplicateUrl.searchParams.set("imdb", "ilike.*" + imdbId + "*");
-    duplicateUrl.searchParams.set("limit", "1");
-    const duplicateRes = await fetch(duplicateUrl, { headers });
-    if (!duplicateRes.ok) throw new Error("Could not check for an existing log.");
-    const duplicates = await duplicateRes.json();
-    if (duplicates.length) {
-      return json(res, 409, {
-        error: "This IMDb title already appears in the film log.",
-        existingMovie: duplicates[0].movie,
-        existingMember: duplicates[0].name
-      });
-    }
+    // Dry run only: no Supabase connection and no database writes.
 
     const tmdbKey = process.env.TMDB_API_KEY;
     const findData = await tmdb("/find/" + imdbId + "?external_source=imdb_id", tmdbKey);
@@ -190,35 +169,22 @@ module.exports = async function handler(req, res) {
       // Streaming availability is optional.
     }
 
-    const entry = {
-      name,
+    return json(res, 200, {
+      dryRun: true,
+      saved: false,
       movie: title,
+      year,
       genre,
       director,
       stars,
       rating,
-      poster,
-      date_logged: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       imdb: canonicalImdb,
-      plot,
+      memberName: name,
       review: cleanReview,
-      watch_providers: watchProviders,
       points,
       bonuses,
-      is_theatre: false,
-      created_at: new Date().toISOString()
-    };
-
-    const insertRes = await fetch(supabaseUrl + "/rest/v1/movie_logs_october", {
-      method: "POST",
-      headers: { ...headers, Prefer: "return=representation" },
-      body: JSON.stringify([entry])
+      watchProviders
     });
-    if (!insertRes.ok) {
-      const detail = await insertRes.text();
-      throw new Error("Supabase insert failed: " + detail.slice(0, 300));
-    }
-    return json(res, 201, { success: true, movie: title, memberName: name, points, bonuses });
   } catch (error) {
     console.error("movie-log API error:", error);
     return json(res, 500, { error: "Could not publish the movie log. Check server configuration and provider access." });
