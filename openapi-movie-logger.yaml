@@ -4,7 +4,7 @@ info:
   version: 0.2.0
   description: Preview movie metadata and estimated points only. This test endpoint never saves or publishes a review.
 servers:
-  - url: https://YOUR-VERCEL-PREVIEW-URL
+  - url: https://cubbon-movie-club-fright-ni-git-d5a69a-shivankar-jay-s-projects.vercel.app
 paths:
   /api/movie-logs:
     post:
@@ -12,7 +12,7 @@ paths:
       summary: Preview a movie review (no save)
       description: Looks up movie details and estimates eligible scoring bonuses. This dry-run endpoint never saves or publishes anything.
       security:
-        - bearerAuth: []
+        - vercelProtectionBypass: []
       requestBody:
         required: true
         content:
@@ -72,6 +72,7 @@ paths:
           description: Server configuration or publishing error.
 components:
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
+    vercelProtectionBypass:
+      type: apiKey
+      in: header
+      name: x-vercel-protection-bypass
