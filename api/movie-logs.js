@@ -89,7 +89,7 @@ module.exports = async function handler(req, res) {
     const tmdbKey = process.env.TMDB_API_KEY_TEST;
     const findData = await tmdb("/find/" + imdbId + "?external_source=imdb_id", tmdbKey);
     const hit = findData.movie_results && findData.movie_results[0];
-    if (!hit) return json(res, 404, { error: "Could not find a movie for that IMDb ID." });
+    if (!hit) return json(res, 404, { code: "TMDB_MOVIE_NOT_FOUND", error: "TMDb could not match this IMDb ID to a movie.", imdbId, checkedBy: "TMDb /find endpoint", hint: "Verify that the IMDb ID belongs to the intended movie. This is a metadata lookup failure, not a database-save failure; this endpoint is preview-only." });
 
     let title = hit.title || "";
     let year = hit.release_date ? hit.release_date.slice(0, 4) : "";
