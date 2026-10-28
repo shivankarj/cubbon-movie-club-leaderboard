@@ -50,7 +50,11 @@ module.exports = async function handler(req, res) {
 
   const expectedKey = process.env.MOVIE_LOG_API_KEY_TEST;
   const auth = req.headers.authorization || "";
-  if (!expectedKey || auth !== "Bearer " + expectedKey) {
+  const expectedBypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  const bypass = req.headers["x-vercel-protection-bypass"] || "";
+  const authorizedByApiKey = Boolean(expectedKey && auth === "Bearer " + expectedKey);
+  const authorizedByVercelBypass = Boolean(expectedBypass && bypass === expectedBypass);
+  if (!authorizedByApiKey && !authorizedByVercelBypass) {
     return json(res, 401, { error: "Unauthorized." });
   }
 
