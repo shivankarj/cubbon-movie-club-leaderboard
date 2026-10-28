@@ -1,16 +1,16 @@
 openapi: 3.1.0
 info:
-  title: Cubbon Movie Club Movie Logger
-  version: 1.0.0
-  description: Publish a movie review to the Cubbon Movie Club film log. Only call this after the user explicitly confirms they want to publish.
+  title: Cubbon Movie Club Movie Lookup (Dry Run)
+  version: 0.2.0
+  description: Preview movie metadata and estimated points only. This test endpoint never saves or publishes a review.
 servers:
-  - url: https://cubbon-movie-club-fright-nights.vercel.app
+  - url: https://YOUR-VERCEL-PREVIEW-URL
 paths:
   /api/movie-logs:
     post:
-      operationId: publishMovieReview
-      summary: Publish a movie review
-      description: Looks up the movie from its IMDb URL, calculates eligible scoring bonuses, and publishes the review to the club film log. Returns a conflict if that IMDb title is already logged.
+      operationId: previewMovieReview
+      summary: Preview a movie review (no save)
+      description: Looks up movie details and estimates eligible scoring bonuses. This dry-run endpoint never saves or publishes anything.
       security:
         - bearerAuth: []
       requestBody:
@@ -39,14 +39,16 @@ paths:
                   maxLength: 5000
                   description: Review text to publish.
       responses:
-        "201":
-          description: Movie review published.
+        "200":
+          description: Movie details and estimated points returned. No movie log is saved.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  success:
+                  dryRun:
+                    type: boolean
+                  saved:
                     type: boolean
                   movie:
                     type: string
