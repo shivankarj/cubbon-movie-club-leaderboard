@@ -68,7 +68,8 @@ module.exports = async function handler(req, res) {
     return json(res, 401, { error: "Unauthorized." });
   }
 
-  const { memberName, imdbUrl, review } = req.body || {};
+  const { memberName, imdbUrl, review, theatreWatch } = req.body || {};
+  const isTheatreWatch = theatreWatch === true || String(theatreWatch || "").trim().toUpperCase() === "YES";
   const name = typeof memberName === "string" ? memberName.trim() : "";
   const imdb = typeof imdbUrl === "string" ? imdbUrl.trim() : "";
   const cleanReview = typeof review === "string" ? review.trim() : "";
@@ -154,7 +155,8 @@ module.exports = async function handler(req, res) {
     if (isIndian) bonuses.push("🇮🇳 Indian (+2)");
     if (isForeign) bonuses.push("🌍 Foreign (+2)");
     if (isUnderrated) bonuses.push("💎 Underrated (+2)");
-    const points = 1 + (isClassic ? 2 : 0) + (isIndian ? 2 : 0) + (isForeign ? 2 : 0) + (isUnderrated ? 2 : 0);
+    if (isTheatreWatch) bonuses.push("🎟️ In Theatre (+5)");
+    const points = 1 + (isClassic ? 2 : 0) + (isIndian ? 2 : 0) + (isForeign ? 2 : 0) + (isUnderrated ? 2 : 0) + (isTheatreWatch ? 5 : 0);
 
     let watchProviders = [];
     try {
@@ -195,6 +197,7 @@ module.exports = async function handler(req, res) {
       imdb: canonicalImdb,
       memberName: name,
       review: cleanReview,
+      theatreWatch: isTheatreWatch,
       points,
       bonuses,
       watchProviders,
@@ -207,6 +210,7 @@ module.exports = async function handler(req, res) {
         isIndian,
         isForeign,
         isUnderrated,
+        isTheatreWatch,
         omdbConfigured: Boolean(process.env.OMDB_API_KEY)
       }
     });
