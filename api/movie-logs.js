@@ -12,8 +12,9 @@ const INDIAN_LANGUAGES = [
   "marathi", "punjabi", "gujarati", "odia", "assamese", "urdu"
 ];
 const ENGLISH_SPEAKING_COUNTRIES = [
-  "united states", "usa", "united kingdom", "uk", "great britain",
-  "canada", "australia", "new zealand", "ireland"
+  "united states", "united states of america", "usa", "u.s.a.",
+  "united kingdom", "great britain", "canada", "australia",
+  "new zealand", "ireland"
 ];
 
 const isIndianCinema = (language = "", country = "") => {
@@ -24,10 +25,19 @@ const isIndianCinema = (language = "", country = "") => {
 
 const isForeignCinema = (language = "", country = "", originalLanguage = "") => {
   if (isIndianCinema(language, country)) return false;
+
+  // Normalize country strings and explicitly recognize common US naming variants.
+  const nation = String(country || "").toLowerCase().replace(/[.,]/g, "").replace(/\\s+/g, " ").trim();
+  const isEnglishSpeakingCountry = ENGLISH_SPEAKING_COUNTRIES.some((item) => {
+    const normalizedItem = item.toLowerCase().replace(/[.,]/g, "").replace(/\\s+/g, " ").trim();
+    return nation === normalizedItem || nation.includes(normalizedItem);
+  });
+  if (isEnglishSpeakingCountry) return false;
+
   const original = String(originalLanguage || "").toLowerCase().trim();
   if (original && original !== "en") return true;
-  const nation = String(country || "").toLowerCase();
-  if (nation && !ENGLISH_SPEAKING_COUNTRIES.some((item) => nation.includes(item))) return true;
+  if (nation) return true;
+
   const languages = String(language || "").toLowerCase().split(",").map((x) => x.trim()).filter(Boolean);
   return languages.length > 0 && !languages[0].includes("english");
 };
