@@ -187,7 +187,18 @@ module.exports = async function handler(req, res) {
       review: cleanReview,
       points,
       bonuses,
-      watchProviders
+      watchProviders,
+      diagnostics: {
+        tmdbOriginalLanguage: details.original_language || hit.original_language || "",
+        languageUsedForForeignRule: language,
+        countryUsedForForeignRule: country,
+        voteCountUsedForUnderratedRule: voteCount,
+        isClassic,
+        isIndian,
+        isForeign,
+        isUnderrated,
+        omdbConfigured: Boolean(process.env.OMDB_API_KEY)
+      }
     });
   } catch (error) {
     console.error("movie-log API error:", error);
