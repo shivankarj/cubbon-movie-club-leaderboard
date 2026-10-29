@@ -102,7 +102,8 @@ module.exports = async function handler(req, res) {
     let originalLanguage = hit.original_language || "";
     let language = originalLanguage;
     let country = "";
-    let voteCount = Number(hit.vote_count) || 0;
+    // Underrated bonus must use IMDb vote counts from OMDb only. TMDb vote_count is not interchangeable.
+    let voteCount = 0;
     const tmdbId = hit.id;
 
     const details = await tmdb("/movie/" + tmdbId + "?append_to_response=credits", tmdbKey);
