@@ -87,6 +87,7 @@ module.exports = async function handler(req, res) {
     // Dry run only: no Supabase connection and no database writes.
 
     const tmdbKey = process.env.TMDB_API_KEY_TEST;
+    const omdbApiKey = process.env.OMDB_API_KEY || process.env.REACT_APP_OMDB_API_KEY;
     const findData = await tmdb("/find/" + imdbId + "?external_source=imdb_id", tmdbKey);
     const hit = findData.movie_results && findData.movie_results[0];
     if (!hit) return json(res, 404, { code: "TMDB_MOVIE_NOT_FOUND", error: "TMDb could not match this IMDb ID to a movie.", imdbId, checkedBy: "TMDb /find endpoint", hint: "Verify that the IMDb ID belongs to the intended movie. This is a metadata lookup failure, not a database-save failure; this endpoint is preview-only." });
@@ -119,10 +120,10 @@ module.exports = async function handler(req, res) {
       stars = details.credits.cast.slice(0, 4).map((c) => c.name).join(", ");
     }
 
-    if (process.env.OMDB_API_KEY) {
+    if (omdbApiKey) {
       try {
         const omdbUrl = new URL("https://www.omdbapi.com/");
-        omdbUrl.searchParams.set("apikey", process.env.OMDB_API_KEY);
+        omdbUrl.searchParams.set("apikey", omdbApiKey);
         omdbUrl.searchParams.set("i", imdbId);
         omdbUrl.searchParams.set("plot", "short");
         const omdbRes = await fetch(omdbUrl);
@@ -212,7 +213,7 @@ module.exports = async function handler(req, res) {
         isForeign,
         isUnderrated,
         isTheatreWatch,
-        omdbConfigured: Boolean(process.env.OMDB_API_KEY)
+        omdbConfigured: Boolean(omdbApiKey)
       }
     });
   } catch (error) {
