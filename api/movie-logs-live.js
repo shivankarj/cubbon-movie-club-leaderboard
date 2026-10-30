@@ -218,7 +218,7 @@ module.exports = async function handler(req, res) {
       is_theatre: isTheatreWatch
     };
 
-    const cleanSupabaseUrl = supabaseUrl.replace(/\\/$/, "");
+    const cleanSupabaseUrl = supabaseUrl.endsWith("/") ? supabaseUrl.slice(0, -1) : supabaseUrl;
     const insertResponse = await fetch(cleanSupabaseUrl + "/rest/v1/movie_logs_october", {
       method: "POST",
       headers: {
