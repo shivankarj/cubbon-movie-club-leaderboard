@@ -84,6 +84,35 @@ module.exports = async function handler(req, res) {
   const canonicalImdb = "https://www.imdb.com/title/" + imdbId + "/";
 
   try {
+    // Prevent the same member from logging the same IMDb title more than once.
+    const supabaseUrlForCheck = process.env.SUPABASE_URL || process.env.REACT_APP_SUPABASE_URL;
+    const supabaseSecretForCheck = process.env.SUPABASE_SECRET_KEY;
+    if (!supabaseUrlForCheck || !supabaseSecretForCheck) {
+      return json(res, 500, { error: "Server is missing SUPABASE_URL or SUPABASE_SECRET_KEY configuration." });
+    }
+    const cleanCheckUrl = supabaseUrlForCheck.endsWith("/") ? supabaseUrlForCheck.slice(0, -1) : supabaseUrlForCheck;
+    const duplicateUrl = new URL(cleanCheckUrl + "/rest/v1/movie_logs_october");
+    duplicateUrl.searchParams.set("select", "id,name,movie,imdb,date_logged");
+    duplicateUrl.searchParams.set("name", "eq." + name);
+    duplicateUrl.searchParams.set("imdb", "eq." + canonicalImdb);
+    const duplicateResponse = await fetch(duplicateUrl, {
+      method: "GET",
+      headers: { "apikey": supabaseSecretForCheck, "Authorization": "Bearer " + supabaseSecretForCheck }
+    });
+    if (!duplicateResponse.ok) {
+      const duplicateError = await duplicateResponse.text();
+      console.error("Supabase duplicate check failed:", duplicateResponse.status, duplicateError.slice(0, 500));
+      return json(res, 502, { error: "Could not check existing movie logs. No movie was saved.", saved: false });
+    }
+    const duplicateRows = await duplicateResponse.json();
+    if (Array.isArray(duplicateRows) && duplicateRows.length > 0) {
+      const existing = duplicateRows[0];
+      return json(res, 200, {
+        duplicate: true, saved: false, dryRun: true, table: "movie_logs_october",
+        memberName: name, imdb: canonicalImdb,
+        existingRecord: { id: existing.id, movie: existing.movie, dateLogged: existing.date_logged }
+      });
+    }
     // Metadata and scoring are calculated before the database insert.
 
     const tmdbKey = process.env.TMDB_API_KEY_TEST;
