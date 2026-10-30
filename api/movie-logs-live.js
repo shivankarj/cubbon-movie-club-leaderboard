@@ -226,9 +226,20 @@ module.exports = async function handler(req, res) {
         saved: false,
         table: "movie_logs_october",
         movie: title,
+        year,
+        genre,
+        director,
+        stars,
+        rating,
+        poster,
+        plot,
+        imdb: canonicalImdb,
         memberName: name,
+        review: cleanReview,
+        theatreWatch: isTheatreWatch,
         points,
         bonuses,
+        watchProviders,
         record: newLogEntry
       });
     }
