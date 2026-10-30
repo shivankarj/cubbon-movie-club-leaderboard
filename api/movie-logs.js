@@ -27,9 +27,9 @@ const isForeignCinema = (language = "", country = "", originalLanguage = "") => 
   if (isIndianCinema(language, country)) return false;
 
   // Normalize country strings and explicitly recognize common US naming variants.
-  const nation = String(country || "").toLowerCase().replace(/[.,]/g, "").replace(/\\s+/g, " ").trim();
+  const nation = String(country || "").toLowerCase().replace(/[.,]/g, "").replace(/\s+/g, " ").trim();
   const isEnglishSpeakingCountry = ENGLISH_SPEAKING_COUNTRIES.some((item) => {
-    const normalizedItem = item.toLowerCase().replace(/[.,]/g, "").replace(/\\s+/g, " ").trim();
+    const normalizedItem = item.toLowerCase().replace(/[.,]/g, "").replace(/\s+/g, " ").trim();
     return nation === normalizedItem || nation.includes(normalizedItem);
   });
   if (isEnglishSpeakingCountry) return false;
