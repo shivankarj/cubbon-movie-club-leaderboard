@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
     return json(res, 401, { error: "Unauthorized." });
   }
 
-  const { memberName, imdbUrl, review, theatreWatch } = req.body || {};
+  const { memberName, imdbUrl, review, theatreWatch, confirmSave } = req.body || {};
   const isTheatreWatch = theatreWatch === true || String(theatreWatch || "").trim().toUpperCase() === "YES";
   const name = typeof memberName === "string" ? memberName.trim() : "";
   const imdb = typeof imdbUrl === "string" ? imdbUrl.trim() : "";
@@ -217,6 +217,21 @@ module.exports = async function handler(req, res) {
       bonuses,
       is_theatre: isTheatreWatch
     };
+
+    // Safety latch: the endpoint previews the complete database row unless the caller
+    // explicitly sends confirmSave: true. This prevents accidental live writes.
+    if (confirmSave !== true) {
+      return json(res, 200, {
+        dryRun: true,
+        saved: false,
+        table: "movie_logs_october",
+        movie: title,
+        memberName: name,
+        points,
+        bonuses,
+        record: newLogEntry
+      });
+    }
 
     const cleanSupabaseUrl = supabaseUrl.endsWith("/") ? supabaseUrl.slice(0, -1) : supabaseUrl;
     const insertResponse = await fetch(cleanSupabaseUrl + "/rest/v1/movie_logs_october", {
