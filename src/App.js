@@ -202,11 +202,11 @@ const isForeignCinema = (languageStr = '', countryStr = '', originalLanguage = '
 };
 
 export const HALLOWEEN_TIERS = {
-  ELDER_GOD: { label: 'ELDER GOD', icon: '👁️', min: 20, color: '#c084fc', border: '#7e22ce', bg: 'rgba(126, 34, 206, 0.2)' },
-  IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#FF3300', border: '#FF3300', bg: 'rgba(255, 51, 0, 0.2)' },
-  UNDEAD: { label: 'UNDEAD', icon: '🧟', min: 10, color: '#4ade80', border: '#15803d', bg: 'rgba(34, 197, 94, 0.2)' },
-  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#FF6600', border: '#FF6600', bg: 'rgba(255, 102, 0, 0.2)' },
-  MORTAL: { label: 'MORTAL', icon: '🕯️', min: 0, color: '#94a3b8', border: '#475569', bg: 'rgba(71, 85, 105, 0.2)' },
+  ELDER_GOD: { label: 'ELDER GOD', icon: '👁️', min: 20, color: '#C9A96B', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
+  IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
+  UNDEAD: { label: 'UNDEAD', icon: '🧟', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
+  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(255, 102, 0, 0.2)' },
+  MORTAL: { label: 'MORTAL', icon: '🕯️', min: 0, color: '#49382D', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
 export const getMemberTier = (filmCount) => {
@@ -232,8 +232,8 @@ const MoviePoster = ({ src, title, className, style }) => {
         className={className}
         style={{
           ...style,
-          backgroundColor: '#0d0203',
-          border: '1px solid #2a080c',
+          backgroundColor: '#14251F',
+          border: '1px solid #49382D',
           borderRadius: '8px',
           display: 'flex',
           flexDirection: 'column',
@@ -245,7 +245,7 @@ const MoviePoster = ({ src, title, className, style }) => {
         }}
       >
         <span style={{ fontSize: '24px', marginBottom: '6px' }}>🎃</span>
-        <span style={{ fontSize: '11px', fontWeight: '800', color: '#FF5500', lineHeight: '1.2' }}>
+        <span style={{ fontSize: '11px', fontWeight: '800', color: '#C9A96B', lineHeight: '1.2' }}>
           {title}
         </span>
       </div>
@@ -840,7 +840,7 @@ export default function App() {
     if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
       return await window.htmlToImage.toJpeg(element, {
         quality: 0.95,
-        backgroundColor: '#040507',
+        backgroundColor: '#14251F',
         pixelRatio: 2,
       });
     }
@@ -1071,12 +1071,12 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-slate-100 font-sans antialiased"
+      className="min-h-screen text-[#49382D] font-sans antialiased"
       style={{
-        backgroundColor: '#040507',
+        backgroundColor: '#14251F',
         backgroundImage: `
-          linear-gradient(rgba(255, 51, 0, 0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 51, 0, 0.04) 1px, transparent 1px)
+          linear-gradient(rgba(201, 169, 107, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(201, 169, 107, 0.035) 1px, transparent 1px)
         `,
         backgroundSize: '32px 32px',
         backgroundAttachment: 'fixed',
@@ -1088,15 +1088,15 @@ export default function App() {
           className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl border shadow-2xl backdrop-blur-md transition-all animate-bounce"
           style={{
             backgroundColor: toastMessage.type === 'error' ? 'rgba(76, 5, 14, 0.95)' : 'rgba(18, 4, 6, 0.95)',
-            borderColor: toastMessage.type === 'error' ? '#f43f5e' : '#FF3300',
-            boxShadow: '0 0 25px rgba(255, 51, 0, 0.3)',
+            borderColor: toastMessage.type === 'error' ? '#f43f5e' : '#6B1820',
+            boxShadow: '0 0 25px rgba(107, 24, 32, 0.16)',
           }}
         >
           <span className="text-lg">
             {toastMessage.type === 'error' ? '🩸' : toastMessage.type === 'success' ? '🎃' : '🔮'}
           </span>
           <span className="text-xs font-bold tracking-wide text-white">{toastMessage.text}</span>
-          <button onClick={() => setToastMessage(null)} className="text-red-400 hover:text-white text-xs ml-2">
+          <button onClick={() => setToastMessage(null)} className="text-[#6B1820] hover:text-white text-xs ml-2">
             ✕
           </button>
         </div>
@@ -1104,21 +1104,21 @@ export default function App() {
 
       {/* SPOOKY CONFIRMATION DIALOG MODAL */}
       {confirmDialog && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0f0305] border-2 border-[#FF3300] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.3)] text-center">
+        <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.3)] text-center">
             <div className="text-3xl mb-2">💀</div>
             <h3 className="text-lg font-black text-white">{confirmDialog.title}</h3>
-            <p className="text-xs text-red-200/80 mt-2 mb-6">{confirmDialog.message}</p>
+            <p className="text-xs text-[#49382D]/80 mt-2 mb-6">{confirmDialog.message}</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={confirmDialog.onCancel}
-                className="px-4 py-2 rounded-xl bg-slate-900 border border-red-950 text-xs font-bold text-slate-300 hover:text-white uppercase tracking-wider"
+                className="px-4 py-2 rounded-xl bg-[#14251F] border border-[#C9A96B]/60 text-xs font-bold text-[#49382D] hover:text-white uppercase tracking-wider"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDialog.onConfirm}
-                className="px-4 py-2 rounded-xl bg-[#FF3300] hover:bg-orange-500 text-xs font-black text-slate-950 uppercase tracking-wider shadow-lg"
+                className="px-4 py-2 rounded-xl bg-[#6B1820] hover:bg-[#49382D] text-xs font-black text-slate-950 uppercase tracking-wider shadow-lg"
               >
                 Delete
               </button>
@@ -1128,19 +1128,19 @@ export default function App() {
       )}
 
       {/* SPOOKY HEADER & NAVBAR */}
-      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-red-950/80 pb-6">
+      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-[#C9A96B]/70 pb-6">
         <div className="flex items-center gap-4">
           <div
             className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
             <span className="text-white">CUBBON</span>
-            <span className="text-[#FF3300] drop-shadow-[0_0_10px_rgba(255,51,0,0.8)]">MOVIE</span>
+            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(255,51,0,0.8)]">MOVIE</span>
             <span className="text-white">CLUB</span>
           </div>
 
-          <div className="w-12 h-12 rounded-xl bg-red-950/20 border border-red-900/60 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,51,0,0.2)]">
-            <svg viewBox="0 0 100 100" className="w-full h-full fill-[#FF3300]">
+          <div className="w-12 h-12 rounded-xl bg-[#6B1820]/10 border border-[#C9A96B]/70 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,51,0,0.2)]">
+            <svg viewBox="0 0 100 100" className="w-full h-full fill-[#6B1820]">
               <path d="M50 15c-3 0-5 2-5 5v5c-15 1-28 12-30 27-2 15 6 28 20 33v-5c0-2 2-4 4-4s4 2 4 4v5c2 0 5 0 7 0s5 0 7 0v-5c0-2 2-4 4-4s4 2 4 4v5c14-5 22-18 20-33-2-15-15-26-30-27v-5c0-3-2-5-5-5zM35 48c3 0 5 3 5 6s-2 6-5 6-6-3-6-6 3-6 6-6zm30 0c3 0 6 3 6 6s-3 6-6 6-5-3-5-6 2-6 5-6zm-23 24l4-8 4 8 4-8 4 8 4-8 4 8h-24z" />
             </svg>
           </div>
@@ -1153,13 +1153,13 @@ export default function App() {
                 <>
                   <button
                     onClick={() => setCurrentPage('admin')}
-                    className="text-[10px] font-bold tracking-widest uppercase text-white hover:text-[#FF3300] border border-red-800 bg-[#FF3300]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
+                    className="text-[10px] font-bold tracking-widest uppercase text-white hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
                   >
                     PANEL 🎃
                   </button>
                   <button
                     onClick={handleAdminLogout}
-                    className="text-[10px] font-bold tracking-widest uppercase text-slate-400 hover:text-rose-400 border border-red-950/80 bg-red-950/20 px-2.5 py-1.5 rounded-xl transition-all"
+                    className="text-[10px] font-bold tracking-widest uppercase text-[#49382D]/80 hover:text-rose-400 border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
                     title="Lock Admin Portal"
                   >
                     🔒 LOGOUT
@@ -1172,7 +1172,7 @@ export default function App() {
                     setAuthError(false);
                     setCurrentPage('login');
                   }}
-                  className="text-[10px] font-bold tracking-widest uppercase text-red-500 hover:text-[#FF3300] border border-red-950 bg-red-950/20 px-3.5 py-2 rounded-xl transition-all shadow-sm"
+                  className="text-[10px] font-bold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] border border-[#C9A96B]/60 bg-[#6B1820]/10 px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
                   ADMIN 🎃
                 </button>
@@ -1183,7 +1183,7 @@ export default function App() {
               {isAuthenticated && (
                 <button
                   onClick={handleAdminLogout}
-                  className="text-[10px] font-bold tracking-widest uppercase text-slate-400 hover:text-rose-400 border border-red-950/80 bg-red-950/20 px-2.5 py-1.5 rounded-xl transition-all"
+                  className="text-[10px] font-bold tracking-widest uppercase text-[#49382D]/80 hover:text-rose-400 border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
                   title="Lock Admin Portal"
                 >
                   🔒 LOGOUT
@@ -1191,7 +1191,7 @@ export default function App() {
               )}
               <button
                 onClick={() => setCurrentPage('public')}
-                className="text-xs font-bold tracking-wider uppercase text-slate-400 hover:text-white"
+                className="text-xs font-bold tracking-wider uppercase text-[#49382D]/80 hover:text-white"
               >
                 ← Back
               </button>
@@ -1205,16 +1205,16 @@ export default function App() {
         {currentPage === 'public' && (
           <div className="space-y-16">
             {/* OCTOBER HALLOWEEN THEME BANNER */}
-            <div className="text-left py-4 border-b border-red-950/80">
+            <div className="text-left py-4 border-b border-[#C9A96B]/70">
               <div
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-[#FF3300] drop-shadow-[0_0_12px_rgba(255,51,0,0.6)]">FRIGHT NIGHTS</span>
+                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(255,51,0,0.6)]">FRIGHT NIGHTS</span>
                 <span className="text-white">OCTOBER 💀</span>
               </div>
               <p
-                className="text-[11px] font-extrabold tracking-widest text-[#FF6600] mt-3 uppercase flex items-center gap-2"
+                className="text-[11px] font-extrabold tracking-widest text-[#C9A96B] mt-3 uppercase flex items-center gap-2"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 <span>GET. SET. LOG.</span>
@@ -1223,7 +1223,7 @@ export default function App() {
 
             {loading ? (
               <div
-                className="text-center py-16 text-xs font-bold tracking-widest text-red-500/80 uppercase animate-pulse"
+                className="text-center py-16 text-xs font-bold tracking-widest text-[#6B1820]/80 uppercase animate-pulse"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 🔮 Summoning Halloween Logs from Crypt...
@@ -1234,18 +1234,18 @@ export default function App() {
                 <section className="space-y-8">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#FF3300] pl-3 uppercase">
+                      <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#6B1820] pl-3 uppercase">
                         LEADERBOARD
                       </h2>
 
-                      <div className="inline-flex items-center p-1 bg-slate-950 border border-red-950 rounded-xl shrink-0 self-start sm:self-auto shadow-inner ml-0 sm:ml-2">
+                      <div className="inline-flex items-center p-1 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl shrink-0 self-start sm:self-auto shadow-inner ml-0 sm:ml-2">
                         <button
                           type="button"
                           onClick={() => setLeaderboardSort('points')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'points'
-                              ? 'bg-[#FF3300] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
-                              : 'text-red-400/80 hover:text-white'
+                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
+                              : 'text-[#6B1820]/80 hover:text-white'
                           }`}
                         >
                           <span>🔥</span> By Points
@@ -1255,8 +1255,8 @@ export default function App() {
                           onClick={() => setLeaderboardSort('films')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'films'
-                              ? 'bg-[#FF3300] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
-                              : 'text-red-400/80 hover:text-white'
+                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
+                              : 'text-[#6B1820]/80 hover:text-white'
                           }`}
                         >
                           <span>🎞️</span> By Films
@@ -1269,7 +1269,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('points')}
                           disabled={isExporting || leaderboardByPoints.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#FF3300] hover:text-orange-400 bg-red-950/40 border border-red-900/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(255,51,0,0.15)]"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#C9A96B] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(255,51,0,0.15)]"
                         >
                           <span>🔥</span>
                           <span>{isExporting && exportType === 'points' ? 'Exporting...' : 'Story: Points'}</span>
@@ -1277,7 +1277,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('films')}
                           disabled={isExporting || leaderboardByFilms.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-slate-200 hover:text-white bg-slate-900 border border-red-950 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#49382D] hover:text-white bg-[#14251F] border border-[#C9A96B]/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
                         >
                           <span>🎞️</span>
                           <span>{isExporting && exportType === 'films' ? 'Exporting...' : 'Story: Films'}</span>
@@ -1287,22 +1287,22 @@ export default function App() {
                   </div>
 
                   {leaderboard.length === 0 ? (
-                    <div className="text-sm text-slate-500 bg-red-950/10 border border-red-950 p-8 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D]/70 bg-[#6B1820]/8 border border-[#C9A96B]/60 p-8 rounded-xl text-center">
                       The Halloween crypt is silent. Unlock the Admin gate to log October horror films!
                     </div>
                   ) : (
-                    <div className="bg-slate-950/80 border border-red-950/80 rounded-2xl divide-y divide-red-950/60 overflow-hidden backdrop-blur-sm shadow-xl">
+                    <div className="bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-2xl divide-y divide-red-950/60 overflow-hidden backdrop-blur-sm shadow-xl">
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
-                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-red-950/20 transition-colors gap-3"
+                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-[#6B1820]/10 transition-colors gap-3"
                         >
                           <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0 mr-1 sm:mr-3">
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0
-                                  ? 'bg-[#FF3300] text-slate-950 shadow-[0_0_10px_#FF3300]'
-                                  : 'bg-red-950/60 text-red-400 border border-red-900/40'
+                                  ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_#6B1820]'
+                                  : 'bg-[#6B1820]/12 text-[#6B1820] border border-[#C9A96B]/40'
                               }`}
                             >
                               {idx + 1}
@@ -1311,13 +1311,13 @@ export default function App() {
                             <img
                               src={getMemberAvatar(member.name)}
                               alt={member.name}
-                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950 border border-red-900/80 p-0.5 object-cover shrink-0"
+                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover shrink-0"
                             />
 
                             <div>
                               <h3
                                 onClick={() => setSelectedUser(member.name)}
-                                className="font-extrabold text-slate-100 text-sm sm:text-base hover:underline hover:text-[#FF3300] select-none cursor-pointer leading-snug"
+                                className="font-extrabold text-[#49382D] text-sm sm:text-base hover:underline hover:text-[#6B1820] select-none cursor-pointer leading-snug"
                               >
                                 {member.name}
                               </h3>
@@ -1326,8 +1326,8 @@ export default function App() {
                                 <span
                                   className={
                                     leaderboardSort === 'points'
-                                      ? 'text-[#FF3300] font-black text-xs'
-                                      : 'text-slate-300 font-semibold'
+                                      ? 'text-[#6B1820] font-black text-xs'
+                                      : 'text-[#49382D] font-semibold'
                                   }
                                 >
                                   {member.points} points
@@ -1336,8 +1336,8 @@ export default function App() {
                                 <span
                                   className={
                                     leaderboardSort === 'films'
-                                      ? 'text-[#FF3300] font-black text-xs'
-                                      : 'text-slate-300 font-semibold'
+                                      ? 'text-[#6B1820] font-black text-xs'
+                                      : 'text-[#49382D] font-semibold'
                                   }
                                 >
                                   {member.count} Film{member.count > 1 ? 's' : ''}
@@ -1352,7 +1352,7 @@ export default function App() {
                                 key={i}
                                 src={mov.poster}
                                 title={mov.title}
-                                className="w-7 h-10 sm:w-8 sm:h-12 object-cover rounded border border-slate-950"
+                                className="w-7 h-10 sm:w-8 sm:h-12 object-cover rounded border border-[#C9A96B]"
                               />
                             ))}
                           </div>
@@ -1364,8 +1364,8 @@ export default function App() {
 
                 {/* 🎬 LOGGED HORROR FEED */}
                 <section className="space-y-8 pt-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-red-950/80 pb-5">
-                    <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#FF3300] pl-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#C9A96B]/70 pb-5">
+                    <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#6B1820] pl-3">
                       LOGGED ({logs.length})
                     </h2>
 
@@ -1374,8 +1374,8 @@ export default function App() {
                         onClick={() => setSortByRating(!sortByRating)}
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
-                            ? 'bg-[#FF3300] text-slate-950 border-[#FF3300]'
-                            : 'bg-slate-950 text-red-400 border-red-950 hover:text-white hover:border-red-900'
+                            ? 'bg-[#6B1820] text-slate-950 border-[#6B1820]'
+                            : 'bg-[#E9DFC9] text-[#6B1820] border-[#C9A96B]/60 hover:text-white hover:border-[#C9A96B]'
                         }`}
                       >
                         <span>★</span>
@@ -1386,16 +1386,16 @@ export default function App() {
                         <select
                           value={selectedMemberFilter}
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
-                          className="w-full bg-slate-950 border border-red-950 rounded-xl px-3 py-2 pr-7 text-xs text-red-200 focus:outline-none focus:border-[#FF3300] font-medium cursor-pointer appearance-none truncate"
+                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
                         >
                           <option value="">Filter Member</option>
                           {uniqueMembers.map((name) => (
-                            <option key={name} value={name} className="bg-slate-950 text-white">
+                            <option key={name} value={name} className="bg-[#E9DFC9] text-white">
                               {name}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-red-500 text-[10px]">
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6B1820] text-[10px]">
                           ▼
                         </div>
                       </div>
@@ -1403,7 +1403,7 @@ export default function App() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-slate-500 bg-red-950/10 border border-red-950 p-6 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D]/70 bg-[#6B1820]/8 border border-[#C9A96B]/60 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
@@ -1417,12 +1417,12 @@ export default function App() {
                             <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                               {log.movie}
                             </h3>
-                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#FF6600] tracking-wide mt-1">
+                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#C9A96B] tracking-wide mt-1">
                               <span className="break-words">{log.genre}</span>
                               {log.rating && (
                                 <>
                                   <span className="text-slate-600 select-none">•</span>
-                                  <span className="whitespace-nowrap font-bold text-[#FF3300]">
+                                  <span className="whitespace-nowrap font-bold text-[#6B1820]">
                                     {log.rating}
                                   </span>
                                 </>
@@ -1432,17 +1432,17 @@ export default function App() {
 
                           {/* 1. LOGGED BY */}
                           <div className="flex items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-red-500/80 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest">
                               LOGGED BY:
                             </span>
                             <button
                               onClick={() => setSelectedUser(log.name)}
-                              className="inline-flex items-center gap-2 bg-red-950/40 border border-red-900/60 hover:border-[#FF3300] text-[#FF3300] hover:text-orange-400 text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
+                              className="inline-flex items-center gap-2 bg-[#6B1820]/12 border border-[#C9A96B]/70 hover:border-[#6B1820] text-[#6B1820] hover:text-[#C9A96B] text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
                             >
                               <img
                                 src={getMemberAvatar(log.name)}
                                 alt={log.name}
-                                className="w-5 h-5 rounded-full bg-slate-950 border border-red-900/80 p-0.5 object-cover group-hover:scale-110 transition-transform"
+                                className="w-5 h-5 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover group-hover:scale-110 transition-transform"
                               />
                               <span className="tracking-wide">{log.name}</span>
                             </button>
@@ -1451,7 +1451,7 @@ export default function App() {
                           {/* 2. STREAM ON BADGES */}
                           {log.watch_providers && log.watch_providers.length > 0 && (
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 pt-0.5">
-                              <span className="text-[10px] font-bold text-red-500/80 uppercase tracking-widest shrink-0 self-start sm:self-auto">
+                              <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest shrink-0 self-start sm:self-auto">
                                 STREAM ON:
                               </span>
                               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -1470,7 +1470,7 @@ export default function App() {
                                   return (
                                     <span
                                       key={idx}
-                                      className="inline-flex items-center gap-1.5 h-6 bg-slate-950 border border-red-950 text-slate-200 text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
+                                      className="inline-flex items-center gap-1.5 h-6 bg-[#E9DFC9] border border-[#C9A96B]/60 text-[#49382D] text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
                                     >
                                       {providerLogo ? (
                                         <img
@@ -1491,16 +1491,16 @@ export default function App() {
 
                           {/* 3. POINTS AND STACKABLE BREAKDOWN CHIPS */}
                           <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-red-500/80 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest">
                               POINTS:
                             </span>
-                            <span className="text-sm font-black text-[#FF3300]">{log.points || 1}</span>
+                            <span className="text-sm font-black text-[#6B1820]">{log.points || 1}</span>
                             {log.bonuses && log.bonuses.length > 0 && (
                               <div className="flex flex-wrap items-center gap-1.5 ml-1">
                                 {log.bonuses.map((bonusTag, bIdx) => (
                                   <span
                                     key={bIdx}
-                                    className="text-[10px] font-bold bg-red-950/60 border border-red-900 text-red-300 px-2 py-0.5 rounded-md"
+                                    className="text-[10px] font-bold bg-[#6B1820]/12 border border-[#C9A96B] text-[#6B1820] px-2 py-0.5 rounded-md"
                                   >
                                     {bonusTag}
                                   </span>
@@ -1510,7 +1510,7 @@ export default function App() {
                           </div>
 
                           {/* Movie Poster */}
-                          <div className="w-full max-w-md bg-slate-950 border border-red-950/80 rounded-xl overflow-hidden shadow-2xl">
+                          <div className="w-full max-w-md bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-xl overflow-hidden shadow-2xl">
                             <MoviePoster
                               src={log.poster}
                               title={log.movie}
@@ -1520,51 +1520,51 @@ export default function App() {
 
                           {/* Metadata Details & Review */}
                           <div className="space-y-4 max-w-md sm:max-xl">
-                            <div className="space-y-1 text-sm text-slate-300 font-medium">
+                            <div className="space-y-1 text-sm text-[#49382D] font-medium">
                               <p>
-                                <span className="text-red-500/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Director:
                                 </span>{' '}
                                 {log.director}
                               </p>
                               <p>
-                                <span className="text-red-500/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Stars:
                                 </span>{' '}
                                 {log.stars}
                               </p>
                               <p>
-                                <span className="text-red-500/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Rating:
                                 </span>{' '}
-                                <span className="text-[#FF3300] font-bold">{log.rating}</span>
+                                <span className="text-[#6B1820] font-bold">{log.rating}</span>
                               </p>
                               <p>
-                                <span className="text-red-500/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Logged On:
                                 </span>{' '}
-                                <span className="text-slate-300 font-medium">
+                                <span className="text-[#49382D] font-medium">
                                   {log.date_logged || 'Prior Entry'}
                                 </span>
                               </p>
                             </div>
 
                             <div className="space-y-1.5">
-                              <span className="text-[10px] font-bold uppercase tracking-widest text-red-500/80">
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B1820]/80">
                                 {log.review ? 'Review' : 'Plot Summary'}
                               </span>
                               {log.review ? (
-                                <p className="text-sm text-slate-200 leading-relaxed bg-red-950/20 p-4 rounded-xl border border-red-950/60 italic border-l-2 border-[#FF3300] whitespace-pre-line">
+                                <p className="text-sm text-[#49382D] leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 italic border-l-2 border-[#6B1820] whitespace-pre-line">
                                   "{log.review}"
                                 </p>
                               ) : (
-                                <p className="text-sm text-slate-400 leading-relaxed bg-red-950/20 p-4 rounded-xl border border-red-950/60 whitespace-pre-line">
+                                <p className="text-sm text-[#49382D]/80 leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 whitespace-pre-line">
                                   {log.plot}
                                 </p>
                               )}
                             </div>
 
-                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-red-950/60">
+                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-[#C9A96B]/60">
                               {isAuthenticated && (
                                 <button
                                   onClick={() => handleDeleteLog(log.id, log.movie)}
@@ -1577,7 +1577,7 @@ export default function App() {
                                 href={log.imdb}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-[11px] font-bold text-red-500 hover:text-white flex items-center gap-0.5"
+                                className="text-[11px] font-bold text-[#6B1820] hover:text-white flex items-center gap-0.5"
                               >
                                 More →
                               </a>
@@ -1595,23 +1595,23 @@ export default function App() {
 
         {/* CURATOR PASSKEY LOGIN GATE */}
         {currentPage === 'login' && (
-          <div className="max-w-md mx-auto mt-16 bg-slate-950/80 border border-red-950 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
+          <div className="max-w-md mx-auto mt-16 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
             <h2 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
               <span>🎃</span> Admin Login
             </h2>
-            <p className="text-xs text-red-400/80 mt-1">Enter passkey to unlock admin portal.</p>
+            <p className="text-xs text-[#6B1820]/80 mt-1">Enter passkey to unlock admin portal.</p>
             <form onSubmit={handlePasswordSubmit} className="mt-5 space-y-4">
               <input
                 type="password"
                 placeholder="Enter Passkey"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#FF3300]"
+                className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#6B1820]"
               />
               {authError && <p className="text-xs text-rose-500 font-semibold mt-1.5">❌ Incorrect passkey.</p>}
               <button
                 type="submit"
-                className="w-full bg-[#FF3300] hover:bg-orange-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(255,51,0,0.3)]"
+                className="w-full bg-[#6B1820] hover:bg-[#49382D] text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(255,51,0,0.3)]"
               >
                 Unlock Admin Panel
               </button>
@@ -1621,18 +1621,18 @@ export default function App() {
 
         {currentPage === 'admin' && (
           <div className="space-y-12">
-            <div className="max-w-xl mx-auto bg-slate-950/90 border border-red-950 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
-              <div className="border-b border-red-950 pb-3 mb-6 flex justify-between items-center">
+            <div className="max-w-xl mx-auto bg-[#E9DFC9]/90 border border-[#C9A96B]/60 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
+              <div className="border-b border-[#C9A96B]/60 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
                     <span>💀</span> October Admin Panel
                   </h2>
-                  <p className="text-xs text-red-400/80 mt-0.5">
+                  <p className="text-xs text-[#6B1820]/80 mt-0.5">
                     Paste IMDb Link or Title ➔ Auto-Populates Bonuses (+2 Each) & Streaming
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] bg-red-950/60 border border-red-900/60 text-[#FF3300] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  <span className="text-[10px] bg-[#6B1820]/12 border border-[#C9A96B]/70 text-[#6B1820] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
                     Curator Mode
                   </span>
                 </div>
@@ -1641,7 +1641,7 @@ export default function App() {
               <form onSubmit={handleLogMovie} className="space-y-5">
                 {/* 1. MEMBER NAME */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#6B1820] mb-1.5">
                     Member Name *
                   </label>
                   <input
@@ -1650,15 +1650,15 @@ export default function App() {
                     placeholder="Who watched it? (e.g., Ananya, Rahul)"
                     value={memberName}
                     onChange={(e) => setMemberName(e.target.value)}
-                    className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#FF3300]"
+                    className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                   />
                 </div>
 
                 {/* 2. IMDB LINK & FETCH BUTTON */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#FF3300] mb-1.5 flex items-center justify-between">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#6B1820] mb-1.5 flex items-center justify-between">
                     <span>IMDb Link or ID *</span>
-                    <span className="text-[10px] text-slate-400 lowercase font-normal">
+                    <span className="text-[10px] text-[#49382D]/80 lowercase font-normal">
                       e.g. https://www.imdb.com/title/tt0076786/
                     </span>
                   </label>
@@ -1674,13 +1674,13 @@ export default function App() {
                           handleScanMetadata();
                         }
                       }}
-                      className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#FF3300]"
+                      className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                     />
                     <button
                       type="button"
                       onClick={handleScanMetadata}
                       disabled={isScanning}
-                      className="px-4 py-3 bg-[#FF3300] hover:bg-orange-500 text-slate-950 text-xs font-black uppercase rounded-xl transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] shrink-0 flex items-center gap-1.5"
+                      className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] text-slate-950 text-xs font-black uppercase rounded-xl transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] shrink-0 flex items-center gap-1.5"
                     >
                       {isScanning ? 'Fetching...' : '⚡ Fetch & Points'}
                     </button>
@@ -1689,7 +1689,7 @@ export default function App() {
 
                 {/* 3. MOVIE TITLE */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#6B1820] mb-1.5">
                     Movie Title * (Auto-filled on fetch or type manually)
                   </label>
                   <div className="flex gap-2">
@@ -1705,14 +1705,14 @@ export default function App() {
                           handleScanMetadata();
                         }
                       }}
-                      className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#FF3300]"
+                      className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                     />
                     {!imdbLink.trim() && (
                       <button
                         type="button"
                         onClick={handleScanMetadata}
                         disabled={isScanning}
-                        className="px-4 py-3 bg-red-950 hover:bg-red-900 border border-red-800 text-[#FF3300] text-xs font-black uppercase rounded-xl transition-colors shrink-0"
+                        className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-[#6B1820] text-xs font-black uppercase rounded-xl transition-colors shrink-0"
                       >
                         {isScanning ? '...' : '🔍 Scan Title'}
                       </button>
@@ -1723,19 +1723,19 @@ export default function App() {
                 {/* 4. STREAMING PLATFORMS (STREAM ON) SELECTOR */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#FF6600]">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-[#C9A96B]">
                       Streaming Platforms (Stream On)
                     </label>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-[#49382D]/80">
                       Auto-detected on fetch • Tap to add/remove
                     </span>
                   </div>
 
-                  <div className="p-3.5 bg-slate-950 border border-red-950 rounded-xl space-y-3">
+                  <div className="p-3.5 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl space-y-3">
                     {/* Active Selected Badges */}
                     <div className="flex flex-wrap items-center gap-1.5 min-h-[28px]">
                       {scannedWatchProviders.length === 0 ? (
-                        <span className="text-xs text-slate-500 italic">
+                        <span className="text-xs text-[#49382D]/70 italic">
                           No streaming platform attached. Tap any service below or type to add:
                         </span>
                       ) : (
@@ -1748,13 +1748,13 @@ export default function App() {
                           return (
                             <span
                               key={idx}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#FF3300]/20 border border-[#FF3300] text-white shadow-sm"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#6B1820]/20 border border-[#6B1820] text-white shadow-sm"
                             >
                               <span>📺 {pName}</span>
                               <button
                                 type="button"
                                 onClick={() => toggleWatchProvider(pName)}
-                                className="text-red-400 hover:text-white font-black ml-1 text-xs"
+                                className="text-[#6B1820] hover:text-white font-black ml-1 text-xs"
                                 title="Remove"
                               >
                                 ✕
@@ -1766,7 +1766,7 @@ export default function App() {
                     </div>
 
                     {/* Quick-Toggle Buttons for Popular Indian OTTs */}
-                    <div className="pt-2 border-t border-red-950/60 flex flex-wrap gap-1.5 items-center">
+                    <div className="pt-2 border-t border-[#C9A96B]/60 flex flex-wrap gap-1.5 items-center">
                       {[
                         'Netflix',
                         'Amazon Prime Video',
@@ -1792,8 +1792,8 @@ export default function App() {
                             onClick={() => toggleWatchProvider(plat)}
                             className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all ${
                               isSelected
-                                ? 'bg-[#FF3300] text-slate-950 border-[#FF3300] shadow-[0_0_10px_rgba(255,51,0,0.35)]'
-                                : 'bg-red-950/30 text-slate-300 border-red-950 hover:border-red-900 hover:text-white'
+                                ? 'bg-[#6B1820] text-slate-950 border-[#6B1820] shadow-[0_0_10px_rgba(255,51,0,0.35)]'
+                                : 'bg-[#6B1820]/12 text-[#49382D] border-[#C9A96B]/60 hover:border-[#C9A96B] hover:text-white'
                             }`}
                           >
                             {isSelected ? `✓ ${plat}` : `+ ${plat}`}
@@ -1815,12 +1815,12 @@ export default function App() {
                             addCustomProvider(customProviderText);
                           }
                         }}
-                        className="w-full bg-slate-900/60 border border-red-950 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#FF3300]"
+                        className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#6B1820]"
                       />
                       <button
                         type="button"
                         onClick={() => addCustomProvider(customProviderText)}
-                        className="px-3 py-1.5 bg-red-950 hover:bg-red-900 border border-red-800 text-xs font-bold text-[#FF3300] rounded-lg shrink-0"
+                        className="px-3 py-1.5 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-xs font-bold text-[#6B1820] rounded-lg shrink-0"
                       >
                         + Add
                       </button>
@@ -1830,30 +1830,30 @@ export default function App() {
 
                 {/* Scanned Movie Feedback Card */}
                 {scannedMovieData && (
-                  <div className="bg-red-950/30 border border-red-900/80 rounded-xl p-3.5 flex flex-col gap-3">
+                  <div className="bg-[#6B1820]/12 border border-[#C9A96B]/70 rounded-xl p-3.5 flex flex-col gap-3">
                     <div className="flex gap-3.5 items-center">
                       <MoviePoster
                         src={scannedMovieData.poster}
                         title={scannedMovieData.title}
-                        className="w-14 h-20 object-cover rounded-lg border border-red-950 shrink-0 shadow"
+                        className="w-14 h-20 object-cover rounded-lg border border-[#C9A96B]/60 shrink-0 shadow"
                       />
                       <div className="min-w-0 text-xs">
                         <div className="font-black text-white truncate text-sm">
                           {scannedMovieData.title} ({scannedMovieData.year})
                         </div>
-                        <div className="text-red-400 font-semibold truncate mt-0.5">
+                        <div className="text-[#6B1820] font-semibold truncate mt-0.5">
                           {scannedMovieData.genre} {scannedMovieData.rating && `• ${scannedMovieData.rating}`} •{' '}
                           {scannedMovieData.votes} IMDb votes
                         </div>
-                        <div className="text-[10px] text-slate-300 mt-1 truncate">
+                        <div className="text-[10px] text-[#49382D] mt-1 truncate">
                           Dir: {scannedMovieData.director} • Origin: {scannedMovieData.country || 'N/A'}
                         </div>
                       </div>
                     </div>
 
                     {scannedWatchProviders && scannedWatchProviders.length > 0 && (
-                      <div className="border-t border-red-950/60 pt-2 flex flex-col sm:flex-row sm:items-center gap-1.5">
-                        <span className="text-[10px] font-bold text-red-500/80 uppercase tracking-widest shrink-0">
+                      <div className="border-t border-[#C9A96B]/60 pt-2 flex flex-col sm:flex-row sm:items-center gap-1.5">
+                        <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest shrink-0">
                           STREAM ON:
                         </span>
                         <div className="flex flex-wrap items-center gap-1.5">
@@ -1868,7 +1868,7 @@ export default function App() {
                             return (
                               <span
                                 key={idx}
-                                className="inline-flex items-center gap-1.5 h-6 bg-slate-950 border border-red-950 text-slate-200 text-[10px] font-bold px-2 rounded-lg shrink-0 select-none"
+                                className="inline-flex items-center gap-1.5 h-6 bg-[#E9DFC9] border border-[#C9A96B]/60 text-[#49382D] text-[10px] font-bold px-2 rounded-lg shrink-0 select-none"
                               >
                                 {providerLogo ? (
                                   <img
@@ -1890,18 +1890,18 @@ export default function App() {
                 )}
 
                 {/* Stackable Halloween Bounties Checkboxes */}
-                <div className="bg-red-950/20 border-2 border-red-900/60 rounded-xl p-4 space-y-3">
-                  <div className="flex items-center justify-between border-b border-red-950 pb-2">
+                <div className="bg-[#6B1820]/10 border-2 border-[#C9A96B]/70 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-2">
                     <span className="text-[11px] font-black uppercase tracking-wider text-white flex items-center gap-1.5">
                       <span>🎃</span> AUTOMATED HALLOWEEN BOUNTIES
                     </span>
-                    <span className="text-[10px] font-bold text-red-400/90">1 Base + 2 Each (+5 In Theatre)</span>
+                    <span className="text-[10px] font-bold text-[#6B1820]/90">1 Base + 2 Each (+5 In Theatre)</span>
                   </div>
 
                   <div className="space-y-2 pt-1">
                     <label
                       className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer select-none transition-all ${
-                        bonusClassic ? 'bg-red-950/40 border-[#FF3300]' : 'bg-slate-950/60 border-red-950 hover:border-red-900'
+                        bonusClassic ? 'bg-[#6B1820]/12 border-[#6B1820]' : 'bg-[#E9DFC9] border-[#C9A96B]/60 hover:border-[#C9A96B]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -1909,18 +1909,18 @@ export default function App() {
                           type="checkbox"
                           checked={bonusClassic}
                           onChange={(e) => setBonusClassic(e.target.checked)}
-                          className="w-4 h-4 accent-[#FF3300] rounded cursor-pointer"
+                          className="w-4 h-4 accent-[#6B1820] rounded cursor-pointer"
                         />
-                        <span className="text-xs font-bold text-slate-200">
+                        <span className="text-xs font-bold text-[#49382D]">
                           🎞️ Classic Cinema (Pre-1990s)
                         </span>
                       </div>
-                      <span className="text-[11px] font-black text-[#FF3300]">+2 POINTS</span>
+                      <span className="text-[11px] font-black text-[#6B1820]">+2 POINTS</span>
                     </label>
 
                     <label
                       className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer select-none transition-all ${
-                        bonusIndian ? 'bg-red-950/40 border-[#FF3300]' : 'bg-slate-950/60 border-red-950 hover:border-red-900'
+                        bonusIndian ? 'bg-[#6B1820]/12 border-[#6B1820]' : 'bg-[#E9DFC9] border-[#C9A96B]/60 hover:border-[#C9A96B]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -1928,18 +1928,18 @@ export default function App() {
                           type="checkbox"
                           checked={bonusIndian}
                           onChange={(e) => setBonusIndian(e.target.checked)}
-                          className="w-4 h-4 accent-[#FF3300] rounded cursor-pointer"
+                          className="w-4 h-4 accent-[#6B1820] rounded cursor-pointer"
                         />
-                        <span className="text-xs font-bold text-slate-200">
+                        <span className="text-xs font-bold text-[#49382D]">
                           🇮🇳 Indian Cinema (Any Indian Language)
                         </span>
                       </div>
-                      <span className="text-[11px] font-black text-[#FF3300]">+2 POINTS</span>
+                      <span className="text-[11px] font-black text-[#6B1820]">+2 POINTS</span>
                     </label>
 
                     <label
                       className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer select-none transition-all ${
-                        bonusForeign ? 'bg-red-950/40 border-[#FF3300]' : 'bg-slate-950/60 border-red-950 hover:border-red-900'
+                        bonusForeign ? 'bg-[#6B1820]/12 border-[#6B1820]' : 'bg-[#E9DFC9] border-[#C9A96B]/60 hover:border-[#C9A96B]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -1947,18 +1947,18 @@ export default function App() {
                           type="checkbox"
                           checked={bonusForeign}
                           onChange={(e) => setBonusForeign(e.target.checked)}
-                          className="w-4 h-4 accent-[#FF3300] rounded cursor-pointer"
+                          className="w-4 h-4 accent-[#6B1820] rounded cursor-pointer"
                         />
-                        <span className="text-xs font-bold text-slate-200">
+                        <span className="text-xs font-bold text-[#49382D]">
                           🌍 Foreign Cinema (Non-English & Non-Indian)
                         </span>
                       </div>
-                      <span className="text-[11px] font-black text-[#FF3300]">+2 POINTS</span>
+                      <span className="text-[11px] font-black text-[#6B1820]">+2 POINTS</span>
                     </label>
 
                     <label
                       className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer select-none transition-all ${
-                        bonusUnderrated ? 'bg-red-950/40 border-[#FF3300]' : 'bg-slate-950/60 border-red-950 hover:border-red-900'
+                        bonusUnderrated ? 'bg-[#6B1820]/12 border-[#6B1820]' : 'bg-[#E9DFC9] border-[#C9A96B]/60 hover:border-[#C9A96B]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -1966,18 +1966,18 @@ export default function App() {
                           type="checkbox"
                           checked={bonusUnderrated}
                           onChange={(e) => setBonusUnderrated(e.target.checked)}
-                          className="w-4 h-4 accent-[#FF3300] rounded cursor-pointer"
+                          className="w-4 h-4 accent-[#6B1820] rounded cursor-pointer"
                         />
-                        <span className="text-xs font-bold text-slate-200">
+                        <span className="text-xs font-bold text-[#49382D]">
                           💎 Underrated (&lt; 30,000 IMDb Votes)
                         </span>
                       </div>
-                      <span className="text-[11px] font-black text-[#FF3300]">+2 POINTS</span>
+                      <span className="text-[11px] font-black text-[#6B1820]">+2 POINTS</span>
                     </label>
 
                     <label
                       className={`flex items-center justify-between p-2.5 rounded-lg border cursor-pointer select-none transition-all ${
-                        bonusTheatre ? 'bg-red-950/40 border-[#FF3300]' : 'bg-slate-950/60 border-red-950 hover:border-red-900'
+                        bonusTheatre ? 'bg-[#6B1820]/12 border-[#6B1820]' : 'bg-[#E9DFC9] border-[#C9A96B]/60 hover:border-[#C9A96B]'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
@@ -1985,27 +1985,27 @@ export default function App() {
                           type="checkbox"
                           checked={bonusTheatre}
                           onChange={(e) => setBonusTheatre(e.target.checked)}
-                          className="w-4 h-4 accent-[#FF3300] rounded cursor-pointer"
+                          className="w-4 h-4 accent-[#6B1820] rounded cursor-pointer"
                         />
-                        <span className="text-xs font-bold text-slate-200">
+                        <span className="text-xs font-bold text-[#49382D]">
                           🎟️ Watched in Theatre (Big Screen Experience)
                         </span>
                       </div>
-                      <span className="text-[11px] font-black text-[#FF3300]">+5 POINTS</span>
+                      <span className="text-[11px] font-black text-[#6B1820]">+5 POINTS</span>
                     </label>
                   </div>
 
                   {/* Live Points Tally Summary */}
-                  <div className="mt-3 p-3 rounded-xl bg-[#FF3300]/15 border border-[#FF3300] flex items-center justify-between shadow-[0_0_15px_rgba(255,51,0,0.2)]">
+                  <div className="mt-3 p-3 rounded-xl bg-[#6B1820]/15 border border-[#6B1820] flex items-center justify-between shadow-[0_0_15px_rgba(255,51,0,0.2)]">
                     <div>
-                      <span className="text-[10px] font-black uppercase tracking-wider text-red-300 block">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-[#6B1820] block">
                         Total Awarded for this Entry:
                       </span>
-                      <span className="text-[11px] text-slate-300 font-semibold">
+                      <span className="text-[11px] text-[#49382D] font-semibold">
                         1 Base + {calculatedPoints - 1} Bonus Points
                       </span>
                     </div>
-                    <span className="text-xl font-black text-[#FF3300] drop-shadow-[0_0_8px_#FF3300]">
+                    <span className="text-xl font-black text-[#6B1820] drop-shadow-[0_0_8px_#6B1820]">
                       {calculatedPoints} POINTS
                     </span>
                   </div>
@@ -2013,7 +2013,7 @@ export default function App() {
 
                 {/* 5. MEMBER REVIEW / THOUGHTS */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#6B1820] mb-1.5">
                     Spooky Review / Thoughts (Optional)
                   </label>
                   <textarea
@@ -2021,13 +2021,13 @@ export default function App() {
                     placeholder="Short creepy review or member thoughts..."
                     value={memberReview}
                     onChange={(e) => setMemberReview(e.target.value)}
-                    className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#FF3300]"
+                    className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                   />
                 </div>
 
                 {/* 6. CUSTOM POSTER IMAGE URL */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-widest text-[#49382D]/80 mb-1.5">
                     Custom Poster Image URL (Optional override)
                   </label>
                   <input
@@ -2035,7 +2035,7 @@ export default function App() {
                     placeholder="Paste direct .jpg/.png image URL here if auto-fetch is blank..."
                     value={customPosterUrl}
                     onChange={(e) => setCustomPosterUrl(e.target.value)}
-                    className="w-full bg-slate-950 border border-red-950 rounded-xl px-4 py-3 text-sm text-slate-100 focus:outline-none focus:border-[#FF3300]"
+                    className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                   />
                 </div>
 
@@ -2043,7 +2043,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={isPublishing}
-                  className="w-full bg-[#FF3300] hover:bg-orange-500 disabled:opacity-50 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(255,51,0,0.4)] flex items-center justify-center gap-2"
+                  className="w-full bg-[#6B1820] hover:bg-[#49382D] disabled:opacity-50 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(255,51,0,0.4)] flex items-center justify-center gap-2"
                 >
                   {isPublishing ? (
                     <span>⏳ Publishing Horror Entry...</span>
@@ -2059,18 +2059,18 @@ export default function App() {
 
       {/* MEMBER HORROR DIARY MODAL */}
       {selectedUser && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#0b0204] border-2 border-[#FF3300] rounded-2xl max-w-2xl w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.35)] relative max-h-[90vh] overflow-y-auto flex flex-col space-y-6">
-            <div className="flex items-center justify-between border-b border-red-950 pb-4">
+        <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-2xl w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.35)] relative max-h-[90vh] overflow-y-auto flex flex-col space-y-6">
+            <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-4">
               <div className="flex items-center gap-3.5">
                 <img
                   src={getMemberAvatar(selectedUser)}
                   alt={selectedUser}
-                  className="w-12 h-12 rounded-full bg-slate-950 border-2 border-[#FF3300] p-0.5 object-cover"
+                  className="w-12 h-12 rounded-full bg-[#E9DFC9] border-2 border-[#6B1820] p-0.5 object-cover"
                 />
                 <div>
                   <h3 className="text-xl font-black text-white">{selectedUser}</h3>
-                  <p className="text-xs text-[#FF3300] font-bold">
+                  <p className="text-xs text-[#6B1820] font-bold">
                     {memberStats[selectedUser]?.points || 0} Total Points • {selectedMemberLogs.length} Horror Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </p>
@@ -2081,14 +2081,14 @@ export default function App() {
                 <button
                   onClick={handleDownloadMemberImage}
                   disabled={isMemberExporting || selectedMemberLogs.length === 0}
-                  className="text-xs font-black tracking-wider uppercase bg-[#FF3300] hover:bg-orange-500 text-slate-950 px-3.5 py-2 rounded-xl transition-all shadow-md disabled:opacity-50 flex items-center gap-1.5"
+                  className="text-xs font-black tracking-wider uppercase bg-[#6B1820] hover:bg-[#49382D] text-slate-950 px-3.5 py-2 rounded-xl transition-all shadow-md disabled:opacity-50 flex items-center gap-1.5"
                 >
                   <span>📸</span>
                   <span>{isMemberExporting ? 'Generating...' : 'Export Story Badge'}</span>
                 </button>
                 <button
                   onClick={() => setSelectedUser(null)}
-                  className="text-slate-400 hover:text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-lg bg-red-950/30 border border-red-950"
+                  className="text-[#49382D]/80 hover:text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-lg bg-[#6B1820]/12 border border-[#C9A96B]/60"
                 >
                   ✕
                 </button>
@@ -2117,14 +2117,14 @@ export default function App() {
             })()}
 
             <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-red-400">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#6B1820]">
                 Horror Entries ({selectedMemberLogs.length})
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
                 {selectedMemberLogs.map((log, idx) => (
                   <div
                     key={`${log.movie}-${idx}`}
-                    className="bg-slate-950/80 border border-red-950/80 rounded-xl p-2.5 flex flex-col justify-between"
+                    className="bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-xl p-2.5 flex flex-col justify-between"
                   >
                     <MoviePoster
                       src={log.poster}
@@ -2133,9 +2133,9 @@ export default function App() {
                     />
                     <div className="min-w-0">
                       <div className="text-xs font-bold text-white truncate">{log.movie}</div>
-                      <div className="text-[10px] text-[#FF3300] font-semibold flex items-center justify-between mt-1">
+                      <div className="text-[10px] text-[#6B1820] font-semibold flex items-center justify-between mt-1">
                         <span>{log.rating || '★ —'}</span>
-                        <span className="text-slate-400">+{log.points || 1} pts</span>
+                        <span className="text-[#49382D]/80">+{log.points || 1} pts</span>
                       </div>
                     </div>
                   </div>
@@ -2154,7 +2154,7 @@ export default function App() {
             style={{
               width: '1080px',
               height: '1920px',
-              backgroundColor: '#040507',
+              backgroundColor: '#14251F',
               backgroundImage: `
                 linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2164,8 +2164,8 @@ export default function App() {
               padding: '60px 60px 40px 60px',
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
               boxSizing: 'border-box',
-              border: '12px solid #FF3300',
-              boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+              border: '12px solid #6B1820',
+              boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
               borderRadius: '0px',
               display: 'flex',
               flexDirection: 'column',
@@ -2185,7 +2185,7 @@ export default function App() {
                   textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 50px rgba(255, 51, 0, 0.85)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 50px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -2198,7 +2198,7 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
               </div>
             </div>
 
@@ -2207,8 +2207,8 @@ export default function App() {
                 height: '130px',
                 marginTop: '10px',
                 marginBottom: '20px',
-                backgroundColor: '#120406',
-                border: '3px solid #FF3300',
+                backgroundColor: '#14251F',
+                border: '3px solid #6B1820',
                 borderRadius: '0px',
                 padding: '0 28px',
                 display: 'flex',
@@ -2227,7 +2227,7 @@ export default function App() {
                     height: '76px',
                     borderRadius: '50%',
                     backgroundColor: '#000000',
-                    border: '3px solid #FF3300',
+                    border: '3px solid #6B1820',
                     padding: '3px',
                     objectFit: 'cover',
                   }}
@@ -2236,7 +2236,7 @@ export default function App() {
                   <div style={{ fontSize: '40px', fontWeight: '900', color: '#ffffff', lineHeight: '1.1', letterSpacing: '-0.5px' }}>
                     {selectedUser}
                   </div>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#FF3300', marginTop: '6px' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#6B1820', marginTop: '6px' }}>
                     {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Horror Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </div>
@@ -2252,8 +2252,8 @@ export default function App() {
                     {isChamp && (
                       <div style={{ width: '175px', height: '52px', position: 'relative' }}>
                         <svg width="175" height="52" viewBox="0 0 175 52">
-                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#FF3300" strokeWidth="2.5" />
-                          <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#FF3300" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
+                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
+                          <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
                             👑 CHAMPION
                           </text>
                         </svg>
@@ -2287,8 +2287,8 @@ export default function App() {
                 <div
                   key={`${log.movie}-${idx}`}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: '2px solid #2a080c',
+                    backgroundColor: '#14251F',
+                    border: '2px solid #49382D',
                     borderRadius: '14px',
                     padding: '16px',
                     textAlign: 'center',
@@ -2320,7 +2320,7 @@ export default function App() {
                   >
                     {log.movie}
                   </div>
-                  <div style={{ fontSize: '16px', color: '#FF3300', fontWeight: '900', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '16px', color: '#6B1820', fontWeight: '900', display: 'flex', justifyContent: 'center' }}>
                     <span>{log.rating || '★ —'}</span>
                   </div>
                 </div>
@@ -2331,7 +2331,7 @@ export default function App() {
               style={{
                 height: '100px',
                 marginTop: '10px',
-                borderTop: '3px solid rgba(255, 51, 0, 0.3)',
+                borderTop: '3px solid rgba(107, 24, 32, 0.16)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -2339,9 +2339,9 @@ export default function App() {
                 fontSize: '28px',
                 fontWeight: '800',
                 fontFamily: 'monospace',
-                color: '#FF3300',
+                color: '#6B1820',
                 letterSpacing: '3px',
-                textShadow: '0 0 14px rgba(255, 51, 0, 0.6)',
+                textShadow: '0 0 14px rgba(107, 24, 32, 0.24)',
               }}
             >
               STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
@@ -2358,7 +2358,7 @@ export default function App() {
             style={{
               width: '1080px',
               height: '1920px',
-              backgroundColor: '#040507',
+              backgroundColor: '#14251F',
               backgroundImage: `
                 linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2368,8 +2368,8 @@ export default function App() {
               padding: '60px 60px 40px 60px',
               fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
               boxSizing: 'border-box',
-              border: '12px solid #FF3300',
-              boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+              border: '12px solid #6B1820',
+              boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
               borderRadius: '0px',
               display: 'flex',
               flexDirection: 'column',
@@ -2389,7 +2389,7 @@ export default function App() {
                   textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 50px rgba(255, 51, 0, 0.85)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 50px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -2402,7 +2402,7 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
               </div>
             </div>
 
@@ -2411,8 +2411,8 @@ export default function App() {
                 height: '130px',
                 marginTop: '10px',
                 marginBottom: '20px',
-                backgroundColor: '#120406',
-                border: '3px solid #FF3300',
+                backgroundColor: '#14251F',
+                border: '3px solid #6B1820',
                 borderRadius: '0px',
                 padding: '0 28px',
                 display: 'flex',
@@ -2431,7 +2431,7 @@ export default function App() {
                     height: '76px',
                     borderRadius: '50%',
                     backgroundColor: '#000000',
-                    border: '3px solid #FF3300',
+                    border: '3px solid #6B1820',
                     padding: '3px',
                     objectFit: 'cover',
                   }}
@@ -2440,7 +2440,7 @@ export default function App() {
                   <div style={{ fontSize: '40px', fontWeight: '900', color: '#ffffff', lineHeight: '1.1', letterSpacing: '-0.5px' }}>
                     {selectedUser}
                   </div>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#FF3300', marginTop: '6px' }}>
+                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#6B1820', marginTop: '6px' }}>
                     {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Horror Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </div>
@@ -2456,8 +2456,8 @@ export default function App() {
                     {isChamp && (
                       <div style={{ width: '175px', height: '52px', position: 'relative' }}>
                         <svg width="175" height="52" viewBox="0 0 175 52">
-                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#FF3300" strokeWidth="2.5" />
-                          <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#FF3300" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
+                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
+                          <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
                             👑 CHAMPION
                           </text>
                         </svg>
@@ -2491,8 +2491,8 @@ export default function App() {
                 <div
                   key={`${log.movie}-${idx + 9}`}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: '2px solid #2a080c',
+                    backgroundColor: '#14251F',
+                    border: '2px solid #49382D',
                     borderRadius: '14px',
                     padding: '16px',
                     textAlign: 'center',
@@ -2524,7 +2524,7 @@ export default function App() {
                   >
                     {log.movie}
                   </div>
-                  <div style={{ fontSize: '16px', color: '#FF3300', fontWeight: '900', display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ fontSize: '16px', color: '#6B1820', fontWeight: '900', display: 'flex', justifyContent: 'center' }}>
                     <span>{log.rating || '★ —'}</span>
                   </div>
                 </div>
@@ -2535,7 +2535,7 @@ export default function App() {
               style={{
                 height: '100px',
                 marginTop: '10px',
-                borderTop: '3px solid rgba(255, 51, 0, 0.3)',
+                borderTop: '3px solid rgba(107, 24, 32, 0.16)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -2543,9 +2543,9 @@ export default function App() {
                 fontSize: '28px',
                 fontWeight: '800',
                 fontFamily: 'monospace',
-                color: '#FF3300',
+                color: '#6B1820',
                 letterSpacing: '3px',
-                textShadow: '0 0 14px rgba(255, 51, 0, 0.6)',
+                textShadow: '0 0 14px rgba(107, 24, 32, 0.24)',
               }}
             >
               STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
@@ -2561,7 +2561,7 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#040507',
+            backgroundColor: '#14251F',
             backgroundImage: `
               linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2571,8 +2571,8 @@ export default function App() {
             padding: '90px 70px 60px 70px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF3300',
-            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            border: '12px solid #6B1820',
+            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
             borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
@@ -2594,7 +2594,7 @@ export default function App() {
                   textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -2607,7 +2607,7 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
               </div>
             </div>
 
@@ -2615,12 +2615,12 @@ export default function App() {
             <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                  <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
                   <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                     LEADERBOARD
                   </div>
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+                <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
                   Ranked by Points
                 </div>
               </div>
@@ -2632,9 +2632,9 @@ export default function App() {
                 <div
                   key={member.name}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: idx === 0 ? '3px solid #FF3300' : '2px solid #2a080c',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 51, 0, 0.35)' : 'none',
+                    backgroundColor: '#14251F',
+                    border: idx === 0 ? '3px solid #6B1820' : '2px solid #49382D',
+                    boxShadow: idx === 0 ? '0 0 25px rgba(107, 24, 32, 0.18)' : 'none',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -2645,7 +2645,7 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF3300' : idx === 1 ? '#FF6600' : idx === 2 ? '#cd7f32' : '#2a080c'} />
+                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#6B1820' : idx === 1 ? '#C9A96B' : idx === 2 ? '#cd7f32' : '#49382D'} />
                         <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 1}
                         </text>
@@ -2660,7 +2660,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF3300',
+                        border: '2px solid #6B1820',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -2676,10 +2676,10 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
                       {member.points} POINTS
                     </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
                       {member.count} Film{member.count > 1 ? 's' : ''}
                     </div>
                   </div>
@@ -2688,7 +2688,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -2701,7 +2701,7 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#040507',
+            backgroundColor: '#14251F',
             backgroundImage: `
               linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2711,8 +2711,8 @@ export default function App() {
             padding: '90px 70px 60px 70px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF3300',
-            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            border: '12px solid #6B1820',
+            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
             borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
@@ -2734,7 +2734,7 @@ export default function App() {
                   textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -2747,18 +2747,18 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
               </div>
             </div>
 
             <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
                 <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
                 Ranked by Points (Ranks 11-20)
               </div>
             </div>
@@ -2768,8 +2768,8 @@ export default function App() {
                 <div
                   key={member.name}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: '2px solid #2a080c',
+                    backgroundColor: '#14251F',
+                    border: '2px solid #49382D',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -2780,8 +2780,8 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill="#2a080c" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff4d4d" fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                        <rect width="64" height="64" rx="12" fill="#49382D" />
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 11}
                         </text>
                       </svg>
@@ -2795,7 +2795,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF3300',
+                        border: '2px solid #6B1820',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -2810,10 +2810,10 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
                       {member.points} POINTS
                     </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
                       {member.count} Film{member.count > 1 ? 's' : ''}
                     </div>
                   </div>
@@ -2822,7 +2822,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -2835,7 +2835,7 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#040507',
+            backgroundColor: '#14251F',
             backgroundImage: `
               linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2845,8 +2845,8 @@ export default function App() {
             padding: '90px 70px 60px 70px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF3300',
-            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            border: '12px solid #6B1820',
+            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
             borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
@@ -2868,7 +2868,7 @@ export default function App() {
                   textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -2881,18 +2881,18 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
               </div>
             </div>
 
             <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
                 <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
                 Ranked by Films
               </div>
             </div>
@@ -2902,9 +2902,9 @@ export default function App() {
                 <div
                   key={member.name}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: idx === 0 ? '3px solid #FF3300' : '2px solid #2a080c',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(255, 51, 0, 0.35)' : 'none',
+                    backgroundColor: '#14251F',
+                    border: idx === 0 ? '3px solid #6B1820' : '2px solid #49382D',
+                    boxShadow: idx === 0 ? '0 0 25px rgba(107, 24, 32, 0.18)' : 'none',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -2915,7 +2915,7 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#FF3300' : idx === 1 ? '#FF6600' : idx === 2 ? '#cd7f32' : '#2a080c'} />
+                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#6B1820' : idx === 1 ? '#C9A96B' : idx === 2 ? '#cd7f32' : '#49382D'} />
                         <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 1}
                         </text>
@@ -2930,7 +2930,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF3300',
+                        border: '2px solid #6B1820',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -2946,10 +2946,10 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
                       {member.count} FILM{member.count > 1 ? 'S' : ''}
                     </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
                       {member.points} Points
                     </div>
                   </div>
@@ -2958,7 +2958,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
@@ -2971,7 +2971,7 @@ export default function App() {
           style={{
             width: '1080px',
             height: '1920px',
-            backgroundColor: '#040507',
+            backgroundColor: '#14251F',
             backgroundImage: `
               linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
               linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
@@ -2981,8 +2981,8 @@ export default function App() {
             padding: '90px 70px 60px 70px',
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
             boxSizing: 'border-box',
-            border: '12px solid #FF3300',
-            boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
+            border: '12px solid #6B1820',
+            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
             borderRadius: '0px',
             display: 'flex',
             flexDirection: 'column',
@@ -3004,7 +3004,7 @@ export default function App() {
                   textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
                 }}
               >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 55px rgba(255, 51, 0, 0.9)' }}>MOVIE</span> CLUB
+                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
               </div>
               <div
                 style={{
@@ -3017,18 +3017,18 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
+                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
               </div>
             </div>
 
             <div style={{ marginBottom: '28px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#FF3300', boxShadow: '0 0 14px #FF3300' }} />
+                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
                 <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
                   LEADERBOARD
                 </div>
               </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#FF6600', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
+              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
                 Ranked by Films (Ranks 11-20)
               </div>
             </div>
@@ -3038,8 +3038,8 @@ export default function App() {
                 <div
                   key={member.name}
                   style={{
-                    backgroundColor: '#0f0305',
-                    border: '2px solid #2a080c',
+                    backgroundColor: '#14251F',
+                    border: '2px solid #49382D',
                     borderRadius: '14px',
                     padding: '18px 28px',
                     display: 'flex',
@@ -3050,8 +3050,8 @@ export default function App() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
                     <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
                       <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill="#2a080c" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#ff4d4d" fontSize="28" fontWeight="900" fontFamily="sans-serif">
+                        <rect width="64" height="64" rx="12" fill="#49382D" />
+                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="28" fontWeight="900" fontFamily="sans-serif">
                           {idx + 11}
                         </text>
                       </svg>
@@ -3065,7 +3065,7 @@ export default function App() {
                         height: '58px',
                         borderRadius: '50%',
                         backgroundColor: '#000000',
-                        border: '2px solid #FF3300',
+                        border: '2px solid #6B1820',
                         padding: '2px',
                         objectFit: 'cover',
                         flexShrink: 0,
@@ -3080,10 +3080,10 @@ export default function App() {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#FF3300' }}>
+                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
                       {member.count} FILM{member.count > 1 ? 'S' : ''}
                     </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#94a3b8', marginTop: '2px' }}>
+                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
                       {member.points} Points
                     </div>
                   </div>
@@ -3092,7 +3092,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(255, 51, 0, 0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#FF3300', letterSpacing: '3px', textShadow: '0 0 14px rgba(255, 51, 0, 0.6)' }}>
+          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
             STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
           </div>
         </div>
