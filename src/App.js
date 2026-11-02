@@ -205,7 +205,7 @@ export const HALLOWEEN_TIERS = {
   ELDER_GOD: { label: 'ELDER GOD', icon: '👁️', min: 20, color: '#C9A96B', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
   IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
   UNDEAD: { label: 'UNDEAD', icon: '🧟', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
-  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(255, 102, 0, 0.2)' },
+  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
   MORTAL: { label: 'MORTAL', icon: '🕯️', min: 0, color: '#49382D', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
@@ -1105,7 +1105,7 @@ export default function App() {
       {/* SPOOKY CONFIRMATION DIALOG MODAL */}
       {confirmDialog && (
         <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.3)] text-center">
+          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(107, 24, 32,0.3)] text-center">
             <div className="text-3xl mb-2">💀</div>
             <h3 className="text-lg font-black text-white">{confirmDialog.title}</h3>
             <p className="text-xs text-[#49382D]/80 mt-2 mb-6">{confirmDialog.message}</p>
@@ -1135,11 +1135,11 @@ export default function App() {
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
             <span className="text-white">CUBBON</span>
-            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(255,51,0,0.8)]">MOVIE</span>
+            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(107, 24, 32,0.8)]">MOVIE</span>
             <span className="text-white">CLUB</span>
           </div>
 
-          <div className="w-12 h-12 rounded-xl bg-[#6B1820]/10 border border-[#C9A96B]/70 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(255,51,0,0.2)]">
+          <div className="w-12 h-12 rounded-xl bg-[#6B1820]/10 border border-[#C9A96B]/70 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(107, 24, 32,0.2)]">
             <svg viewBox="0 0 100 100" className="w-full h-full fill-[#6B1820]">
               <path d="M50 15c-3 0-5 2-5 5v5c-15 1-28 12-30 27-2 15 6 28 20 33v-5c0-2 2-4 4-4s4 2 4 4v5c2 0 5 0 7 0s5 0 7 0v-5c0-2 2-4 4-4s4 2 4 4v5c14-5 22-18 20-33-2-15-15-26-30-27v-5c0-3-2-5-5-5zM35 48c3 0 5 3 5 6s-2 6-5 6-6-3-6-6 3-6 6-6zm30 0c3 0 6 3 6 6s-3 6-6 6-5-3-5-6 2-6 5-6zm-23 24l4-8 4 8 4-8 4 8 4-8 4 8h-24z" />
             </svg>
@@ -1210,7 +1210,7 @@ export default function App() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(255,51,0,0.6)]">FRIGHT NIGHTS</span>
+                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(107, 24, 32,0.6)]">FRIGHT NIGHTS</span>
                 <span className="text-white">OCTOBER 💀</span>
               </div>
               <p
@@ -1244,7 +1244,7 @@ export default function App() {
                           onClick={() => setLeaderboardSort('points')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'points'
-                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
+                              ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
                               : 'text-[#6B1820]/80 hover:text-white'
                           }`}
                         >
@@ -1255,7 +1255,7 @@ export default function App() {
                           onClick={() => setLeaderboardSort('films')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'films'
-                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(255,51,0,0.5)]'
+                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(107, 24, 32,0.5)]'
                               : 'text-[#6B1820]/80 hover:text-white'
                           }`}
                         >
@@ -1269,7 +1269,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('points')}
                           disabled={isExporting || leaderboardByPoints.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#C9A96B] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(255,51,0,0.15)]"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#C9A96B] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(107, 24, 32,0.15)]"
                         >
                           <span>🔥</span>
                           <span>{isExporting && exportType === 'points' ? 'Exporting...' : 'Story: Points'}</span>
@@ -1287,11 +1287,11 @@ export default function App() {
                   </div>
 
                   {leaderboard.length === 0 ? (
-                    <div className="text-sm text-[#49382D]/70 bg-[#6B1820]/8 border border-[#C9A96B]/60 p-8 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-8 rounded-xl text-center">
                       The Halloween crypt is silent. Unlock the Admin gate to log October horror films!
                     </div>
                   ) : (
-                    <div className="bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-2xl divide-y divide-red-950/60 overflow-hidden backdrop-blur-sm shadow-xl">
+                    <div className="bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-2xl divide-y divide-[#C9A96B]/50 overflow-hidden shadow-xl">
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
@@ -1301,7 +1301,7 @@ export default function App() {
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0
-                                  ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_#6B1820]'
+                                  ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
                                   : 'bg-[#6B1820]/12 text-[#6B1820] border border-[#C9A96B]/40'
                               }`}
                             >
@@ -1332,7 +1332,7 @@ export default function App() {
                                 >
                                   {member.points} points
                                 </span>
-                                <span className="text-slate-600 font-normal select-none">•</span>
+                                <span className="text-[#49382D]/50 font-normal select-none">•</span>
                                 <span
                                   className={
                                     leaderboardSort === 'films'
@@ -1374,8 +1374,8 @@ export default function App() {
                         onClick={() => setSortByRating(!sortByRating)}
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
-                            ? 'bg-[#6B1820] text-slate-950 border-[#6B1820]'
-                            : 'bg-[#E9DFC9] text-[#6B1820] border-[#C9A96B]/60 hover:text-white hover:border-[#C9A96B]'
+                            ? 'bg-[#6B1820] text-[#E9DFC9] border-[#6B1820]'
+                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
                         }`}
                       >
                         <span>★</span>
@@ -1390,7 +1390,7 @@ export default function App() {
                         >
                           <option value="">Filter Member</option>
                           {uniqueMembers.map((name) => (
-                            <option key={name} value={name} className="bg-[#E9DFC9] text-white">
+                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#49382D]">
                               {name}
                             </option>
                           ))}
@@ -1403,11 +1403,11 @@ export default function App() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-[#49382D]/70 bg-[#6B1820]/8 border border-[#C9A96B]/60 p-6 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
-                    <div className="divide-y divide-red-950/60 space-y-12">
+                    <div className="divide-y divide-[#C9A96B]/50 space-y-12">
                       {processedLogs.map((log) => (
                         <div
                           key={`${log.name}-${log.movie}-${Math.random()}`}
@@ -1596,7 +1596,7 @@ export default function App() {
         {/* CURATOR PASSKEY LOGIN GATE */}
         {currentPage === 'login' && (
           <div className="max-w-md mx-auto mt-16 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
-            <h2 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-lg font-black text-[#49382D] tracking-tight flex items-center gap-2">
               <span>🎃</span> Admin Login
             </h2>
             <p className="text-xs text-[#6B1820]/80 mt-1">Enter passkey to unlock admin portal.</p>
@@ -1606,12 +1606,12 @@ export default function App() {
                 placeholder="Enter Passkey"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
-                className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#6B1820]"
+                className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-2.5 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
               />
               {authError && <p className="text-xs text-rose-500 font-semibold mt-1.5">❌ Incorrect passkey.</p>}
               <button
                 type="submit"
-                className="w-full bg-[#6B1820] hover:bg-[#49382D] text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(255,51,0,0.3)]"
+                className="w-full bg-[#6B1820] hover:bg-[#49382D] text-[#E9DFC9] font-bold py-2.5 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-[0_0_15px_rgba(107, 24, 32,0.3)]"
               >
                 Unlock Admin Panel
               </button>
@@ -1624,7 +1624,7 @@ export default function App() {
             <div className="max-w-xl mx-auto bg-[#E9DFC9]/90 border border-[#C9A96B]/60 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
               <div className="border-b border-[#C9A96B]/60 pb-3 mb-6 flex justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-black text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-xl font-black text-[#49382D] tracking-tight flex items-center gap-2">
                     <span>💀</span> October Admin Panel
                   </h2>
                   <p className="text-xs text-[#6B1820]/80 mt-0.5">
@@ -1680,7 +1680,7 @@ export default function App() {
                       type="button"
                       onClick={handleScanMetadata}
                       disabled={isScanning}
-                      className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] text-slate-950 text-xs font-black uppercase rounded-xl transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] shrink-0 flex items-center gap-1.5"
+                      className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] text-[#E9DFC9] text-xs font-black uppercase rounded-xl transition-all shadow-[0_0_15px_rgba(107, 24, 32,0.3)] shrink-0 flex items-center gap-1.5"
                     >
                       {isScanning ? 'Fetching...' : '⚡ Fetch & Points'}
                     </button>
@@ -1748,13 +1748,13 @@ export default function App() {
                           return (
                             <span
                               key={idx}
-                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#6B1820]/20 border border-[#6B1820] text-white shadow-sm"
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-[#6B1820]/20 border border-[#6B1820] text-[#49382D] shadow-sm"
                             >
                               <span>📺 {pName}</span>
                               <button
                                 type="button"
                                 onClick={() => toggleWatchProvider(pName)}
-                                className="text-[#6B1820] hover:text-white font-black ml-1 text-xs"
+                                className="text-[#6B1820] hover:text-[#49382D] font-black ml-1 text-xs"
                                 title="Remove"
                               >
                                 ✕
@@ -1792,8 +1792,8 @@ export default function App() {
                             onClick={() => toggleWatchProvider(plat)}
                             className={`text-[11px] font-bold px-2.5 py-1 rounded-lg border transition-all ${
                               isSelected
-                                ? 'bg-[#6B1820] text-slate-950 border-[#6B1820] shadow-[0_0_10px_rgba(255,51,0,0.35)]'
-                                : 'bg-[#6B1820]/12 text-[#49382D] border-[#C9A96B]/60 hover:border-[#C9A96B] hover:text-white'
+                                ? 'bg-[#6B1820] text-[#E9DFC9] border-[#6B1820] shadow-[0_0_10px_rgba(107, 24, 32,0.35)]'
+                                : 'bg-[#6B1820]/12 text-[#49382D] border-[#C9A96B]/60 hover:border-[#C9A96B] hover:text-[#49382D]'
                             }`}
                           >
                             {isSelected ? `✓ ${plat}` : `+ ${plat}`}
@@ -1815,7 +1815,7 @@ export default function App() {
                             addCustomProvider(customProviderText);
                           }
                         }}
-                        className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#6B1820]"
+                        className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-lg px-3 py-1.5 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820]"
                       />
                       <button
                         type="button"
@@ -1838,7 +1838,7 @@ export default function App() {
                         className="w-14 h-20 object-cover rounded-lg border border-[#C9A96B]/60 shrink-0 shadow"
                       />
                       <div className="min-w-0 text-xs">
-                        <div className="font-black text-white truncate text-sm">
+                        <div className="font-black text-[#49382D] truncate text-sm">
                           {scannedMovieData.title} ({scannedMovieData.year})
                         </div>
                         <div className="text-[#6B1820] font-semibold truncate mt-0.5">
@@ -1892,7 +1892,7 @@ export default function App() {
                 {/* Stackable Halloween Bounties Checkboxes */}
                 <div className="bg-[#6B1820]/10 border-2 border-[#C9A96B]/70 rounded-xl p-4 space-y-3">
                   <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-2">
-                    <span className="text-[11px] font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-[#49382D] flex items-center gap-1.5">
                       <span>🎃</span> AUTOMATED HALLOWEEN BOUNTIES
                     </span>
                     <span className="text-[10px] font-bold text-[#6B1820]/90">1 Base + 2 Each (+5 In Theatre)</span>
@@ -1996,7 +1996,7 @@ export default function App() {
                   </div>
 
                   {/* Live Points Tally Summary */}
-                  <div className="mt-3 p-3 rounded-xl bg-[#6B1820]/15 border border-[#6B1820] flex items-center justify-between shadow-[0_0_15px_rgba(255,51,0,0.2)]">
+                  <div className="mt-3 p-3 rounded-xl bg-[#6B1820]/15 border border-[#6B1820] flex items-center justify-between shadow-[0_0_15px_rgba(107, 24, 32,0.2)]">
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-wider text-[#6B1820] block">
                         Total Awarded for this Entry:
@@ -2043,7 +2043,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={isPublishing}
-                  className="w-full bg-[#6B1820] hover:bg-[#49382D] disabled:opacity-50 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(255,51,0,0.4)] flex items-center justify-center gap-2"
+                  className="w-full bg-[#6B1820] hover:bg-[#49382D] disabled:opacity-50 text-[#E9DFC9] font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(107, 24, 32,0.4)] flex items-center justify-center gap-2"
                 >
                   {isPublishing ? (
                     <span>⏳ Publishing Horror Entry...</span>
@@ -2060,7 +2060,7 @@ export default function App() {
       {/* MEMBER HORROR DIARY MODAL */}
       {selectedUser && (
         <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-2xl w-full p-6 shadow-[0_0_35px_rgba(255,51,0,0.35)] relative max-h-[90vh] overflow-y-auto flex flex-col space-y-6">
+          <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-2xl w-full p-6 shadow-[0_0_35px_rgba(107, 24, 32,0.35)] relative max-h-[90vh] overflow-y-auto flex flex-col space-y-6">
             <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-4">
               <div className="flex items-center gap-3.5">
                 <img
@@ -2156,8 +2156,8 @@ export default function App() {
               height: '1920px',
               backgroundColor: '#14251F',
               backgroundImage: `
-                linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+                linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
               `,
               backgroundSize: '28px 28px',
               color: '#ffffff',
@@ -2215,7 +2215,7 @@ export default function App() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 boxSizing: 'border-box',
-                boxShadow: '0 0 25px rgba(255, 51, 0, 0.25)',
+                boxShadow: '0 0 25px rgba(107, 24, 32, 0.25)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
@@ -2252,7 +2252,7 @@ export default function App() {
                     {isChamp && (
                       <div style={{ width: '175px', height: '52px', position: 'relative' }}>
                         <svg width="175" height="52" viewBox="0 0 175 52">
-                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
+                          <rect width="175" height="52" rx="26" fill="rgba(107, 24, 32, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
                           <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
                             👑 CHAMPION
                           </text>
@@ -2360,8 +2360,8 @@ export default function App() {
               height: '1920px',
               backgroundColor: '#14251F',
               backgroundImage: `
-                linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+                linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
               `,
               backgroundSize: '28px 28px',
               color: '#ffffff',
@@ -2419,7 +2419,7 @@ export default function App() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 boxSizing: 'border-box',
-                boxShadow: '0 0 25px rgba(255, 51, 0, 0.25)',
+                boxShadow: '0 0 25px rgba(107, 24, 32, 0.25)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
@@ -2456,7 +2456,7 @@ export default function App() {
                     {isChamp && (
                       <div style={{ width: '175px', height: '52px', position: 'relative' }}>
                         <svg width="175" height="52" viewBox="0 0 175 52">
-                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
+                          <rect width="175" height="52" rx="26" fill="rgba(107, 24, 32, 0.25)" stroke="#6B1820" strokeWidth="2.5" />
                           <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
                             👑 CHAMPION
                           </text>
@@ -2563,8 +2563,8 @@ export default function App() {
             height: '1920px',
             backgroundColor: '#14251F',
             backgroundImage: `
-              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
             `,
             backgroundSize: '28px 28px',
             color: '#ffffff',
@@ -2703,8 +2703,8 @@ export default function App() {
             height: '1920px',
             backgroundColor: '#14251F',
             backgroundImage: `
-              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
             `,
             backgroundSize: '28px 28px',
             color: '#ffffff',
@@ -2837,8 +2837,8 @@ export default function App() {
             height: '1920px',
             backgroundColor: '#14251F',
             backgroundImage: `
-              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
             `,
             backgroundSize: '28px 28px',
             color: '#ffffff',
@@ -2973,8 +2973,8 @@ export default function App() {
             height: '1920px',
             backgroundColor: '#14251F',
             backgroundImage: `
-              linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
+              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
             `,
             backgroundSize: '28px 28px',
             color: '#ffffff',
