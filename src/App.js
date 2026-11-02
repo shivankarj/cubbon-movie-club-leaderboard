@@ -2101,7 +2101,7 @@ export default function App() {
               return (
                 <div className="flex items-center gap-2 flex-wrap">
                   {isChamp && (
-                    <span className="text-xs font-black px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 border border-orange-500 flex items-center gap-1">
+                    <span className="text-xs font-black px-3 py-1 rounded-full bg-[#C9A96B]/20 text-[#6B1820] border border-[#C9A96B] flex items-center gap-1">
                       👑 CHAMPION
                     </span>
                   )}
