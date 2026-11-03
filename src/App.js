@@ -1483,7 +1483,8 @@ export default function App() {
                                       providerObj = { name: provider, logo: null };
                                     }
                                   }
-                                  const providerName = providerObj?.name || 'Platform';
+                                  const rawProviderName = providerObj?.name || 'Platform';
+                                  const providerName = /amazon\s*(prime\s*)?(video)?/i.test(rawProviderName) ? 'Prime' : rawProviderName;
                                   const providerLogo = providerObj?.logo || null;
 
                                   return (
@@ -1767,7 +1768,8 @@ export default function App() {
                           if (typeof item === 'string') {
                             try { obj = JSON.parse(item); } catch (e) { obj = { name: item }; }
                           }
-                          const pName = obj?.name || 'Platform';
+                          const rawProviderName = obj?.name || 'Platform';
+                          const pName = /amazon\s*(prime\s*)?(video)?/i.test(rawProviderName) ? 'Prime' : rawProviderName;
                           return (
                             <span
                               key={idx}
