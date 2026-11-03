@@ -2621,7 +2621,7 @@ export default function App() {
                   <div style={{ width: '2px', height: '82px', background: '#8b795c' }} />
                   <div style={{ width: '76px', height: '76px', borderRadius: '17px', background: '#e5d9bd', border: '1px solid #c4ad7c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '43px' }}>🕵️</div>
                   <div style={{ marginLeft: 'auto', textAlign: 'right', color: '#75654f', fontFamily: 'Georgia,serif', fontSize: '14px', letterSpacing: '2px' }}>
-                    THE CLUB RECORD<br/><span style={{ fontSize: '12px' }}>MYSTERY MONTH EDITION · {part === 1 ? 'NO. 01' : 'NO. 02'}</span>
+                    THE CLUB RECORD<br/><span style={{ fontSize: '12px' }}>MYSTERY MONTH EDITION · NO. {String(part).padStart(2, '0')}</span>
                   </div>
                 </div>
 
