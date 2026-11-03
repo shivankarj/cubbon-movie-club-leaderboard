@@ -1128,17 +1128,19 @@ export default function App() {
       )}
 
       {/* SPOOKY HEADER & NAVBAR */}
-      <header className="max-w-6xl mx-auto px-4 md:px-8 pt-6 md:pt-8 flex items-center justify-between border-b-2 border-black pb-5">
+      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b-2 border-black pb-6">
         <div className="flex items-center gap-4">
           <div
-            className="flex items-baseline gap-2 text-xl md:text-3xl font-black tracking-[-0.06em] leading-none uppercase select-none"
+            className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
-            <span className="text-black">CUBBON</span><span className="text-[#004FFF]">MOVIE CLUB</span>
+            <span className="text-black">CUBBON</span>
+            <span className="text-[#004FFF]">MOVIE</span>
+            <span className="text-black">CLUB</span>
           </div>
 
-          <div className="hidden">
-            <svg viewBox="0 0 100 100" className="w-full h-full fill-[#6B1820]">
+          <div className="w-12 h-12 rounded-xl bg-blue-50 border border-gray-300/70 flex items-center justify-center p-2">
+            <svg viewBox="0 0 100 100" className="w-full h-full fill-[#004FFF]">
               <path d="M50 15c-3 0-5 2-5 5v5c-15 1-28 12-30 27-2 15 6 28 20 33v-5c0-2 2-4 4-4s4 2 4 4v5c2 0 5 0 7 0s5 0 7 0v-5c0-2 2-4 4-4s4 2 4 4v5c14-5 22-18 20-33-2-15-15-26-30-27v-5c0-3-2-5-5-5zM35 48c3 0 5 3 5 6s-2 6-5 6-6-3-6-6 3-6 6-6zm30 0c3 0 6 3 6 6s-3 6-6 6-5-3-5-6 2-6 5-6zm-23 24l4-8 4 8 4-8 4 8 4-8 4 8h-24z" />
             </svg>
           </div>
@@ -1198,29 +1200,21 @@ export default function App() {
         </div>
       </header>
 
-      {currentPage === 'public' && (
-        <nav className="max-w-6xl mx-auto px-4 md:px-8 border-b border-gray-300 flex items-center gap-7 overflow-x-auto text-[11px] md:text-xs font-extrabold uppercase tracking-[0.14em]">
-          <a href="#leaderboard" className="py-4 whitespace-nowrap text-black hover:text-[#004FFF]">Leaderboard</a>
-          <a href="#movie-log" className="py-4 whitespace-nowrap text-black hover:text-[#004FFF]">Movie Log</a>
-          <span className="py-4 whitespace-nowrap text-gray-400">Mystery Month · November</span>
-        </nav>
-      )}
-
       {/* MAIN CONTAINER */}
-      <main className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-10">
+      <main className="max-w-4xl mx-auto p-4 md:p-8">
         {currentPage === 'public' && (
-          <div className="space-y-12">
-            {/* EDITORIAL CLUB MASTHEAD */}
-            <div className="text-left pt-4 pb-7 border-b-4 border-black">
+          <div className="space-y-16">
+            {/* MYSTERY MONTH THEME BANNER */}
+            <div className="text-left py-4 border-b border-gray-300/70">
               <div
-                className="text-4xl sm:text-6xl md:text-7xl font-black tracking-[-0.065em] uppercase flex flex-col gap-0 leading-[0.88]"
+                className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-black">CUBBON MOVIE CLUB</span>
-                <span className="text-[#004FFF] text-2xl sm:text-3xl md:text-4xl tracking-[-0.035em] mt-2">MYSTERY MONTH</span>
+                <span className="text-[#004FFF]">MYSTERY MONTH</span>
+                <span className="text-black">NOVEMBER</span>
               </div>
               <p
-                className="text-xs font-bold tracking-[0.18em] text-black mt-4 uppercase flex items-center gap-2"
+                className="text-[11px] font-extrabold tracking-widest text-black mt-3 uppercase flex items-center gap-2"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 <span>ONE CLUB. MANY MYSTERIES. ALL THE MOVIES.</span>
@@ -1413,11 +1407,11 @@ export default function App() {
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                    <div className="divide-y divide-gray-200 space-y-12">
                       {processedLogs.map((log) => (
                         <div
                           key={`${log.name}-${log.movie}-${Math.random()}`}
-                          className="flex flex-col space-y-4 border-b border-gray-200 pb-8"
+                          className="flex flex-col space-y-4 pt-10 first:pt-0"
                         >
                           <div>
                             <h3 className="text-2xl sm:text-3xl font-black text-black tracking-tight">
