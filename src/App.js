@@ -1071,8 +1071,8 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-[#49382D] font-sans antialiased"
-      style={{
+      className={`min-h-screen font-sans antialiased ${currentPage === 'public' ? 'bg-white text-[#171717]' : 'text-[#49382D]'}`}
+      style={currentPage === 'public' ? { backgroundColor: '#ffffff' } : {
         backgroundColor: '#E9DFC9',
         backgroundImage: `
           linear-gradient(rgba(73, 56, 45, 0.045) 1px, transparent 1px),
@@ -1128,18 +1128,16 @@ export default function App() {
       )}
 
       {/* SPOOKY HEADER & NAVBAR */}
-      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b border-[#C9A96B]/70 pb-6">
+      <header className="max-w-6xl mx-auto px-4 md:px-8 pt-6 md:pt-8 flex items-center justify-between border-b-2 border-black pb-5">
         <div className="flex items-center gap-4">
           <div
-            className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
+            className="flex items-baseline gap-2 text-xl md:text-3xl font-black tracking-[-0.06em] leading-none uppercase select-none"
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
-            <span className="text-[#14251F]">CUBBON</span>
-            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(201, 169, 107,0.45)]">MOVIE</span>
-            <span className="text-[#14251F]">CLUB</span>
+            <span className="text-black">CUBBON</span><span className="text-[#004FFF]">MOVIE CLUB</span>
           </div>
 
-          <div className="w-12 h-12 rounded-xl bg-[#6B1820]/10 border border-[#C9A96B]/70 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(107, 24, 32,0.2)]">
+          <div className="hidden">
             <svg viewBox="0 0 100 100" className="w-full h-full fill-[#6B1820]">
               <path d="M50 15c-3 0-5 2-5 5v5c-15 1-28 12-30 27-2 15 6 28 20 33v-5c0-2 2-4 4-4s4 2 4 4v5c2 0 5 0 7 0s5 0 7 0v-5c0-2 2-4 4-4s4 2 4 4v5c14-5 22-18 20-33-2-15-15-26-30-27v-5c0-3-2-5-5-5zM35 48c3 0 5 3 5 6s-2 6-5 6-6-3-6-6 3-6 6-6zm30 0c3 0 6 3 6 6s-3 6-6 6-5-3-5-6 2-6 5-6zm-23 24l4-8 4 8 4-8 4 8 4-8 4 8h-24z" />
             </svg>
@@ -1200,24 +1198,32 @@ export default function App() {
         </div>
       </header>
 
+      {currentPage === 'public' && (
+        <nav className="max-w-6xl mx-auto px-4 md:px-8 border-b border-gray-300 flex items-center gap-7 overflow-x-auto text-[11px] md:text-xs font-extrabold uppercase tracking-[0.14em]">
+          <a href="#leaderboard" className="py-4 whitespace-nowrap text-black hover:text-[#004FFF]">Leaderboard</a>
+          <a href="#movie-log" className="py-4 whitespace-nowrap text-black hover:text-[#004FFF]">Movie Log</a>
+          <span className="py-4 whitespace-nowrap text-gray-400">Mystery Month · November</span>
+        </nav>
+      )}
+
       {/* MAIN CONTAINER */}
-      <main className="max-w-4xl mx-auto p-4 md:p-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-10">
         {currentPage === 'public' && (
-          <div className="space-y-16">
-            {/* OCTOBER HALLOWEEN THEME BANNER */}
-            <div className="text-left py-4 border-b border-[#C9A96B]/70">
+          <div className="space-y-12">
+            {/* EDITORIAL CLUB MASTHEAD */}
+            <div className="text-left pt-4 pb-7 border-b-4 border-black">
               <div
-                className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
+                className="text-4xl sm:text-6xl md:text-7xl font-black tracking-[-0.065em] uppercase flex flex-col gap-0 leading-[0.88]"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(201, 169, 107,0.35)]">FRIGHT NIGHTS</span>
-                <span className="text-[#14251F]">OCTOBER 💀</span>
+                <span className="text-black">CUBBON MOVIE CLUB</span>
+                <span className="text-[#004FFF] text-2xl sm:text-3xl md:text-4xl tracking-[-0.035em] mt-2">MYSTERY MONTH</span>
               </div>
               <p
-                className="text-[11px] font-extrabold tracking-widest text-[#6B1820] mt-3 uppercase flex items-center gap-2"
+                className="text-xs font-bold tracking-[0.18em] text-black mt-4 uppercase flex items-center gap-2"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>GET. SET. LOG.</span>
+                <span>ONE CLUB. MANY MYSTERIES. ALL THE MOVIES.</span>
               </p>
             </div>
 
@@ -1231,10 +1237,10 @@ export default function App() {
             ) : (
               <>
                 {/* 🏆 LEADERBOARD VIEW BLOCK */}
-                <section className="space-y-8">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <section id="leaderboard" className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black pb-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <h2 className="text-xl font-extrabold tracking-tight text-[#14251F] border-l-4 border-[#6B1820] pl-3 uppercase">
+                      <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-black uppercase">
                         LEADERBOARD
                       </h2>
 
@@ -1363,9 +1369,9 @@ export default function App() {
                 </section>
 
                 {/* 🎬 LOGGED HORROR FEED */}
-                <section className="space-y-8 pt-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#C9A96B]/70 pb-5">
-                    <h2 className="text-xl font-extrabold tracking-tight text-[#14251F] border-l-4 border-[#6B1820] pl-3">
+                <section id="movie-log" className="space-y-7 pt-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b-2 border-black pb-4">
+                    <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-black">
                       LOGGED ({logs.length})
                     </h2>
 
