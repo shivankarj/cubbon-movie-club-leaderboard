@@ -836,6 +836,28 @@ export default function App() {
 
   const captureElementToJpeg = async (element) => {
     if (!element) return null;
+
+    // Wait for web fonts, inline images and CSS background images before capture.
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    const inlineImages = Array.from(element.querySelectorAll('img'));
+    await Promise.all(inlineImages.map((img) => {
+      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+      return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    }));
+    const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\\(["']?(.*?)["']?\\)/);
+    if (backgroundMatch && backgroundMatch[1]) {
+      await new Promise((resolve) => {
+        const bg = new Image();
+        bg.onload = resolve;
+        bg.onerror = resolve;
+        bg.src = backgroundMatch[1];
+        if (bg.complete) resolve();
+      });
+    }
+
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
     if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
       return await window.htmlToImage.toJpeg(element, {
@@ -2580,20 +2602,15 @@ export default function App() {
                 padding: '58px 62px 54px',
                 color: '#25221d',
                 fontFamily: "'Inter', system-ui, sans-serif",
-                backgroundColor: '#f4ead7',
-                backgroundImage: 'radial-gradient(ellipse at 20% 8%, rgba(255,255,255,.7), transparent 44%), radial-gradient(ellipse at 85% 90%, rgba(166,126,76,.10), transparent 48%), repeating-linear-gradient(0deg, rgba(91,69,43,.025) 0px, rgba(91,69,43,.025) 1px, transparent 1px, transparent 4px)',
+                backgroundColor: '#e9dfc9',
+                backgroundImage: "url('/images/mystery-parchment.jpg')",
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
                 border: '1px solid #c8b99d',
               }}
             >
-              {/* Layered, deliberately illegible newspaper scraps */}
-              <div style={{ position: 'absolute', zIndex: 0, top: '-24px', right: '-32px', width: '430px', height: '190px', transform: 'rotate(7deg)', opacity: .82, pointerEvents: 'none' }}>
-                <div style={{ position: 'absolute', inset: '0 0 38px 0', padding: '20px 24px', background: 'repeating-linear-gradient(0deg,#d8cbb4 0 2px,#eee3d0 2px 5px)', border: '1px solid #c4b69e', boxShadow: '0 7px 15px rgba(54,40,25,.18)', color: '#766b5a', fontFamily: 'Georgia,serif', fontSize: '18px', letterSpacing: '5px', lineHeight: '1.45', overflow: 'hidden' }}>
-                  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪<br/>— — — — — — — — — —<br/>▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪<br/>— — — — — — — — — —
-                </div>
-                <div style={{ position: 'absolute', right: '35px', top: '88px', width: '245px', height: '80px', transform: 'rotate(-9deg)', background: 'repeating-linear-gradient(0deg,#e9deca 0 3px,#cfc1a9 3px 5px)', border: '1px solid #c4b69e', boxShadow: '0 4px 9px rgba(54,40,25,.16)' }} />
-              </div>
-              <div style={{ position: 'absolute', left: '-64px', top: '235px', transform: 'rotate(-9deg)', width: '210px', height: '255px', opacity: .52, background: 'repeating-linear-gradient(0deg,transparent 0 18px,rgba(109,83,53,.55) 19px 20px)', maskImage: 'linear-gradient(90deg,#000,transparent)', pointerEvents: 'none' }} />
-
+              
               <div style={{ position: 'relative', zIndex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '40px' }}>
                   <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '27px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
@@ -2650,18 +2667,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Bottom-left intentionally left clear. Bottom-right archival clipping. */}
-              <div style={{ position: 'absolute', right: '-12px', bottom: '-20px', width: '250px', height: '290px', transform: 'rotate(7deg)', background: '#e8ddc8', padding: '12px', boxSizing: 'border-box', boxShadow: '0 5px 18px rgba(48,35,20,.22)', border: '1px solid #c7b89d' }}>
-                <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg,#c7c0b1,#716c61 55%,#292923)', filter: 'grayscale(1)' }}>
-                  <div style={{ position: 'absolute', inset: 0, opacity: .42, background: 'repeating-linear-gradient(0deg,transparent 0 3px,rgba(20,20,18,.2) 4px 5px)' }} />
-                  <div style={{ position: 'absolute', bottom: '-8px', left: '0', right: '0', height: '105px', background: '#393832', clipPath: 'polygon(0 38%,18% 22%,35% 30%,49% 10%,65% 24%,82% 4%,100% 18%,100% 100%,0 100%)' }} />
-                  <div style={{ position: 'absolute', bottom: '90px', left: '34px', width: '12px', height: '105px', background: '#373630' }} />
-                  <div style={{ position: 'absolute', bottom: '175px', left: '17px', width: '48px', height: '48px', border: '8px solid #373630', borderBottom: 0, borderRadius: '50% 50% 0 0' }} />
-                  <div style={{ position: 'absolute', bottom: '70px', right: '38px', width: '7px', height: '120px', background: '#373630' }} />
-                  <div style={{ position: 'absolute', bottom: '178px', right: '23px', width: '36px', height: '36px', borderRadius: '50%', background: '#d8c9a8', boxShadow: '0 0 20px 8px rgba(232,219,189,.45)' }} />
-                  <div style={{ position: 'absolute', top: '12px', left: '12px', right: '12px', height: '1px', background: 'rgba(255,255,255,.35)' }} />
-                </div>
-              </div>
+              {/* Parchment background supplies the archival details; keep the lower corners uncluttered. */}
               <div style={{ position: 'absolute', left: '54px', bottom: '38px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '13px', letterSpacing: '2px' }}>
                 CUBBON MOVIE CLUB · MYSTERY MONTH
               </div>
