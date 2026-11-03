@@ -865,6 +865,10 @@ export default function App() {
         pixelRatio: 2,
         cacheBust: true,
         skipAutoScale: false,
+        // Avoid cross-origin Google Fonts CSS access during export.
+        skipFonts: true,
+        // RoboHash does not allow canvas access from StackBlitz, so use a local cat avatar in exports.
+        imagePlaceholder: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22%3E%3Crect width=%22120%22 height=%22120%22 rx=%2260%22 fill=%22%23e9dfc9%22/%3E%3Cpath d=%22M25 47 L31 15 L55 34 Q60 32 65 34 L89 15 L95 47 Q105 60 99 79 Q91 103 60 104 Q29 103 21 79 Q15 60 25 47Z%22 fill=%22%236b1820%22 stroke=%22%23c9a96b%22 stroke-width=%224%22/%3E%3Cpath d=%22M43 64 Q48 58 53 64 M67 64 Q72 58 77 64 M54 78 Q60 84 66 78%22 fill=%22none%22 stroke=%22%23e9dfc9%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3C/svg%3E',
       });
     }
     throw new Error('Image exporter could not be initialized.');
