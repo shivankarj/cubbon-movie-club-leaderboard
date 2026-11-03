@@ -1157,7 +1157,7 @@ export default function App() {
                     onClick={() => setCurrentPage('admin')}
                     className="text-[10px] font-bold tracking-widest uppercase text-[#14251F] hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
                   >
-                    PANEL ⌕
+                    PANEL 🔍
                   </button>
                   <button
                     onClick={handleAdminLogout}
@@ -1176,7 +1176,7 @@ export default function App() {
                   }}
                   className="text-[10px] font-bold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] border border-[#C9A96B]/60 bg-[#6B1820]/10 px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
-                  ADMIN ⌕
+                  ADMIN 🔍
                 </button>
               )}
             </div>
@@ -1636,7 +1636,7 @@ export default function App() {
               <div className="border-b border-[#C9A96B]/60 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-[#49382D] tracking-tight flex items-center gap-2">
-                    <span>⌕</span> Mystery Month Admin Panel
+                    <span>🔍</span> Mystery Month Admin Panel
                   </h2>
                   <p className="text-xs text-[#6B1820]/80 mt-0.5">
                     Paste IMDb Link or Title ➔ Auto-Populates Bonuses (+2 Each) & Streaming
