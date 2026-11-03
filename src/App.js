@@ -313,8 +313,12 @@ export default function App() {
   // Exporter Refs & States
   const exportPointsRefPart1 = useRef(null);
   const exportPointsRefPart2 = useRef(null);
+  const exportPointsRefPart3 = useRef(null);
+  const exportPointsRefPart4 = useRef(null);
   const exportFilmsRefPart1 = useRef(null);
   const exportFilmsRefPart2 = useRef(null);
+  const exportFilmsRefPart3 = useRef(null);
+  const exportFilmsRefPart4 = useRef(null);
   const memberExportCardRefPart1 = useRef(null);
   const memberExportCardRefPart2 = useRef(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -888,31 +892,21 @@ export default function App() {
       const dateTag = new Date().toISOString().split('T')[0];
       const tagLabel = mode === 'points' ? 'Points' : 'Films';
 
-      const refPart1 = mode === 'points' ? exportPointsRefPart1 : exportFilmsRefPart1;
-      const refPart2 = mode === 'points' ? exportPointsRefPart2 : exportFilmsRefPart2;
+      const exportRefs = mode === 'points'
+        ? [exportPointsRefPart1, exportPointsRefPart2, exportPointsRefPart3, exportPointsRefPart4]
+        : [exportFilmsRefPart1, exportFilmsRefPart2, exportFilmsRefPart3, exportFilmsRefPart4];
 
-      if (refPart1.current) {
-        const dataUrl1 = await captureElementToJpeg(refPart1.current);
-        if (dataUrl1) {
-          const link1 = document.createElement('a');
-          link1.href = dataUrl1;
-          link1.download = `Cubbon-Leaderboard-${tagLabel}-${dateTag}-Part1.jpg`;
-          document.body.appendChild(link1);
-          link1.click();
-          document.body.removeChild(link1);
-        }
-      }
-
-      if (targetBoard.length > 10 && refPart2.current) {
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        const dataUrl2 = await captureElementToJpeg(refPart2.current);
-        if (dataUrl2) {
-          const link2 = document.createElement('a');
-          link2.href = dataUrl2;
-          link2.download = `Cubbon-Leaderboard-${tagLabel}-${dateTag}-Part2.jpg`;
-          document.body.appendChild(link2);
-          link2.click();
-          document.body.removeChild(link2);
+      for (let i = 0; i < exportRefs.length; i += 1) {
+        if (i * 5 >= targetBoard.length || !exportRefs[i].current) continue;
+        if (i > 0) await new Promise((resolve) => setTimeout(resolve, 600));
+        const dataUrl = await captureElementToJpeg(exportRefs[i].current);
+        if (dataUrl) {
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = `Cubbon-Leaderboard-${tagLabel}-${dateTag}-Part${i + 1}.jpg`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         }
       }
       showToast(`🎃 Downloaded ${tagLabel} Leaderboard story slides!`, 'success');
@@ -2644,30 +2638,29 @@ export default function App() {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '17px' }}>
                   {members.map((member, idx) => {
-                    const rank = (part - 1) * 10 + idx + 1;
+                    const rank = (part - 1) * 5 + idx + 1;
                     return (
                       <div key={member.name} style={{
-                        minHeight: '112px',
+                        minHeight: '190px',
                         display: 'grid',
                         gridTemplateColumns: '72px minmax(0,1fr) 160px 135px',
                         alignItems: 'center',
-                        padding: '10px 14px',
+                        padding: '18px 14px',
                         position: 'relative',
                         boxSizing: 'border-box',
-                        background: 'linear-gradient(180deg,rgba(255,250,237,.98),rgba(235,222,198,.98))',
-                        border: '1px solid #d1bea0',
-                        borderRadius: '13px 18px 12px 17px',
-                        clipPath: 'polygon(1.2% 0, 98.7% 0.8%, 100% 7%, 99.2% 92%, 97.8% 100%, 2% 99%, 0 92%, .7% 8%)',
-                        boxShadow: '0 5px 9px rgba(71,52,29,.16)',
+                        background: 'rgba(255,250,237,.78)',
+                        border: '1px solid rgba(157,132,91,.8)',
+                        borderRadius: '2px',
+                        boxShadow: '0 2px 4px rgba(71,52,29,.08)',
                       }}>
-                        <div style={{ width: '48px', height: '48px', borderRadius: '7px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                        <div style={{ width: '52px', height: '52px', borderRadius: '2px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
                           {rank}
                         </div>
-                        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '18px', paddingRight: '10px' }}>
-                          <img src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
-                          <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '29px', lineHeight: 1.15, fontWeight: 800, color: '#302a22' }}>{member.name}</div>
+                        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
+                          <img src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', border: '1px solid #b9a27a', padding: '14px 16px', background: 'rgba(233,223,201,.32)', letterSpacing: '1px' }}>{member.name}</div>
                         </div>
-                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
+                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#302a22', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
                       </div>
                     );
@@ -2684,10 +2677,14 @@ export default function App() {
         );
         return (
           <>
-            {renderLeaderboardExport(exportPointsRefPart1, leaderboardByPoints.slice(0, 10), 'points', 1)}
-            {renderLeaderboardExport(exportPointsRefPart2, leaderboardByPoints.slice(10, 20), 'points', 2)}
-            {renderLeaderboardExport(exportFilmsRefPart1, leaderboardByFilms.slice(0, 10), 'films', 1)}
-            {renderLeaderboardExport(exportFilmsRefPart2, leaderboardByFilms.slice(10, 20), 'films', 2)}
+            {renderLeaderboardExport(exportPointsRefPart1, leaderboardByPoints.slice(0, 5), 'points', 1)}
+            {renderLeaderboardExport(exportPointsRefPart2, leaderboardByPoints.slice(5, 10), 'points', 2)}
+            {renderLeaderboardExport(exportPointsRefPart3, leaderboardByPoints.slice(10, 15), 'points', 3)}
+            {renderLeaderboardExport(exportPointsRefPart4, leaderboardByPoints.slice(15, 20), 'points', 4)}
+            {renderLeaderboardExport(exportFilmsRefPart1, leaderboardByFilms.slice(0, 5), 'films', 1)}
+            {renderLeaderboardExport(exportFilmsRefPart2, leaderboardByFilms.slice(5, 10), 'films', 2)}
+            {renderLeaderboardExport(exportFilmsRefPart3, leaderboardByFilms.slice(10, 15), 'films', 3)}
+            {renderLeaderboardExport(exportFilmsRefPart4, leaderboardByFilms.slice(15, 20), 'films', 4)}
           </>
         );
       })()}
