@@ -1071,12 +1071,12 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-[#E9DFC9] font-sans antialiased"
+      className="min-h-screen text-[#49382D] font-sans antialiased"
       style={{
-        backgroundColor: '#14251F',
+        backgroundColor: '#E9DFC9',
         backgroundImage: `
-          linear-gradient(rgba(201, 169, 107, 0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(201, 169, 107, 0.035) 1px, transparent 1px)
+          linear-gradient(rgba(73, 56, 45, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(73, 56, 45, 0.045) 1px, transparent 1px)
         `,
         backgroundSize: '32px 32px',
         backgroundAttachment: 'fixed',
@@ -1095,8 +1095,8 @@ export default function App() {
           <span className="text-lg">
             {toastMessage.type === 'error' ? '🩸' : toastMessage.type === 'success' ? '🎃' : '🔮'}
           </span>
-          <span className="text-xs font-bold tracking-wide text-white">{toastMessage.text}</span>
-          <button onClick={() => setToastMessage(null)} className="text-[#6B1820] hover:text-white text-xs ml-2">
+          <span className="text-xs font-bold tracking-wide text-[#14251F]">{toastMessage.text}</span>
+          <button onClick={() => setToastMessage(null)} className="text-[#6B1820] hover:text-[#14251F] text-xs ml-2">
             ✕
           </button>
         </div>
@@ -1107,12 +1107,12 @@ export default function App() {
         <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(107, 24, 32,0.3)] text-center">
             <div className="text-3xl mb-2">💀</div>
-            <h3 className="text-lg font-black text-white">{confirmDialog.title}</h3>
+            <h3 className="text-lg font-black text-[#14251F]">{confirmDialog.title}</h3>
             <p className="text-xs text-[#49382D]/80 mt-2 mb-6">{confirmDialog.message}</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={confirmDialog.onCancel}
-                className="px-4 py-2 rounded-xl bg-[#14251F] border border-[#C9A96B]/60 text-xs font-bold text-[#49382D] hover:text-white uppercase tracking-wider"
+                className="px-4 py-2 rounded-xl bg-[#14251F] border border-[#C9A96B]/60 text-xs font-bold text-[#49382D] hover:text-[#14251F] uppercase tracking-wider"
               >
                 Cancel
               </button>
@@ -1134,9 +1134,9 @@ export default function App() {
             className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
-            <span className="text-white">CUBBON</span>
-            <span className="text-[#C9A96B] drop-shadow-[0_0_10px_rgba(201, 169, 107,0.45)]">MOVIE</span>
-            <span className="text-white">CLUB</span>
+            <span className="text-[#14251F]">CUBBON</span>
+            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(201, 169, 107,0.45)]">MOVIE</span>
+            <span className="text-[#14251F]">CLUB</span>
           </div>
 
           <div className="w-12 h-12 rounded-xl bg-[#6B1820]/10 border border-[#C9A96B]/70 flex items-center justify-center p-2 shadow-[0_0_15px_rgba(107, 24, 32,0.2)]">
@@ -1153,13 +1153,13 @@ export default function App() {
                 <>
                   <button
                     onClick={() => setCurrentPage('admin')}
-                    className="text-[10px] font-bold tracking-widest uppercase text-white hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
+                    className="text-[10px] font-bold tracking-widest uppercase text-[#14251F] hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
                   >
                     PANEL 🎃
                   </button>
                   <button
                     onClick={handleAdminLogout}
-                    className="text-[10px] font-bold tracking-widest uppercase text-[#E9DFC9] hover:text-[#C9A96B] border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
+                    className="text-[10px] font-bold tracking-widest uppercase text-[#49382D] hover:text-[#6B1820] border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
                     title="Lock Admin Portal"
                   >
                     🔒 LOGOUT
@@ -1191,7 +1191,7 @@ export default function App() {
               )}
               <button
                 onClick={() => setCurrentPage('public')}
-                className="text-xs font-bold tracking-wider uppercase text-[#E9DFC9] hover:text-[#C9A96B]"
+                className="text-xs font-bold tracking-wider uppercase text-[#49382D] hover:text-[#6B1820]"
               >
                 ← Back
               </button>
@@ -1210,11 +1210,11 @@ export default function App() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-[#C9A96B] drop-shadow-[0_0_12px_rgba(201, 169, 107,0.35)]">FRIGHT NIGHTS</span>
-                <span className="text-white">OCTOBER 💀</span>
+                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(201, 169, 107,0.35)]">FRIGHT NIGHTS</span>
+                <span className="text-[#14251F]">OCTOBER 💀</span>
               </div>
               <p
-                className="text-[11px] font-extrabold tracking-widest text-[#C9A96B] mt-3 uppercase flex items-center gap-2"
+                className="text-[11px] font-extrabold tracking-widest text-[#6B1820] mt-3 uppercase flex items-center gap-2"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 <span>GET. SET. LOG.</span>
@@ -1223,7 +1223,7 @@ export default function App() {
 
             {loading ? (
               <div
-                className="text-center py-16 text-xs font-bold tracking-widest text-[#C9A96B] uppercase animate-pulse"
+                className="text-center py-16 text-xs font-bold tracking-widest text-[#6B1820] uppercase animate-pulse"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 🔮 Summoning Halloween Logs from Crypt...
@@ -1234,7 +1234,7 @@ export default function App() {
                 <section className="space-y-8">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#6B1820] pl-3 uppercase">
+                      <h2 className="text-xl font-extrabold tracking-tight text-[#14251F] border-l-4 border-[#6B1820] pl-3 uppercase">
                         LEADERBOARD
                       </h2>
 
@@ -1244,8 +1244,8 @@ export default function App() {
                           onClick={() => setLeaderboardSort('points')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'points'
-                              ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
-                              : 'text-[#6B1820]/80 hover:text-white'
+                              ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
+                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
                           }`}
                         >
                           <span>🔥</span> By Points
@@ -1256,7 +1256,7 @@ export default function App() {
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'films'
                               ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(107, 24, 32,0.5)]'
-                              : 'text-[#6B1820]/80 hover:text-white'
+                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
                           }`}
                         >
                           <span>🎞️</span> By Films
@@ -1269,7 +1269,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('points')}
                           disabled={isExporting || leaderboardByPoints.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#C9A96B] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(107, 24, 32,0.15)]"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(107, 24, 32,0.15)]"
                         >
                           <span>🔥</span>
                           <span>{isExporting && exportType === 'points' ? 'Exporting...' : 'Story: Points'}</span>
@@ -1277,7 +1277,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('films')}
                           disabled={isExporting || leaderboardByFilms.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#49382D] hover:text-white bg-[#14251F] border border-[#C9A96B]/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#49382D] hover:text-[#14251F] bg-[#14251F] border border-[#C9A96B]/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
                         >
                           <span>🎞️</span>
                           <span>{isExporting && exportType === 'films' ? 'Exporting...' : 'Story: Films'}</span>
@@ -1301,7 +1301,7 @@ export default function App() {
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0
-                                  ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
+                                  ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
                                   : 'bg-[#6B1820]/12 text-[#6B1820] border border-[#C9A96B]/40'
                               }`}
                             >
@@ -1365,7 +1365,7 @@ export default function App() {
                 {/* 🎬 LOGGED HORROR FEED */}
                 <section className="space-y-8 pt-4">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#C9A96B]/70 pb-5">
-                    <h2 className="text-xl font-extrabold tracking-tight text-white border-l-4 border-[#6B1820] pl-3">
+                    <h2 className="text-xl font-extrabold tracking-tight text-[#14251F] border-l-4 border-[#6B1820] pl-3">
                       LOGGED ({logs.length})
                     </h2>
 
@@ -1374,8 +1374,8 @@ export default function App() {
                         onClick={() => setSortByRating(!sortByRating)}
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
-                            ? 'bg-[#6B1820] text-[#E9DFC9] border-[#6B1820]'
-                            : 'bg-[#E9DFC9] text-[#E9DFC9] border-[#C9A96B]/60 hover:text-[#C9A96B] hover:border-[#6B1820]'
+                            ? 'bg-[#6B1820] text-[#49382D] border-[#6B1820]'
+                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
                         }`}
                       >
                         <span>★</span>
@@ -1386,16 +1386,16 @@ export default function App() {
                         <select
                           value={selectedMemberFilter}
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
-                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#E9DFC9] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
+                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
                         >
                           <option value="">Filter Member</option>
                           {uniqueMembers.map((name) => (
-                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#E9DFC9]">
+                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#49382D]">
                               {name}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#C9A96B] text-[10px]">
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6B1820] text-[10px]">
                           ▼
                         </div>
                       </div>
@@ -1403,7 +1403,7 @@ export default function App() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-[#E9DFC9] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
@@ -1414,15 +1414,15 @@ export default function App() {
                           className="flex flex-col space-y-4 pt-10 first:pt-0"
                         >
                           <div>
-                            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                            <h3 className="text-2xl sm:text-3xl font-black text-[#14251F] tracking-tight">
                               {log.movie}
                             </h3>
-                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#C9A96B] tracking-wide mt-1">
+                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#6B1820] tracking-wide mt-1">
                               <span className="break-words">{log.genre}</span>
                               {log.rating && (
                                 <>
                                   <span className="text-slate-600 select-none">•</span>
-                                  <span className="whitespace-nowrap font-bold text-[#C9A96B]">
+                                  <span className="whitespace-nowrap font-bold text-[#6B1820]">
                                     {log.rating}
                                   </span>
                                 </>
