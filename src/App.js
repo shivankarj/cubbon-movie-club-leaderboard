@@ -1229,7 +1229,7 @@ export default function App() {
 
             {loading ? (
               <div
-                className="text-center py-16 text-xs font-bold tracking-widest text-[#6B1820] uppercase animate-pulse"
+                className="text-center py-16 text-xs font-bold tracking-widest text-[#004FFF] uppercase animate-pulse"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 🔮 Summoning Halloween Logs from Crypt...
@@ -1244,14 +1244,14 @@ export default function App() {
                         LEADERBOARD
                       </h2>
 
-                      <div className="inline-flex items-center p-1 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl shrink-0 self-start sm:self-auto shadow-inner ml-0 sm:ml-2">
+                      <div className="inline-flex items-center p-1 bg-[#F3F3F3] border border-gray-300/60 rounded-xl shrink-0 self-start sm:self-auto shadow-inner ml-0 sm:ml-2">
                         <button
                           type="button"
                           onClick={() => setLeaderboardSort('points')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'points'
                               ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
-                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
+                              : 'text-[#004FFF]/80 hover:text-black'
                           }`}
                         >
                           <span>🔥</span> By Points
@@ -1261,8 +1261,8 @@ export default function App() {
                           onClick={() => setLeaderboardSort('films')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'films'
-                              ? 'bg-[#6B1820] text-slate-950 shadow-[0_0_10px_rgba(107, 24, 32,0.5)]'
-                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
+                              ? 'bg-[#6B1820] text-white shadow-[0_0_10px_rgba(107, 24, 32,0.5)]'
+                              : 'text-[#004FFF]/80 hover:text-black'
                           }`}
                         >
                           <span>🎞️</span> By Films
@@ -1275,7 +1275,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('points')}
                           disabled={isExporting || leaderboardByPoints.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] bg-[#6B1820]/12 border border-[#C9A96B]/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(107, 24, 32,0.15)]"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#004FFF] hover:text-[#004FFF] bg-blue-50 border border-gray-300/70 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5 shadow-[0_0_15px_rgba(107, 24, 32,0.15)]"
                         >
                           <span>🔥</span>
                           <span>{isExporting && exportType === 'points' ? 'Exporting...' : 'Story: Points'}</span>
@@ -1283,7 +1283,7 @@ export default function App() {
                         <button
                           onClick={() => handleDownloadLeaderboardImage('films')}
                           disabled={isExporting || leaderboardByFilms.length === 0}
-                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#49382D] hover:text-[#14251F] bg-[#14251F] border border-[#C9A96B]/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
+                          className="text-[10px] font-extrabold tracking-widest uppercase text-[#49382D] hover:text-black bg-[#F3F3F3] border border-gray-300/60 px-3 py-2 rounded-xl transition-all disabled:opacity-40 flex items-center gap-1.5"
                         >
                           <span>🎞️</span>
                           <span>{isExporting && exportType === 'films' ? 'Exporting...' : 'Story: Films'}</span>
@@ -1293,22 +1293,22 @@ export default function App() {
                   </div>
 
                   {leaderboard.length === 0 ? (
-                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-8 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D] bg-[#F3F3F3] border border-gray-300/60 p-8 rounded-xl text-center">
                       The Halloween crypt is silent. Unlock the Admin gate to log October horror films!
                     </div>
                   ) : (
-                    <div className="bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-2xl divide-y divide-[#C9A96B]/50 overflow-hidden shadow-xl">
+                    <div className="bg-[#F3F3F3] border border-gray-300/70 rounded-2xl divide-y divide-gray-200 overflow-hidden shadow-xl">
                       {leaderboard.map((member, idx) => (
                         <div
                           key={member.name}
-                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-[#6B1820]/10 transition-colors gap-3"
+                          className="p-4 sm:p-5 flex items-center justify-between hover:bg-blue-50 transition-colors gap-3"
                         >
                           <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0 mr-1 sm:mr-3">
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0
                                   ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
-                                  : 'bg-[#6B1820]/12 text-[#6B1820] border border-[#C9A96B]/40'
+                                  : 'bg-blue-50 text-[#004FFF] border border-gray-300/40'
                               }`}
                             >
                               {idx + 1}
@@ -1317,13 +1317,13 @@ export default function App() {
                             <img
                               src={getMemberAvatar(member.name)}
                               alt={member.name}
-                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover shrink-0"
+                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F3F3F3] border border-gray-300/70 p-0.5 object-cover shrink-0"
                             />
 
                             <div>
                               <h3
                                 onClick={() => setSelectedUser(member.name)}
-                                className="font-extrabold text-[#49382D] text-sm sm:text-base hover:underline hover:text-[#6B1820] select-none cursor-pointer leading-snug"
+                                className="font-extrabold text-[#49382D] text-sm sm:text-base hover:underline hover:text-[#004FFF] select-none cursor-pointer leading-snug"
                               >
                                 {member.name}
                               </h3>
@@ -1332,7 +1332,7 @@ export default function App() {
                                 <span
                                   className={
                                     leaderboardSort === 'points'
-                                      ? 'text-[#6B1820] font-black text-xs'
+                                      ? 'text-[#004FFF] font-black text-xs'
                                       : 'text-[#49382D] font-semibold'
                                   }
                                 >
@@ -1342,7 +1342,7 @@ export default function App() {
                                 <span
                                   className={
                                     leaderboardSort === 'films'
-                                      ? 'text-[#6B1820] font-black text-xs'
+                                      ? 'text-[#004FFF] font-black text-xs'
                                       : 'text-[#49382D] font-semibold'
                                   }
                                 >
@@ -1358,7 +1358,7 @@ export default function App() {
                                 key={i}
                                 src={mov.poster}
                                 title={mov.title}
-                                className="w-7 h-10 sm:w-8 sm:h-12 object-cover rounded border border-[#C9A96B]"
+                                className="w-7 h-10 sm:w-8 sm:h-12 object-cover rounded border border-gray-300"
                               />
                             ))}
                           </div>
@@ -1380,8 +1380,8 @@ export default function App() {
                         onClick={() => setSortByRating(!sortByRating)}
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
-                            ? 'bg-[#6B1820] text-[#49382D] border-[#6B1820]'
-                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
+                            ? 'bg-[#6B1820] text-[#49382D] border-[#004FFF]'
+                            : 'bg-[#F3F3F3] text-[#49382D] border-gray-300/60 hover:text-[#004FFF] hover:border-[#004FFF]'
                         }`}
                       >
                         <span>★</span>
@@ -1392,16 +1392,16 @@ export default function App() {
                         <select
                           value={selectedMemberFilter}
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
-                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
+                          className="w-full bg-[#F3F3F3] border border-gray-300/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#004FFF] font-medium cursor-pointer appearance-none truncate"
                         >
                           <option value="">Filter Member</option>
                           {uniqueMembers.map((name) => (
-                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#49382D]">
+                            <option key={name} value={name} className="bg-[#F3F3F3] text-[#49382D]">
                               {name}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6B1820] text-[10px]">
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#004FFF] text-[10px]">
                           ▼
                         </div>
                       </div>
@@ -1409,26 +1409,26 @@ export default function App() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
+                    <div className="text-sm text-[#49382D] bg-[#F3F3F3] border border-gray-300/60 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
-                    <div className="divide-y divide-[#C9A96B]/50 space-y-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
                       {processedLogs.map((log) => (
                         <div
                           key={`${log.name}-${log.movie}-${Math.random()}`}
-                          className="flex flex-col space-y-4 pt-10 first:pt-0"
+                          className="flex flex-col space-y-4 border-b border-gray-200 pb-8"
                         >
                           <div>
-                            <h3 className="text-2xl sm:text-3xl font-black text-[#14251F] tracking-tight">
+                            <h3 className="text-2xl sm:text-3xl font-black text-black tracking-tight">
                               {log.movie}
                             </h3>
-                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#6B1820] tracking-wide mt-1">
+                            <div className="flex flex-wrap items-center gap-x-2 text-xs font-semibold text-[#004FFF] tracking-wide mt-1">
                               <span className="break-words">{log.genre}</span>
                               {log.rating && (
                                 <>
-                                  <span className="text-slate-600 select-none">•</span>
-                                  <span className="whitespace-nowrap font-bold text-[#6B1820]">
+                                  <span className="text-gray-500 select-none">•</span>
+                                  <span className="whitespace-nowrap font-bold text-[#004FFF]">
                                     {log.rating}
                                   </span>
                                 </>
@@ -1438,17 +1438,17 @@ export default function App() {
 
                           {/* 1. LOGGED BY */}
                           <div className="flex items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#555555] uppercase tracking-widest">
                               LOGGED BY:
                             </span>
                             <button
                               onClick={() => setSelectedUser(log.name)}
-                              className="inline-flex items-center gap-2 bg-[#6B1820]/12 border border-[#C9A96B]/70 hover:border-[#6B1820] text-[#C9A96B] hover:text-[#C9A96B] text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
+                              className="inline-flex items-center gap-2 bg-blue-50 border border-gray-300/70 hover:border-[#004FFF] text-[#555555] hover:text-[#555555] text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
                             >
                               <img
                                 src={getMemberAvatar(log.name)}
                                 alt={log.name}
-                                className="w-5 h-5 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover group-hover:scale-110 transition-transform"
+                                className="w-5 h-5 rounded-full bg-[#F3F3F3] border border-gray-300/70 p-0.5 object-cover group-hover:scale-110 transition-transform"
                               />
                               <span className="tracking-wide">{log.name}</span>
                             </button>
@@ -1457,7 +1457,7 @@ export default function App() {
                           {/* 2. STREAM ON BADGES */}
                           {log.watch_providers && log.watch_providers.length > 0 && (
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 pt-0.5">
-                              <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest shrink-0 self-start sm:self-auto">
+                              <span className="text-[10px] font-bold text-[#555555] uppercase tracking-widest shrink-0 self-start sm:self-auto">
                                 STREAM ON:
                               </span>
                               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -1476,7 +1476,7 @@ export default function App() {
                                   return (
                                     <span
                                       key={idx}
-                                      className="inline-flex items-center gap-1.5 h-6 bg-[#E9DFC9] border border-[#C9A96B]/60 text-[#E9DFC9] text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
+                                      className="inline-flex items-center gap-1.5 h-6 bg-[#F3F3F3] border border-gray-300/60 text-[#222222] text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
                                     >
                                       {providerLogo ? (
                                         <img
@@ -1497,16 +1497,16 @@ export default function App() {
 
                           {/* 3. POINTS AND STACKABLE BREAKDOWN CHIPS */}
                           <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#555555] uppercase tracking-widest">
                               POINTS:
                             </span>
-                            <span className="text-sm font-black text-[#C9A96B]">{log.points || 1}</span>
+                            <span className="text-sm font-black text-[#555555]">{log.points || 1}</span>
                             {log.bonuses && log.bonuses.length > 0 && (
                               <div className="flex flex-wrap items-center gap-1.5 ml-1">
                                 {log.bonuses.map((bonusTag, bIdx) => (
                                   <span
                                     key={bIdx}
-                                    className="text-[10px] font-bold bg-[#6B1820]/12 border border-[#C9A96B] text-[#C9A96B] px-2 py-0.5 rounded-md"
+                                    className="text-[10px] font-bold bg-blue-50 border border-gray-300 text-[#555555] px-2 py-0.5 rounded-md"
                                   >
                                     {bonusTag}
                                   </span>
@@ -1516,40 +1516,40 @@ export default function App() {
                           </div>
 
                           {/* Movie Poster */}
-                          <div className="w-full max-w-md bg-[#E9DFC9] border border-[#C9A96B]/70 rounded-xl overflow-hidden shadow-2xl">
+                          <div className="w-full max-w-md bg-[#F3F3F3] border border-gray-300/70 rounded-xl overflow-hidden shadow-2xl">
                             <MoviePoster
                               src={log.poster}
                               title={log.movie}
-                              className="w-full h-auto object-contain min-h-[300px]"
+                              className="w-full h-auto object-contain max-h-[520px]"
                             />
                           </div>
 
                           {/* Metadata Details & Review */}
                           <div className="space-y-4 max-w-md sm:max-xl">
-                            <div className="space-y-1 text-sm text-[#E9DFC9] font-medium">
+                            <div className="space-y-1 text-sm text-[#222222] font-medium">
                               <p>
-                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#555555] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Director:
                                 </span>{' '}
                                 {log.director}
                               </p>
                               <p>
-                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#555555] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Stars:
                                 </span>{' '}
                                 {log.stars}
                               </p>
                               <p>
-                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#555555] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Rating:
                                 </span>{' '}
-                                <span className="text-[#C9A96B] font-bold">{log.rating}</span>
+                                <span className="text-[#555555] font-bold">{log.rating}</span>
                               </p>
                               <p>
-                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#555555] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Logged On:
                                 </span>{' '}
-                                <span className="text-[#E9DFC9] font-medium">
+                                <span className="text-[#222222] font-medium">
                                   {log.date_logged || 'Prior Entry'}
                                 </span>
                               </p>
@@ -1560,17 +1560,17 @@ export default function App() {
                                 {log.review ? 'Review' : 'Plot Summary'}
                               </span>
                               {log.review ? (
-                                <p className="text-sm text-[#E9DFC9] leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 italic border-l-2 border-[#6B1820] whitespace-pre-line">
+                                <p className="text-sm text-[#222222] leading-relaxed bg-blue-50 p-4 rounded-xl border border-gray-300/60 italic border-l-2 border-[#004FFF] whitespace-pre-line">
                                   "{log.review}"
                                 </p>
                               ) : (
-                                <p className="text-sm text-[#E9DFC9]/85 leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 whitespace-pre-line">
+                                <p className="text-sm text-[#222222]/85 leading-relaxed bg-blue-50 p-4 rounded-xl border border-gray-300/60 whitespace-pre-line">
                                   {log.plot}
                                 </p>
                               )}
                             </div>
 
-                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-[#C9A96B]/60">
+                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-gray-300/60">
                               {isAuthenticated && (
                                 <button
                                   onClick={() => handleDeleteLog(log.id, log.movie)}
@@ -1583,7 +1583,7 @@ export default function App() {
                                 href={log.imdb}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-[11px] font-bold text-[#C9A96B] hover:text-[#E9DFC9] flex items-center gap-0.5"
+                                className="text-[11px] font-bold text-[#555555] hover:text-[#222222] flex items-center gap-0.5"
                               >
                                 More →
                               </a>
