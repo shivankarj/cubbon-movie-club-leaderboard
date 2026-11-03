@@ -218,7 +218,12 @@ export const getMemberTier = (filmCount) => {
   return MYSTERY_TIERS.EYE_WITNESS;
 };
 
-const EXPORT_CAT_AVATAR = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 120 120%22%3E%3Crect width=%22120%22 height=%22120%22 rx=%2260%22 fill=%22%23e9dfc9%22/%3E%3Cpath d=%22M25 47 L31 15 L55 34 Q60 32 65 34 L89 15 L95 47 Q105 60 99 79 Q91 103 60 104 Q29 103 21 79 Q15 60 25 47Z%22 fill=%22%236b1820%22 stroke=%22%23c9a96b%22 stroke-width=%224%22/%3E%3Cpath d=%22M43 64 Q48 58 53 64 M67 64 Q72 58 77 64 M54 78 Q60 84 66 78%22 fill=%22none%22 stroke=%22%23e9dfc9%22 stroke-width=%224%22 stroke-linecap=%22round%22/%3E%3C/svg%3E';
+const getMemberAvatarForExport = (name) => {
+  const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
+  const originalUrl = `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
+  // Use an image proxy that returns browser-readable image responses for canvas export.
+  return `https://images.weserv.nl/?url=${encodeURIComponent(originalUrl)}&w=120&h=120&fit=cover&output=png`;
+};
 
 const getMemberAvatar = (name) => {
   const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
@@ -2662,7 +2667,7 @@ export default function App() {
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '18px', paddingRight: '10px' }}>
-                          <img src={EXPORT_CAT_AVATAR} alt={member.name} style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <img src={getMemberAvatarForExport(member.name)} crossOrigin="anonymous" alt={member.name} style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
                           <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '29px', lineHeight: 1.15, fontWeight: 800, color: '#302a22' }}>{member.name}</div>
                         </div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
