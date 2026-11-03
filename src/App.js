@@ -1071,7 +1071,7 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-[#49382D] font-sans antialiased"
+      className="min-h-screen text-[#E9DFC9] font-sans antialiased"
       style={{
         backgroundColor: '#14251F',
         backgroundImage: `
@@ -1135,7 +1135,7 @@ export default function App() {
             style={{ fontFamily: "'Syncopate', sans-serif" }}
           >
             <span className="text-white">CUBBON</span>
-            <span className="text-[#6B1820] drop-shadow-[0_0_10px_rgba(107, 24, 32,0.8)]">MOVIE</span>
+            <span className="text-[#C9A96B] drop-shadow-[0_0_10px_rgba(201, 169, 107,0.45)]">MOVIE</span>
             <span className="text-white">CLUB</span>
           </div>
 
@@ -1159,7 +1159,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={handleAdminLogout}
-                    className="text-[10px] font-bold tracking-widest uppercase text-[#49382D]/80 hover:text-rose-400 border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
+                    className="text-[10px] font-bold tracking-widest uppercase text-[#E9DFC9] hover:text-[#C9A96B] border border-[#C9A96B]/70 bg-[#6B1820]/10 px-2.5 py-1.5 rounded-xl transition-all"
                     title="Lock Admin Portal"
                   >
                     🔒 LOGOUT
@@ -1191,7 +1191,7 @@ export default function App() {
               )}
               <button
                 onClick={() => setCurrentPage('public')}
-                className="text-xs font-bold tracking-wider uppercase text-[#49382D]/80 hover:text-white"
+                className="text-xs font-bold tracking-wider uppercase text-[#E9DFC9] hover:text-[#C9A96B]"
               >
                 ← Back
               </button>
@@ -1210,7 +1210,7 @@ export default function App() {
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span className="text-[#6B1820] drop-shadow-[0_0_12px_rgba(107, 24, 32,0.6)]">FRIGHT NIGHTS</span>
+                <span className="text-[#C9A96B] drop-shadow-[0_0_12px_rgba(201, 169, 107,0.35)]">FRIGHT NIGHTS</span>
                 <span className="text-white">OCTOBER 💀</span>
               </div>
               <p
@@ -1223,7 +1223,7 @@ export default function App() {
 
             {loading ? (
               <div
-                className="text-center py-16 text-xs font-bold tracking-widest text-[#6B1820]/80 uppercase animate-pulse"
+                className="text-center py-16 text-xs font-bold tracking-widest text-[#C9A96B] uppercase animate-pulse"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
                 🔮 Summoning Halloween Logs from Crypt...
@@ -1375,7 +1375,7 @@ export default function App() {
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
                             ? 'bg-[#6B1820] text-[#E9DFC9] border-[#6B1820]'
-                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
+                            : 'bg-[#E9DFC9] text-[#E9DFC9] border-[#C9A96B]/60 hover:text-[#C9A96B] hover:border-[#6B1820]'
                         }`}
                       >
                         <span>★</span>
@@ -1386,16 +1386,16 @@ export default function App() {
                         <select
                           value={selectedMemberFilter}
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
-                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
+                          className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#E9DFC9] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
                         >
                           <option value="">Filter Member</option>
                           {uniqueMembers.map((name) => (
-                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#49382D]">
+                            <option key={name} value={name} className="bg-[#E9DFC9] text-[#E9DFC9]">
                               {name}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6B1820] text-[10px]">
+                        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#C9A96B] text-[10px]">
                           ▼
                         </div>
                       </div>
@@ -1403,7 +1403,7 @@ export default function App() {
                   </div>
 
                   {processedLogs.length === 0 ? (
-                    <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
+                    <div className="text-sm text-[#E9DFC9] bg-[#E9DFC9] border border-[#C9A96B]/60 p-6 rounded-xl text-center">
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
@@ -1422,7 +1422,7 @@ export default function App() {
                               {log.rating && (
                                 <>
                                   <span className="text-slate-600 select-none">•</span>
-                                  <span className="whitespace-nowrap font-bold text-[#6B1820]">
+                                  <span className="whitespace-nowrap font-bold text-[#C9A96B]">
                                     {log.rating}
                                   </span>
                                 </>
@@ -1432,12 +1432,12 @@ export default function App() {
 
                           {/* 1. LOGGED BY */}
                           <div className="flex items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest">
                               LOGGED BY:
                             </span>
                             <button
                               onClick={() => setSelectedUser(log.name)}
-                              className="inline-flex items-center gap-2 bg-[#6B1820]/12 border border-[#C9A96B]/70 hover:border-[#6B1820] text-[#6B1820] hover:text-[#C9A96B] text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
+                              className="inline-flex items-center gap-2 bg-[#6B1820]/12 border border-[#C9A96B]/70 hover:border-[#6B1820] text-[#C9A96B] hover:text-[#C9A96B] text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
                             >
                               <img
                                 src={getMemberAvatar(log.name)}
@@ -1451,7 +1451,7 @@ export default function App() {
                           {/* 2. STREAM ON BADGES */}
                           {log.watch_providers && log.watch_providers.length > 0 && (
                             <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 pt-0.5">
-                              <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest shrink-0 self-start sm:self-auto">
+                              <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest shrink-0 self-start sm:self-auto">
                                 STREAM ON:
                               </span>
                               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -1470,7 +1470,7 @@ export default function App() {
                                   return (
                                     <span
                                       key={idx}
-                                      className="inline-flex items-center gap-1.5 h-6 bg-[#E9DFC9] border border-[#C9A96B]/60 text-[#49382D] text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
+                                      className="inline-flex items-center gap-1.5 h-6 bg-[#E9DFC9] border border-[#C9A96B]/60 text-[#E9DFC9] text-[10px] font-bold px-2.5 rounded-lg shrink-0 select-none"
                                     >
                                       {providerLogo ? (
                                         <img
@@ -1491,16 +1491,16 @@ export default function App() {
 
                           {/* 3. POINTS AND STACKABLE BREAKDOWN CHIPS */}
                           <div className="flex flex-wrap items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-[#6B1820]/80 uppercase tracking-widest">
+                            <span className="text-[10px] font-bold text-[#C9A96B] uppercase tracking-widest">
                               POINTS:
                             </span>
-                            <span className="text-sm font-black text-[#6B1820]">{log.points || 1}</span>
+                            <span className="text-sm font-black text-[#C9A96B]">{log.points || 1}</span>
                             {log.bonuses && log.bonuses.length > 0 && (
                               <div className="flex flex-wrap items-center gap-1.5 ml-1">
                                 {log.bonuses.map((bonusTag, bIdx) => (
                                   <span
                                     key={bIdx}
-                                    className="text-[10px] font-bold bg-[#6B1820]/12 border border-[#C9A96B] text-[#6B1820] px-2 py-0.5 rounded-md"
+                                    className="text-[10px] font-bold bg-[#6B1820]/12 border border-[#C9A96B] text-[#C9A96B] px-2 py-0.5 rounded-md"
                                   >
                                     {bonusTag}
                                   </span>
@@ -1520,45 +1520,45 @@ export default function App() {
 
                           {/* Metadata Details & Review */}
                           <div className="space-y-4 max-w-md sm:max-xl">
-                            <div className="space-y-1 text-sm text-[#49382D] font-medium">
+                            <div className="space-y-1 text-sm text-[#E9DFC9] font-medium">
                               <p>
-                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Director:
                                 </span>{' '}
                                 {log.director}
                               </p>
                               <p>
-                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Stars:
                                 </span>{' '}
                                 {log.stars}
                               </p>
                               <p>
-                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Rating:
                                 </span>{' '}
-                                <span className="text-[#6B1820] font-bold">{log.rating}</span>
+                                <span className="text-[#C9A96B] font-bold">{log.rating}</span>
                               </p>
                               <p>
-                                <span className="text-[#6B1820]/80 font-bold uppercase tracking-wider text-[11px] mr-1.5">
+                                <span className="text-[#C9A96B] font-bold uppercase tracking-wider text-[11px] mr-1.5">
                                   Logged On:
                                 </span>{' '}
-                                <span className="text-[#49382D] font-medium">
+                                <span className="text-[#E9DFC9] font-medium">
                                   {log.date_logged || 'Prior Entry'}
                                 </span>
                               </p>
                             </div>
 
                             <div className="space-y-1.5">
-                              <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B1820]/80">
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-[#49382D]">
                                 {log.review ? 'Review' : 'Plot Summary'}
                               </span>
                               {log.review ? (
-                                <p className="text-sm text-[#49382D] leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 italic border-l-2 border-[#6B1820] whitespace-pre-line">
+                                <p className="text-sm text-[#E9DFC9] leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 italic border-l-2 border-[#6B1820] whitespace-pre-line">
                                   "{log.review}"
                                 </p>
                               ) : (
-                                <p className="text-sm text-[#49382D]/80 leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 whitespace-pre-line">
+                                <p className="text-sm text-[#E9DFC9]/85 leading-relaxed bg-[#6B1820]/10 p-4 rounded-xl border border-[#C9A96B]/60 whitespace-pre-line">
                                   {log.plot}
                                 </p>
                               )}
@@ -1577,7 +1577,7 @@ export default function App() {
                                 href={log.imdb}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-[11px] font-bold text-[#6B1820] hover:text-white flex items-center gap-0.5"
+                                className="text-[11px] font-bold text-[#C9A96B] hover:text-[#E9DFC9] flex items-center gap-0.5"
                               >
                                 More →
                               </a>
@@ -1712,7 +1712,7 @@ export default function App() {
                         type="button"
                         onClick={handleScanMetadata}
                         disabled={isScanning}
-                        className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-[#6B1820] text-xs font-black uppercase rounded-xl transition-colors shrink-0"
+                        className="px-4 py-3 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-[#E9DFC9] text-xs font-black uppercase rounded-xl transition-colors shrink-0"
                       >
                         {isScanning ? '...' : '🔍 Scan Title'}
                       </button>
@@ -1820,7 +1820,7 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => addCustomProvider(customProviderText)}
-                        className="px-3 py-1.5 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-xs font-bold text-[#6B1820] rounded-lg shrink-0"
+                        className="px-3 py-1.5 bg-[#6B1820] hover:bg-[#49382D] border border-[#6B1820] text-xs font-bold text-[#E9DFC9] rounded-lg shrink-0"
                       >
                         + Add
                       </button>
@@ -2070,7 +2070,7 @@ export default function App() {
                 />
                 <div>
                   <h3 className="text-xl font-black text-white">{selectedUser}</h3>
-                  <p className="text-xs text-[#6B1820] font-bold">
+                  <p className="text-xs text-[#C9A96B] font-bold">
                     {memberStats[selectedUser]?.points || 0} Total Points • {selectedMemberLogs.length} Horror Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </p>
@@ -2117,7 +2117,7 @@ export default function App() {
             })()}
 
             <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#6B1820]">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#C9A96B]">
                 Horror Entries ({selectedMemberLogs.length})
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
@@ -2132,7 +2132,7 @@ export default function App() {
                       className="w-full h-36 object-cover rounded-lg mb-2"
                     />
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-white truncate">{log.movie}</div>
+                      <div className="text-xs font-bold text-[#49382D] truncate">{log.movie}</div>
                       <div className="text-[10px] text-[#6B1820] font-semibold flex items-center justify-between mt-1">
                         <span>{log.rating || '★ —'}</span>
                         <span className="text-[#49382D]/80">+{log.points || 1} pts</span>
