@@ -206,7 +206,7 @@ export const MYSTERY_TIERS = {
   SERIAL_KILLER: { label: 'SERIAL KILLER', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
   MURDERER: { label: 'MURDERER', icon: '🔪', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
   SUSPECT: { label: 'SUSPECT', icon: '🕵️', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
-  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#49382D', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
+  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#E9DFC9', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
 export const getMemberTier = (filmCount) => {
