@@ -497,7 +497,7 @@ export default function App() {
 
           // Standardize display names
           let displayName = rawName;
-          if (lowerName === 'amazon video') displayName = 'Amazon Prime Video';
+          if (lowerName === 'amazon video' || lowerName.includes('amazon prime')) displayName = 'Prime';
           if (lowerName.includes('apple tv')) displayName = 'Apple TV';
 
           const matchesIndianWhitelist = INDIAN_ALLOWED_PLATFORMS.some((allowed) => {
@@ -1140,14 +1140,10 @@ export default function App() {
           </div>
 
           <div className="w-12 h-12 rounded-xl bg-[#E9DFC9] border border-[#C9A96B]/70 flex items-center justify-center p-2">
-            <svg viewBox="0 0 100 100" className="w-full h-full" aria-hidden="true">
-              <circle cx="39" cy="37" r="25" fill="#14251F" stroke="#C9A96B" strokeWidth="5" />
-              <circle cx="39" cy="37" r="18" fill="#6B1820" stroke="#E9DFC9" strokeWidth="2" />
-              <path d="M55 55L82 82" stroke="#49382D" strokeWidth="13" strokeLinecap="round" />
-              <path d="M55 55L82 82" stroke="#C9A96B" strokeWidth="8" strokeLinecap="round" />
-              <path d="M29 29l5-5 5 5-5 5z" fill="#E9DFC9" />
-              <path d="M67 69l4-4 4 4-4 4z" fill="#E9DFC9" />
-              <circle cx="39" cy="37" r="4" fill="#C9A96B" />
+            <svg viewBox="0 0 24 24" className="w-full h-full" aria-hidden="true">
+              <circle cx="9.5" cy="9.5" r="6.5" fill="#6B1820" stroke="#C9A96B" strokeWidth="1.8" />
+              <path d="M14.5 14.5L21 21" stroke="#C9A96B" strokeWidth="3" strokeLinecap="round" />
+              <path d="M7 7l2.5-2.5L12 7l-2.5 2.5z" fill="#E9DFC9" />
             </svg>
           </div>
         </div>
@@ -1219,7 +1215,7 @@ export default function App() {
         {currentPage === 'public' && (
           <div className="space-y-16">
             {/* REPLACEABLE MYSTERY MONTH BANNER IMAGE: upload a new file as public/mystery-month-banner.jpg */}
-            <div className="mb-4 overflow-hidden rounded-2xl border border-[#C9A96B]/70 bg-[#14251F]">
+            <div className="mb-0 overflow-hidden rounded-2xl border border-[#C9A96B]/70 bg-[#14251F]">
               <img
                 src="/mystery-month-banner.jpg"
                 alt="Mystery Month banner"
@@ -1228,7 +1224,7 @@ export default function App() {
               />
             </div>
             {/* MYSTERY MONTH THEME BANNER */}
-            <div className="text-left py-4 border-b border-[#C9A96B]/70">
+            <div className="text-left pt-2 pb-4 border-b border-[#C9A96B]/70">
               <div
                 className="text-2xl md:text-4xl font-bold tracking-widest uppercase flex flex-col gap-1 leading-none"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
@@ -1796,7 +1792,7 @@ export default function App() {
                     <div className="pt-2 border-t border-[#C9A96B]/60 flex flex-wrap gap-1.5 items-center">
                       {[
                         'Netflix',
-                        'Amazon Prime Video',
+                        'Prime',
                         'Hotstar',
                         'JioCinema',
                         'SonyLIV',
