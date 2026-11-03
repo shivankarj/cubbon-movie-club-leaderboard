@@ -2603,7 +2603,7 @@ export default function App() {
                 color: '#25221d',
                 fontFamily: "'Inter', system-ui, sans-serif",
                 backgroundColor: '#e9dfc9',
-                backgroundImage: "url('/images/mystery-parchment.jpg')",
+                backgroundImage: "url('/images/my-newspaper-background.jpg')",
                 backgroundSize: '100% 100%',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
