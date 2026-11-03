@@ -2563,549 +2563,102 @@ export default function App() {
         </div>
       )}
 
-      {/* 1A. STORY BY POINTS — SLIDE 1 (RANKS 1 TO 10) */}
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
-        <div
-          ref={exportPointsRefPart1}
-          style={{
-            width: '1080px',
-            height: '1920px',
-            backgroundColor: '#14251F',
-            backgroundImage: `
-              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: '28px 28px',
-            color: '#ffffff',
-            padding: '90px 70px 60px 70px',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            boxSizing: 'border-box',
-            border: '12px solid #6B1820',
-            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
-            borderRadius: '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            {/* MATCHING PROFILE STORY HEADER STYLE */}
-            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '800',
-                  fontSize: '46px',
-                  letterSpacing: '4px',
-                  lineHeight: '1.1',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
-                }}
-              >
-                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '700',
-                  fontSize: '24px',
-                  letterSpacing: '3px',
-                  marginTop: '10px',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                }}
-              >
-                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
-              </div>
-            </div>
-
-            {/* LEADERBOARD TITLE ROW */}
-            <div style={{ marginBottom: '28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
-                  <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
-                    LEADERBOARD
-                  </div>
-                </div>
-                <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
-                  Ranked by Points
+      
+      {/* MYSTERY MONTH VINTAGE NEWSPAPER LEADERBOARD EXPORTS */}
+      {(() => {
+        const renderLeaderboardExport = (ref, members, mode, part) => (
+          <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+            <div
+              ref={ref}
+              style={{
+                width: '1080px',
+                height: '1920px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                padding: '62px 68px 58px',
+                color: '#25221d',
+                fontFamily: "'Inter', system-ui, sans-serif",
+                backgroundColor: '#f2ead8',
+                backgroundImage: 'radial-gradient(ellipse at 18% 12%, rgba(255,255,255,.78), transparent 42%), radial-gradient(ellipse at 82% 88%, rgba(151,112,65,.10), transparent 48%), repeating-linear-gradient(0deg, rgba(91,69,43,.025) 0px, rgba(91,69,43,.025) 1px, transparent 1px, transparent 4px)',
+                border: '1px solid #c8b99d',
+              }}
+            >
+              <div style={{ position: 'absolute', top: '-18px', right: '-28px', width: '370px', height: '190px', transform: 'rotate(8deg)', opacity: .62, pointerEvents: 'none' }}>
+                <div style={{ background: '#dfd3bb', padding: '18px 22px', boxShadow: '0 5px 14px rgba(54,40,25,.13)', border: '1px solid #c4b69e', color: '#716653', fontFamily: 'Georgia,serif', fontSize: '17px', lineHeight: '1.45', letterSpacing: '2px', filter: 'grayscale(1)' }}>
+                  QVARTERLY REPORT · ARCHIVE 1894<br/>— — — — — — — — — — — —<br/>THE EVENING REGISTER<br/>— — — — — — — — — — — —<br/>•••  •••  •••  •••  •••  •••
                 </div>
               </div>
-            </div>
+              <div style={{ position: 'absolute', left: '-42px', top: '205px', transform: 'rotate(-8deg)', color: 'rgba(103,73,44,.55)', fontFamily: 'cursive', fontSize: '26px', lineHeight: '1.7', letterSpacing: '2px', pointerEvents: 'none' }}>
+                notes from<br/>the archive<br/>and other<br/>observations
+              </div>
 
-            {/* CARDS LIST */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {leaderboardByPoints.slice(0, 10).map((member, idx) => (
-                <div
-                  key={member.name}
-                  style={{
-                    backgroundColor: '#14251F',
-                    border: idx === 0 ? '3px solid #6B1820' : '2px solid #49382D',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(107, 24, 32, 0.18)' : 'none',
-                    borderRadius: '14px',
-                    padding: '18px 28px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
-                      <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#6B1820' : idx === 1 ? '#C9A96B' : idx === 2 ? '#cd7f32' : '#49382D'} />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
-                          {idx + 1}
-                        </text>
-                      </svg>
-                    </div>
-
-                    <img
-                      src={getMemberAvatar(member.name)}
-                      alt={member.name}
-                      style={{
-                        width: '58px',
-                        height: '58px',
-                        borderRadius: '50%',
-                        backgroundColor: '#000000',
-                        border: '2px solid #6B1820',
-                        padding: '2px',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    <div>
-                      <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>{member.name}</span>
-                        {idx === 0 && <span style={{ fontSize: '24px' }}>👑</span>}
-                      </div>
-                    </div>
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '42px' }}>
+                  <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '27px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
+                    CUBBON<br/><span style={{ color: '#6B1820' }}>MOVIE</span><br/>CLUB
                   </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
-                      {member.points} POINTS
-                    </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
-                      {member.count} Film{member.count > 1 ? 's' : ''}
-                    </div>
+                  <div style={{ width: '2px', height: '82px', background: '#8b795c' }} />
+                  <div style={{ width: '76px', height: '76px', borderRadius: '17px', background: '#e5d9bd', border: '1px solid #c4ad7c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '43px' }}>🕵️</div>
+                  <div style={{ marginLeft: 'auto', textAlign: 'right', color: '#6f604c', fontFamily: 'Georgia,serif', fontSize: '15px', letterSpacing: '2px' }}>
+                    THE CLUB RECORD<br/><span style={{ fontSize: '12px' }}>MYSTERY MONTH EDITION · {part === 1 ? 'NO. 01' : 'NO. 02'}</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
-            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
-          </div>
-        </div>
-      </div>
-
-      {/* 1B. STORY BY POINTS — SLIDE 2 (RANKS 11 TO 20) */}
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
-        <div
-          ref={exportPointsRefPart2}
-          style={{
-            width: '1080px',
-            height: '1920px',
-            backgroundColor: '#14251F',
-            backgroundImage: `
-              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: '28px 28px',
-            color: '#ffffff',
-            padding: '90px 70px 60px 70px',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            boxSizing: 'border-box',
-            border: '12px solid #6B1820',
-            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
-            borderRadius: '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            {/* MATCHING PROFILE STORY HEADER STYLE (PART 2) */}
-            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '800',
-                  fontSize: '46px',
-                  letterSpacing: '4px',
-                  lineHeight: '1.1',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
-                }}
-              >
-                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '700',
-                  fontSize: '24px',
-                  letterSpacing: '3px',
-                  marginTop: '10px',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                }}
-              >
-                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '28px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
-                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
+                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '59px', lineHeight: 1.22, letterSpacing: '5px', textTransform: 'uppercase', color: '#6B1820', marginLeft: '8px' }}>
+                  MYSTERY MONTH
+                </div>
+                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '65px', lineHeight: 1.16, letterSpacing: '5px', textTransform: 'uppercase', color: '#14251F', marginLeft: '8px', marginBottom: '32px' }}>
                   LEADERBOARD
                 </div>
-              </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
-                Ranked by Points (Ranks 11-20)
-              </div>
-            </div>
+                <div style={{ borderTop: '2px solid #49382D', borderBottom: '1px solid #9f9076', padding: '16px 8px', display: 'grid', gridTemplateColumns: '72px 1fr 170px 145px', alignItems: 'center', fontSize: '20px', fontWeight: 800, letterSpacing: '3px', color: '#14251F', textTransform: 'uppercase' }}>
+                  <span>#</span><span>Member</span><span style={{ textAlign: 'center' }}>Points</span><span style={{ textAlign: 'center' }}>Films</span>
+                </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {leaderboardByPoints.slice(10, 20).map((member, idx) => (
-                <div
-                  key={member.name}
-                  style={{
-                    backgroundColor: '#14251F',
-                    border: '2px solid #49382D',
-                    borderRadius: '14px',
-                    padding: '18px 28px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
-                      <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill="#49382D" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="28" fontWeight="900" fontFamily="sans-serif">
-                          {idx + 11}
-                        </text>
-                      </svg>
-                    </div>
-
-                    <img
-                      src={getMemberAvatar(member.name)}
-                      alt={member.name}
-                      style={{
-                        width: '58px',
-                        height: '58px',
-                        borderRadius: '50%',
-                        backgroundColor: '#000000',
-                        border: '2px solid #6B1820',
-                        padding: '2px',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    <div>
-                      <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc' }}>
-                        {member.name}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '13px', marginTop: '18px' }}>
+                  {members.map((member, idx) => {
+                    const rank = (part - 1) * 10 + idx + 1;
+                    return (
+                      <div key={member.name} style={{ minHeight: '116px', display: 'grid', gridTemplateColumns: '72px 1fr 170px 145px', alignItems: 'center', padding: '12px 8px', borderBottom: '1px solid rgba(125,103,72,.38)', background: 'rgba(255,252,243,.43)' }}>
+                        <div style={{ width: '48px', height: '48px', borderRadius: '7px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.42)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                          {rank}
+                        </div>
+                        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '18px' }}>
+                          <img src={getMemberAvatar(member.name)} alt={member.name} crossOrigin="anonymous" style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <div title={member.name} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '29px', lineHeight: 1.15, fontWeight: 800, color: '#302a22' }}>{member.name}</div>
+                        </div>
+                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 800, color: '#49382D', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
+                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 800, color: '#49382D', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
                       </div>
-                    </div>
-                  </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
-                      {member.points} POINTS
-                    </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
-                      {member.count} Film{member.count > 1 ? 's' : ''}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
-            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
-          </div>
-        </div>
-      </div>
-
-      {/* 2A. STORY BY FILMS — SLIDE 1 (RANKS 1 TO 10) */}
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
-        <div
-          ref={exportFilmsRefPart1}
-          style={{
-            width: '1080px',
-            height: '1920px',
-            backgroundColor: '#14251F',
-            backgroundImage: `
-              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: '28px 28px',
-            color: '#ffffff',
-            padding: '90px 70px 60px 70px',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            boxSizing: 'border-box',
-            border: '12px solid #6B1820',
-            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
-            borderRadius: '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            {/* MATCHING PROFILE STORY HEADER STYLE (FILMS 1) */}
-            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '800',
-                  fontSize: '46px',
-                  letterSpacing: '4px',
-                  lineHeight: '1.1',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
-                }}
-              >
-                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '700',
-                  fontSize: '24px',
-                  letterSpacing: '3px',
-                  marginTop: '10px',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                }}
-              >
-                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '28px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
-                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
-                  LEADERBOARD
+                    );
+                  })}
                 </div>
               </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
-                Ranked by Films
+
+              <div style={{ position: 'absolute', left: '58px', bottom: '44px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '14px', letterSpacing: '2px' }}>
+                CUBBON MOVIE CLUB · MYSTERY MONTH
               </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {leaderboardByFilms.slice(0, 10).map((member, idx) => (
-                <div
-                  key={member.name}
-                  style={{
-                    backgroundColor: '#14251F',
-                    border: idx === 0 ? '3px solid #6B1820' : '2px solid #49382D',
-                    boxShadow: idx === 0 ? '0 0 25px rgba(107, 24, 32, 0.18)' : 'none',
-                    borderRadius: '14px',
-                    padding: '18px 28px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
-                      <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill={idx === 0 ? '#6B1820' : idx === 1 ? '#C9A96B' : idx === 2 ? '#cd7f32' : '#49382D'} />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill={idx === 0 || idx === 1 ? '#000000' : '#ffffff'} fontSize="28" fontWeight="900" fontFamily="sans-serif">
-                          {idx + 1}
-                        </text>
-                      </svg>
-                    </div>
-
-                    <img
-                      src={getMemberAvatar(member.name)}
-                      alt={member.name}
-                      style={{
-                        width: '58px',
-                        height: '58px',
-                        borderRadius: '50%',
-                        backgroundColor: '#000000',
-                        border: '2px solid #6B1820',
-                        padding: '2px',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    <div>
-                      <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>{member.name}</span>
-                        {idx === 0 && <span style={{ fontSize: '24px' }}>👑</span>}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
-                      {member.count} FILM{member.count > 1 ? 'S' : ''}
-                    </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
-                      {member.points} Points
-                    </div>
-                  </div>
-                </div>
-              ))}
+              <div style={{ position: 'absolute', right: '44px', bottom: '34px', width: '190px', height: '230px', transform: 'rotate(5deg)', background: 'linear-gradient(145deg,#b9a98c,#756b59)', border: '12px solid #e8ddc8', boxShadow: '0 4px 14px rgba(48,35,20,.22)', overflow: 'hidden', filter: 'grayscale(1)' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 34%, rgba(235,224,202,.5), transparent 38%), linear-gradient(0deg, rgba(30,27,23,.82), transparent 68%)' }} />
+                <div style={{ position: 'absolute', bottom: '0', left: '48px', width: '88px', height: '132px', background: '#302d28', borderRadius: '48% 48% 0 0' }} />
+                <div style={{ position: 'absolute', bottom: '108px', left: '67px', width: '52px', height: '58px', background: '#302d28', borderRadius: '50%' }} />
+                <div style={{ position: 'absolute', bottom: '153px', left: '57px', width: '72px', height: '12px', background: '#302d28', borderRadius: '50%' }} />
+                <div style={{ position: 'absolute', right: '20px', top: '28px', width: '7px', height: '95px', background: '#39342c' }} />
+                <div style={{ position: 'absolute', right: '9px', top: '17px', width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(235,218,178,.8)', boxShadow: '0 0 22px 8px rgba(235,218,178,.35)' }} />
+              </div>
             </div>
           </div>
+        );
+        return (
+          <>
+            {renderLeaderboardExport(exportPointsRefPart1, leaderboardByPoints.slice(0, 10), 'points', 1)}
+            {renderLeaderboardExport(exportPointsRefPart2, leaderboardByPoints.slice(10, 20), 'points', 2)}
+            {renderLeaderboardExport(exportFilmsRefPart1, leaderboardByFilms.slice(0, 10), 'films', 1)}
+            {renderLeaderboardExport(exportFilmsRefPart2, leaderboardByFilms.slice(10, 20), 'films', 2)}
+          </>
+        );
+      })()}
 
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
-            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
-          </div>
-        </div>
-      </div>
-
-      {/* 2B. STORY BY FILMS — SLIDE 2 (RANKS 11 TO 20) */}
-      <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
-        <div
-          ref={exportFilmsRefPart2}
-          style={{
-            width: '1080px',
-            height: '1920px',
-            backgroundColor: '#14251F',
-            backgroundImage: `
-              linear-gradient(rgba(107, 24, 32, 0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(107, 24, 32, 0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: '28px 28px',
-            color: '#ffffff',
-            padding: '90px 70px 60px 70px',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            boxSizing: 'border-box',
-            border: '12px solid #6B1820',
-            boxShadow: '0 0 60px rgba(107, 24, 32, 0.18) inset, 0 0 30px rgba(107, 24, 32, 0.2)',
-            borderRadius: '0px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            {/* MATCHING PROFILE STORY HEADER STYLE (FILMS 2) */}
-            <div style={{ marginBottom: '32px', boxSizing: 'border-box' }}>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '800',
-                  fontSize: '46px',
-                  letterSpacing: '4px',
-                  lineHeight: '1.1',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                  textShadow: '0 0 22px rgba(255, 255, 255, 0.4)',
-                }}
-              >
-                CUBBON <span style={{ color: '#6B1820', textShadow: '0 0 25px #6B1820, 0 0 55px rgba(107, 24, 32, 0.24)' }}>MOVIE</span> CLUB
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '700',
-                  fontSize: '24px',
-                  letterSpacing: '3px',
-                  marginTop: '10px',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                }}
-              >
-                <span style={{ color: '#6B1820', textShadow: '0 0 15px rgba(107, 24, 32, 0.24)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '28px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <div style={{ width: '8px', height: '38px', backgroundColor: '#6B1820', boxShadow: '0 0 14px #6B1820' }} />
-                <div style={{ fontSize: '40px', fontWeight: '900', letterSpacing: '2px', color: '#ffffff' }}>
-                  LEADERBOARD
-                </div>
-              </div>
-              <div style={{ fontSize: '18px', fontWeight: '800', color: '#C9A96B', letterSpacing: '1.5px', textTransform: 'uppercase', marginLeft: '22px', marginTop: '4px' }}>
-                Ranked by Films (Ranks 11-20)
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {leaderboardByFilms.slice(10, 20).map((member, idx) => (
-                <div
-                  key={member.name}
-                  style={{
-                    backgroundColor: '#14251F',
-                    border: '2px solid #49382D',
-                    borderRadius: '14px',
-                    padding: '18px 28px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                    <div style={{ width: '52px', height: '52px', position: 'relative', flexShrink: 0 }}>
-                      <svg width="100%" height="100%" viewBox="0 0 64 64">
-                        <rect width="64" height="64" rx="12" fill="#49382D" />
-                        <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fill="#6B1820" fontSize="28" fontWeight="900" fontFamily="sans-serif">
-                          {idx + 11}
-                        </text>
-                      </svg>
-                    </div>
-
-                    <img
-                      src={getMemberAvatar(member.name)}
-                      alt={member.name}
-                      style={{
-                        width: '58px',
-                        height: '58px',
-                        borderRadius: '50%',
-                        backgroundColor: '#000000',
-                        border: '2px solid #6B1820',
-                        padding: '2px',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    <div>
-                      <div style={{ fontSize: '30px', fontWeight: '900', color: '#f8fafc' }}>
-                        {member.name}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '26px', fontWeight: '900', color: '#6B1820' }}>
-                      {member.count} FILM{member.count > 1 ? 'S' : ''}
-                    </div>
-                    <div style={{ fontSize: '15px', fontWeight: '800', color: '#49382D', marginTop: '2px' }}>
-                      {member.points} Points
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ minHeight: '80px', borderTop: '3px solid rgba(107, 24, 32, 0.16)', display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', fontSize: '28px', fontWeight: '800', fontFamily: 'monospace', color: '#6B1820', letterSpacing: '3px', textShadow: '0 0 14px rgba(107, 24, 32, 0.24)' }}>
-            STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
