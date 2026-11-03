@@ -1213,7 +1213,7 @@ export default function App() {
       {/* MAIN CONTAINER */}
       <main className="max-w-4xl mx-auto p-4 md:p-8">
         {currentPage === 'public' && (
-          <div className="space-y-16">
+          <div className="space-y-6">
             {/* REPLACEABLE MYSTERY MONTH BANNER IMAGE: upload a new file as public/mystery-month-banner.jpg */}
             <div className="mb-0 overflow-hidden rounded-2xl border border-[#C9A96B]/70 bg-[#14251F]">
               <img
