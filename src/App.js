@@ -846,6 +846,7 @@ export default function App() {
   const captureElementToJpeg = async (element) => {
     if (!element) return null;
 
+    // Wait for web fonts, inline images and CSS background images before capture.
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     const inlineImages = Array.from(element.querySelectorAll('img'));
     await Promise.all(inlineImages.map((img) => {
@@ -855,7 +856,6 @@ export default function App() {
         img.onerror = resolve;
       });
     }));
-
     const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\(["']?(.*?)["']?\)/);
     if (backgroundMatch && backgroundMatch[1]) {
       await new Promise((resolve) => {
@@ -868,47 +868,17 @@ export default function App() {
     }
 
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
-    if (typeof window === 'undefined' || !window.htmlToImage || !window.htmlToImage.toJpeg) {
-      throw new Error('Image exporter could not be initialized.');
-    }
-
-    // Inline remote images in an off-screen clone so html-to-image does not
-    // need to fetch RoboHash avatars again while building the JPEG.
-    const exportClone = element.cloneNode(true);
-    const cloneImages = Array.from(exportClone.querySelectorAll('img'));
-    await Promise.all(cloneImages.map(async (img) => {
-      const source = img.getAttribute('src');
-      if (!source || source.startsWith('data:')) return;
-      const response = await fetch(source);
-      if (!response.ok) throw new Error(`Could not fetch export image (${response.status}): ${source}`);
-      const blob = await response.blob();
-      const dataUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error(`Could not convert export image: ${source}`));
-        reader.readAsDataURL(blob);
-      });
-      img.setAttribute('src', dataUrl);
-      img.removeAttribute('srcset');
-      img.loading = 'eager';
-    }));
-
-    exportClone.style.position = 'fixed';
-    exportClone.style.left = '-12000px';
-    exportClone.style.top = '0';
-    exportClone.style.pointerEvents = 'none';
-    document.body.appendChild(exportClone);
-    try {
-      return await window.htmlToImage.toJpeg(exportClone, {
+    if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
+      return await window.htmlToImage.toJpeg(element, {
         quality: 0.96,
         pixelRatio: 2,
-        cacheBust: false,
+        cacheBust: true,
         skipAutoScale: false,
+        // Avoid cross-origin Google Fonts CSS access during export.
         skipFonts: true,
       });
-    } finally {
-      document.body.removeChild(exportClone);
     }
+    throw new Error('Image exporter could not be initialized.');
   };
 
   const handleDownloadLeaderboardImage = async (mode = 'points') => {
