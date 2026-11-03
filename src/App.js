@@ -839,9 +839,10 @@ export default function App() {
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
     if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
       return await window.htmlToImage.toJpeg(element, {
-        quality: 0.95,
-        backgroundColor: '#14251F',
+        quality: 0.96,
         pixelRatio: 2,
+        cacheBust: true,
+        skipAutoScale: false,
       });
     }
     throw new Error('Image exporter could not be initialized.');
@@ -2567,7 +2568,7 @@ export default function App() {
       {/* MYSTERY MONTH VINTAGE NEWSPAPER LEADERBOARD EXPORTS */}
       {(() => {
         const renderLeaderboardExport = (ref, members, mode, part) => (
-          <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
+          <div style={{ position: 'fixed', left: '-12000px', top: 0, width: '1080px', height: '1920px', pointerEvents: 'none' }}>
             <div
               ref={ref}
               style={{
@@ -2576,75 +2577,93 @@ export default function App() {
                 position: 'relative',
                 overflow: 'hidden',
                 boxSizing: 'border-box',
-                padding: '62px 68px 58px',
+                padding: '58px 62px 54px',
                 color: '#25221d',
                 fontFamily: "'Inter', system-ui, sans-serif",
-                backgroundColor: '#f2ead8',
-                backgroundImage: 'radial-gradient(ellipse at 18% 12%, rgba(255,255,255,.78), transparent 42%), radial-gradient(ellipse at 82% 88%, rgba(151,112,65,.10), transparent 48%), repeating-linear-gradient(0deg, rgba(91,69,43,.025) 0px, rgba(91,69,43,.025) 1px, transparent 1px, transparent 4px)',
+                backgroundColor: '#f4ead7',
+                backgroundImage: 'radial-gradient(ellipse at 20% 8%, rgba(255,255,255,.7), transparent 44%), radial-gradient(ellipse at 85% 90%, rgba(166,126,76,.10), transparent 48%), repeating-linear-gradient(0deg, rgba(91,69,43,.025) 0px, rgba(91,69,43,.025) 1px, transparent 1px, transparent 4px)',
                 border: '1px solid #c8b99d',
               }}
             >
-              <div style={{ position: 'absolute', top: '-18px', right: '-28px', width: '370px', height: '190px', transform: 'rotate(8deg)', opacity: .62, pointerEvents: 'none' }}>
-                <div style={{ background: '#dfd3bb', padding: '18px 22px', boxShadow: '0 5px 14px rgba(54,40,25,.13)', border: '1px solid #c4b69e', color: '#716653', fontFamily: 'Georgia,serif', fontSize: '17px', lineHeight: '1.45', letterSpacing: '2px', filter: 'grayscale(1)' }}>
-                  QXRV ·· 19/04 ·· N° 7<br/>— — — — — — — — — — — —<br/>VVRN / K—L / 08:31<br/>— — — — — — — — — — — —<br/>•••  ••  •••  ••  •••  ••
+              {/* Layered, deliberately illegible newspaper scraps */}
+              <div style={{ position: 'absolute', zIndex: 0, top: '-24px', right: '-32px', width: '430px', height: '190px', transform: 'rotate(7deg)', opacity: .82, pointerEvents: 'none' }}>
+                <div style={{ position: 'absolute', inset: '0 0 38px 0', padding: '20px 24px', background: 'repeating-linear-gradient(0deg,#d8cbb4 0 2px,#eee3d0 2px 5px)', border: '1px solid #c4b69e', boxShadow: '0 7px 15px rgba(54,40,25,.18)', color: '#766b5a', fontFamily: 'Georgia,serif', fontSize: '18px', letterSpacing: '5px', lineHeight: '1.45', overflow: 'hidden' }}>
+                  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪<br/>— — — — — — — — — —<br/>▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪<br/>— — — — — — — — — —
                 </div>
+                <div style={{ position: 'absolute', right: '35px', top: '88px', width: '245px', height: '80px', transform: 'rotate(-9deg)', background: 'repeating-linear-gradient(0deg,#e9deca 0 3px,#cfc1a9 3px 5px)', border: '1px solid #c4b69e', boxShadow: '0 4px 9px rgba(54,40,25,.16)' }} />
               </div>
-              <div style={{ position: 'absolute', left: '-42px', top: '205px', transform: 'rotate(-8deg)', color: 'rgba(103,73,44,.55)', fontFamily: 'cursive', fontSize: '26px', lineHeight: '1.7', letterSpacing: '2px', pointerEvents: 'none' }}>
-                notes from<br/>the archive<br/>and other<br/>observations
-              </div>
+              <div style={{ position: 'absolute', left: '-64px', top: '235px', transform: 'rotate(-9deg)', width: '210px', height: '255px', opacity: .52, background: 'repeating-linear-gradient(0deg,transparent 0 18px,rgba(109,83,53,.55) 19px 20px)', maskImage: 'linear-gradient(90deg,#000,transparent)', pointerEvents: 'none' }} />
 
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '42px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '40px' }}>
                   <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '27px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
                     CUBBON<br/><span style={{ color: '#6B1820' }}>MOVIE</span><br/>CLUB
                   </div>
                   <div style={{ width: '2px', height: '82px', background: '#8b795c' }} />
                   <div style={{ width: '76px', height: '76px', borderRadius: '17px', background: '#e5d9bd', border: '1px solid #c4ad7c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '43px' }}>🕵️</div>
-                  <div style={{ marginLeft: 'auto', textAlign: 'right', color: '#6f604c', fontFamily: 'Georgia,serif', fontSize: '15px', letterSpacing: '2px' }}>
+                  <div style={{ marginLeft: 'auto', textAlign: 'right', color: '#75654f', fontFamily: 'Georgia,serif', fontSize: '14px', letterSpacing: '2px' }}>
                     THE CLUB RECORD<br/><span style={{ fontSize: '12px' }}>MYSTERY MONTH EDITION · {part === 1 ? 'NO. 01' : 'NO. 02'}</span>
                   </div>
                 </div>
 
-                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '59px', lineHeight: 1.22, letterSpacing: '5px', textTransform: 'uppercase', color: '#6B1820', marginLeft: '8px' }}>
+                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '59px', lineHeight: 1.18, letterSpacing: '5px', textTransform: 'uppercase', color: '#6B1820', marginLeft: '8px' }}>
                   MYSTERY MONTH
                 </div>
-                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '65px', lineHeight: 1.16, letterSpacing: '5px', textTransform: 'uppercase', color: '#14251F', marginLeft: '8px', marginBottom: '32px' }}>
+                <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '65px', lineHeight: 1.16, letterSpacing: '5px', textTransform: 'uppercase', color: '#14251F', marginLeft: '8px', marginBottom: '28px' }}>
                   LEADERBOARD
                 </div>
-                <div style={{ borderTop: '2px solid #49382D', borderBottom: '1px solid #9f9076', padding: '16px 8px', display: 'grid', gridTemplateColumns: '72px 1fr 170px 145px', alignItems: 'center', fontSize: '20px', fontWeight: 800, letterSpacing: '3px', color: '#14251F', textTransform: 'uppercase' }}>
+
+                <div style={{ borderTop: '2px solid #49382D', borderBottom: '1px solid #9f9076', padding: '15px 14px', display: 'grid', gridTemplateColumns: '72px minmax(0,1fr) 160px 135px', alignItems: 'center', fontSize: '19px', fontWeight: 800, letterSpacing: '3px', color: '#14251F', textTransform: 'uppercase' }}>
                   <span>#</span><span>Member</span><span style={{ textAlign: 'center' }}>Points</span><span style={{ textAlign: 'center' }}>Films</span>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '13px', marginTop: '18px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '17px' }}>
                   {members.map((member, idx) => {
                     const rank = (part - 1) * 10 + idx + 1;
                     return (
-                      <div key={member.name} style={{ minHeight: '116px', display: 'grid', gridTemplateColumns: '72px 1fr 170px 145px', alignItems: 'center', padding: '12px 8px', borderBottom: '1px solid rgba(125,103,72,.38)', background: 'rgba(255,252,243,.43)' }}>
-                        <div style={{ width: '48px', height: '48px', borderRadius: '7px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.42)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                      <div key={member.name} style={{
+                        minHeight: '112px',
+                        display: 'grid',
+                        gridTemplateColumns: '72px minmax(0,1fr) 160px 135px',
+                        alignItems: 'center',
+                        padding: '10px 14px',
+                        position: 'relative',
+                        boxSizing: 'border-box',
+                        background: 'linear-gradient(180deg,rgba(255,250,237,.98),rgba(235,222,198,.98))',
+                        border: '1px solid #d1bea0',
+                        borderRadius: '13px 18px 12px 17px',
+                        clipPath: 'polygon(1.2% 0, 98.7% 0.8%, 100% 7%, 99.2% 92%, 97.8% 100%, 2% 99%, 0 92%, .7% 8%)',
+                        boxShadow: '0 5px 9px rgba(71,52,29,.16)',
+                      }}>
+                        <div style={{ width: '48px', height: '48px', borderRadius: '7px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
                           {rank}
                         </div>
-                        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '18px' }}>
-                          <img src={getMemberAvatar(member.name)} alt={member.name} crossOrigin="anonymous" style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
-                          <div title={member.name} style={{ minWidth: 0, maxWidth: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '29px', lineHeight: 1.15, fontWeight: 800, color: '#302a22' }}>{member.name}</div>
+                        <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '18px', paddingRight: '10px' }}>
+                          <img src={getMemberAvatar(member.name)} alt={member.name} style={{ width: '68px', height: '68px', flex: '0 0 68px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '29px', lineHeight: 1.15, fontWeight: 800, color: '#302a22' }}>{member.name}</div>
                         </div>
-                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 800, color: '#49382D', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
-                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 800, color: '#49382D', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
+                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
+                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#302a22', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              <div style={{ position: 'absolute', left: '58px', bottom: '44px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '14px', letterSpacing: '2px' }}>
-                CUBBON MOVIE CLUB · MYSTERY MONTH
+              {/* Bottom-left intentionally left clear. Bottom-right archival clipping. */}
+              <div style={{ position: 'absolute', right: '-12px', bottom: '-20px', width: '250px', height: '290px', transform: 'rotate(7deg)', background: '#e8ddc8', padding: '12px', boxSizing: 'border-box', boxShadow: '0 5px 18px rgba(48,35,20,.22)', border: '1px solid #c7b89d' }}>
+                <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg,#c7c0b1,#716c61 55%,#292923)', filter: 'grayscale(1)' }}>
+                  <div style={{ position: 'absolute', inset: 0, opacity: .42, background: 'repeating-linear-gradient(0deg,transparent 0 3px,rgba(20,20,18,.2) 4px 5px)' }} />
+                  <div style={{ position: 'absolute', bottom: '-8px', left: '0', right: '0', height: '105px', background: '#393832', clipPath: 'polygon(0 38%,18% 22%,35% 30%,49% 10%,65% 24%,82% 4%,100% 18%,100% 100%,0 100%)' }} />
+                  <div style={{ position: 'absolute', bottom: '90px', left: '34px', width: '12px', height: '105px', background: '#373630' }} />
+                  <div style={{ position: 'absolute', bottom: '175px', left: '17px', width: '48px', height: '48px', border: '8px solid #373630', borderBottom: 0, borderRadius: '50% 50% 0 0' }} />
+                  <div style={{ position: 'absolute', bottom: '70px', right: '38px', width: '7px', height: '120px', background: '#373630' }} />
+                  <div style={{ position: 'absolute', bottom: '178px', right: '23px', width: '36px', height: '36px', borderRadius: '50%', background: '#d8c9a8', boxShadow: '0 0 20px 8px rgba(232,219,189,.45)' }} />
+                  <div style={{ position: 'absolute', top: '12px', left: '12px', right: '12px', height: '1px', background: 'rgba(255,255,255,.35)' }} />
+                </div>
               </div>
-              <div style={{ position: 'absolute', right: '44px', bottom: '34px', width: '190px', height: '230px', transform: 'rotate(5deg)', background: 'linear-gradient(145deg,#b9a98c,#756b59)', border: '12px solid #e8ddc8', boxShadow: '0 4px 14px rgba(48,35,20,.22)', overflow: 'hidden', filter: 'grayscale(1)' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 34%, rgba(235,224,202,.5), transparent 38%), linear-gradient(0deg, rgba(30,27,23,.82), transparent 68%)' }} />
-                <div style={{ position: 'absolute', bottom: '0', left: '48px', width: '88px', height: '132px', background: '#302d28', borderRadius: '48% 48% 0 0' }} />
-                <div style={{ position: 'absolute', bottom: '108px', left: '67px', width: '52px', height: '58px', background: '#302d28', borderRadius: '50%' }} />
-                <div style={{ position: 'absolute', bottom: '153px', left: '57px', width: '72px', height: '12px', background: '#302d28', borderRadius: '50%' }} />
-                <div style={{ position: 'absolute', right: '20px', top: '28px', width: '7px', height: '95px', background: '#39342c' }} />
-                <div style={{ position: 'absolute', right: '9px', top: '17px', width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(235,218,178,.8)', boxShadow: '0 0 22px 8px rgba(235,218,178,.35)' }} />
+              <div style={{ position: 'absolute', left: '54px', bottom: '38px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '13px', letterSpacing: '2px' }}>
+                CUBBON MOVIE CLUB · MYSTERY MONTH
               </div>
             </div>
           </div>
