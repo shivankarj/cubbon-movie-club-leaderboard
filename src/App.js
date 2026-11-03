@@ -2651,7 +2651,7 @@ export default function App() {
                         boxSizing: 'border-box',
                         borderBottom: idx === members.length - 1 ? 'none' : '1px solid rgba(117,101,79,.62)',
                       }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', color: '#6B1820', fontSize: '29px', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
+                        <div style={{ width: '52px', height: '52px', borderRadius: '2px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '25px', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
