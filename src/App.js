@@ -1224,7 +1224,7 @@ export default function App() {
                 className="text-[11px] font-extrabold tracking-widest text-[#14251F] mt-3 uppercase flex items-center gap-2"
                 style={{ fontFamily: "'Syncopate', sans-serif" }}
               >
-                <span>ONE CLUB. MANY MYSTERIES. ALL THE MOVIES.</span>
+                <span>GET. SET. LOG.</span>
               </p>
             </div>
 
@@ -1572,7 +1572,7 @@ export default function App() {
                               )}
                             </div>
 
-                            <div className="pt-2 flex items-center justify-end gap-4 border-t border-[#C9A96B]/60">
+                            <div className="pt-2 flex items-center justify-end gap-4">
                               {isAuthenticated && (
                                 <button
                                   onClick={() => handleDeleteLog(log.id, log.movie)}
@@ -2080,7 +2080,7 @@ export default function App() {
                 <div>
                   <h3 className="text-xl font-black text-white">{selectedUser}</h3>
                   <p className="text-xs text-[#C9A96B] font-bold">
-                    {memberStats[selectedUser]?.points || 0} Total Points • {selectedMemberLogs.length} Horror Film
+                    {memberStats[selectedUser]?.points || 0} Total Points • {selectedMemberLogs.length} Mystery Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </p>
                 </div>
@@ -2127,7 +2127,7 @@ export default function App() {
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-widest text-[#C9A96B]">
-                Horror Entries ({selectedMemberLogs.length})
+                MYSTERY ENTRIES ({selectedMemberLogs.length})
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
                 {selectedMemberLogs.map((log, idx) => (
@@ -2246,7 +2246,7 @@ export default function App() {
                     {selectedUser}
                   </div>
                   <div style={{ fontSize: '20px', fontWeight: '800', color: '#6B1820', marginTop: '6px' }}>
-                    {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Horror Film
+                    {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Mystery Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </div>
                 </div>
@@ -2450,7 +2450,7 @@ export default function App() {
                     {selectedUser}
                   </div>
                   <div style={{ fontSize: '20px', fontWeight: '800', color: '#6B1820', marginTop: '6px' }}>
-                    {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Horror Film
+                    {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Mystery Film
                     {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
                   </div>
                 </div>
