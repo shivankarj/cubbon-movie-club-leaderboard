@@ -847,7 +847,7 @@ export default function App() {
         img.onerror = resolve;
       });
     }));
-    const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\\(["']?(.*?)["']?\\)/);
+    const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\(["']?(.*?)["']?\)/);
     if (backgroundMatch && backgroundMatch[1]) {
       await new Promise((resolve) => {
         const bg = new Image();
