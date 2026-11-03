@@ -1244,7 +1244,7 @@ export default function App() {
                           onClick={() => setLeaderboardSort('points')}
                           className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                             leaderboardSort === 'points'
-                              ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
+                              ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
                               : 'text-[#6B1820]/80 hover:text-[#14251F]'
                           }`}
                         >
@@ -1431,18 +1431,18 @@ export default function App() {
                           </div>
 
                           {/* 1. LOGGED BY */}
-                          <div className="flex items-center gap-2 pt-0.5">
-                            <span className="text-[10px] font-bold text-[#49382D]/75 uppercase tracking-widest">
-                              LOGGED BY:
+                          <div className="flex flex-col items-start gap-1.5 pt-1">
+                            <span className="text-[11px] font-extrabold text-[#6B1820] uppercase tracking-[0.18em]">
+                              LOGGED BY
                             </span>
                             <button
                               onClick={() => setSelectedUser(log.name)}
-                              className="inline-flex items-center gap-2 bg-[#E9DFC9] border border-[#C9A96B]/70 hover:border-[#6B1820] text-[#49382D]/75 hover:text-[#49382D]/75 text-xs font-extrabold px-3 py-1 rounded-full transition-all group shadow-sm"
+                              className="inline-flex items-center gap-2.5 bg-[#E9DFC9] border border-[#C9A96B] hover:border-[#6B1820] text-[#14251F] text-base font-black px-3.5 py-2 rounded-xl transition-all group shadow-sm"
                             >
                               <img
                                 src={getMemberAvatar(log.name)}
                                 alt={log.name}
-                                className="w-5 h-5 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover group-hover:scale-110 transition-transform"
+                                className="w-7 h-7 rounded-full bg-[#E9DFC9] border border-[#C9A96B] p-0.5 object-cover group-hover:scale-110 transition-transform"
                               />
                               <span className="tracking-wide">{log.name}</span>
                             </button>
@@ -1514,7 +1514,7 @@ export default function App() {
                             <MoviePoster
                               src={log.poster}
                               title={log.movie}
-                              className="block w-auto max-w-full h-auto max-h-[520px] object-contain"
+                              className="block w-full max-w-[260px] aspect-[2/3] h-auto object-cover rounded-md"
                             />
                           </div>
 
