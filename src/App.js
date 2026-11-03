@@ -219,8 +219,8 @@ export const getMemberTier = (filmCount) => {
 };
 
 const getMemberAvatar = (name) => {
-  const safeSeed = name ? `spooky-${name.trim().toLowerCase()}` : 'jack-o-lantern';
-  return `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(safeSeed)}&backgroundColor=180202,09030a&radius=50`;
+  const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
+  return `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
 };
 
 const MoviePoster = ({ src, title, className, style }) => {
@@ -1387,7 +1387,7 @@ export default function App() {
                             <img
                               src={getMemberAvatar(member.name)}
                               alt={member.name}
-                              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-cover shrink-0"
+                              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-contain shrink-0"
                             />
 
                             <div>
@@ -1511,6 +1511,11 @@ export default function App() {
                             <span className="text-[11px] font-extrabold leading-6 text-[#6B1820] uppercase tracking-[0.18em]">
                               LOGGED BY
                             </span>
+                            <img
+                              src={getMemberAvatar(log.name)}
+                              alt=""
+                              className="w-8 h-8 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-contain shrink-0"
+                            />
                             <button
                               onClick={() => setSelectedUser(log.name)}
                               className="text-base font-black leading-6 text-[#14251F] hover:text-[#6B1820] tracking-wide transition-colors"
