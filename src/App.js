@@ -1095,7 +1095,7 @@ export default function App() {
           <span className="text-lg">
             {toastMessage.type === 'error' ? '🩸' : toastMessage.type === 'success' ? '🎃' : '🔮'}
           </span>
-          <span className="text-xs font-bold tracking-wide text-[#14251F]">{toastMessage.text}</span>
+          <span className="text-xs font-bold tracking-wide text-[#E9DFC9]">{toastMessage.text}</span>
           <button onClick={() => setToastMessage(null)} className="text-[#6B1820] hover:text-[#14251F] text-xs ml-2">
             ✕
           </button>
@@ -1107,18 +1107,18 @@ export default function App() {
         <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-sm w-full p-6 shadow-[0_0_35px_rgba(107, 24, 32,0.3)] text-center">
             <div className="text-3xl mb-2">💀</div>
-            <h3 className="text-lg font-black text-[#14251F]">{confirmDialog.title}</h3>
-            <p className="text-xs text-[#49382D]/80 mt-2 mb-6">{confirmDialog.message}</p>
+            <h3 className="text-lg font-black text-[#E9DFC9]">{confirmDialog.title}</h3>
+            <p className="text-xs text-[#E9DFC9]/80 mt-2 mb-6">{confirmDialog.message}</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={confirmDialog.onCancel}
-                className="px-4 py-2 rounded-xl bg-[#14251F] border border-[#C9A96B]/60 text-xs font-bold text-[#49382D] hover:text-[#14251F] uppercase tracking-wider"
+                className="px-4 py-2 rounded-xl bg-[#14251F] border border-[#C9A96B]/60 text-xs font-bold text-[#E9DFC9] hover:text-white uppercase tracking-wider"
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDialog.onConfirm}
-                className="px-4 py-2 rounded-xl bg-[#6B1820] hover:bg-[#49382D] text-xs font-black text-slate-950 uppercase tracking-wider shadow-lg"
+                className="px-4 py-2 rounded-xl bg-[#6B1820] hover:bg-[#49382D] text-xs font-black text-[#E9DFC9] uppercase tracking-wider shadow-lg"
               >
                 Delete
               </button>
