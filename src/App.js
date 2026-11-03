@@ -2636,32 +2636,30 @@ export default function App() {
                   <span>#</span><span>Member</span><span style={{ textAlign: 'center' }}>Points</span><span style={{ textAlign: 'center' }}>Films</span>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '17px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '1370px', marginTop: '17px' }}>
                   {members.map((member, idx) => {
                     const rank = (part - 1) * 5 + idx + 1;
                     return (
                       <div key={member.name} style={{
-                        minHeight: '190px',
+                        flex: '1 1 0',
+                        minHeight: 0,
                         display: 'grid',
-                        gridTemplateColumns: '72px minmax(0,1fr) 160px 135px',
+                        gridTemplateColumns: '52px minmax(0,1fr) 160px 135px',
                         alignItems: 'center',
-                        padding: '18px 14px',
+                        padding: '12px 14px',
                         position: 'relative',
                         boxSizing: 'border-box',
-                        background: 'rgba(255,250,237,.78)',
-                        border: '1px solid rgba(157,132,91,.8)',
-                        borderRadius: '2px',
-                        boxShadow: '0 2px 4px rgba(71,52,29,.08)',
+                        borderBottom: idx === members.length - 1 ? 'none' : '1px solid rgba(117,101,79,.62)',
                       }}>
-                        <div style={{ width: '52px', height: '52px', borderRadius: '2px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', color: '#6B1820', fontSize: '29px', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
                           <img src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
-                          <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', border: '1px solid #b9a27a', padding: '14px 16px', background: 'rgba(233,223,201,.32)', letterSpacing: '1px' }}>{member.name}</div>
+                          <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', letterSpacing: '0.2px' }}>{member.name}</div>
                         </div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
-                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '76px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '27px', fontWeight: 800, color: '#302a22', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
+                        <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#302a22', fontVariantNumeric: 'tabular-nums' }}>{member.count}</div>
                       </div>
                     );
                   })}
