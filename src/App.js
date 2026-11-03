@@ -201,21 +201,21 @@ const isForeignCinema = (languageStr = '', countryStr = '', originalLanguage = '
   return false;
 };
 
-export const HALLOWEEN_TIERS = {
-  ELDER_GOD: { label: 'ELDER GOD', icon: '👁️', min: 20, color: '#C9A96B', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
-  IMMORTAL: { label: 'IMMORTAL', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
-  UNDEAD: { label: 'UNDEAD', icon: '🧟', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
-  SURVIVOR: { label: 'SURVIVOR', icon: '🔪', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
-  MORTAL: { label: 'MORTAL', icon: '🕯️', min: 0, color: '#49382D', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
+export const MYSTERY_TIERS = {
+  MASTERMIND: { label: 'MASTERMIND', icon: '🧠', min: 20, color: '#C9A96B', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
+  SERIAL_KILLER: { label: 'SERIAL KILLER', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
+  MURDERER: { label: 'MURDERER', icon: '🔪', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
+  SUSPECT: { label: 'SUSPECT', icon: '🕵️', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
+  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#49382D', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
 export const getMemberTier = (filmCount) => {
   const count = Number(filmCount) || 0;
-  if (count >= 20) return HALLOWEEN_TIERS.ELDER_GOD;
-  if (count >= 15) return HALLOWEEN_TIERS.IMMORTAL;
-  if (count >= 10) return HALLOWEEN_TIERS.UNDEAD;
-  if (count >= 5) return HALLOWEEN_TIERS.SURVIVOR;
-  return HALLOWEEN_TIERS.MORTAL;
+  if (count >= 20) return MYSTERY_TIERS.MASTERMIND;
+  if (count >= 15) return MYSTERY_TIERS.SERIAL_KILLER;
+  if (count >= 10) return MYSTERY_TIERS.MURDERER;
+  if (count >= 5) return MYSTERY_TIERS.SUSPECT;
+  return MYSTERY_TIERS.EYE_WITNESS;
 };
 
 const getMemberAvatar = (name) => {
@@ -1605,7 +1605,7 @@ export default function App() {
         {currentPage === 'login' && (
           <div className="max-w-md mx-auto mt-16 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-2xl p-6 backdrop-blur-sm shadow-2xl">
             <h2 className="text-lg font-black text-[#49382D] tracking-tight flex items-center gap-2">
-              <span>🎃</span> Admin Login
+              <span>🕵️</span> Admin Login
             </h2>
             <p className="text-xs text-[#6B1820]/80 mt-1">Enter passkey to unlock admin portal.</p>
             <form onSubmit={handlePasswordSubmit} className="mt-5 space-y-4">
@@ -1704,7 +1704,7 @@ export default function App() {
                     <input
                       required
                       type="text"
-                      placeholder="Title of horror film (e.g., Suspiria, Saw)"
+                      placeholder="Movie title (e.g., Suspiria, Saw)"
                       value={movieTitle}
                       onChange={(e) => setMovieTitle(e.target.value)}
                       onKeyDown={(e) => {
@@ -1898,11 +1898,11 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Stackable Halloween Bounties Checkboxes */}
+                {/* Stackable Mystery Bonuses Checkboxes */}
                 <div className="bg-[#6B1820]/10 border-2 border-[#C9A96B]/70 rounded-xl p-4 space-y-3">
                   <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-2">
                     <span className="text-[11px] font-black uppercase tracking-wider text-[#49382D] flex items-center gap-1.5">
-                      <span>🎃</span> AUTOMATED HALLOWEEN BOUNTIES
+                      <span>🕵️</span> AUTOMATED MYSTERY BONUSES
                     </span>
                     <span className="text-[10px] font-bold text-[#6B1820]/90">1 Base + 2 Each (+5 In Theatre)</span>
                   </div>
@@ -2023,11 +2023,11 @@ export default function App() {
                 {/* 5. MEMBER REVIEW / THOUGHTS */}
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-[#6B1820] mb-1.5">
-                    Spooky Review / Thoughts (Optional)
+                    Review / Thoughts (Optional)
                   </label>
                   <textarea
                     rows={3}
-                    placeholder="Short creepy review or member thoughts..."
+                    placeholder="Short review or member thoughts..."
                     value={memberReview}
                     onChange={(e) => setMemberReview(e.target.value)}
                     className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-4 py-3 text-sm text-[#49382D] focus:outline-none focus:border-[#6B1820]"
@@ -2055,9 +2055,9 @@ export default function App() {
                   className="w-full bg-[#6B1820] hover:bg-[#49382D] disabled:opacity-50 text-[#E9DFC9] font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(107, 24, 32,0.4)] flex items-center justify-center gap-2"
                 >
                   {isPublishing ? (
-                    <span>⏳ Publishing Horror Entry...</span>
+                    <span>⏳ Publishing Movie Entry...</span>
                   ) : (
-                    <span>🎃 Publish Horror Watch (+{calculatedPoints} Pts)</span>
+                    <span>🕵️ Publish Movie (+{calculatedPoints} Pts)</span>
                   )}
                 </button>
               </form>
