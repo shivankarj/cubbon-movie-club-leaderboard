@@ -2586,7 +2586,7 @@ export default function App() {
             >
               <div style={{ position: 'absolute', top: '-18px', right: '-28px', width: '370px', height: '190px', transform: 'rotate(8deg)', opacity: .62, pointerEvents: 'none' }}>
                 <div style={{ background: '#dfd3bb', padding: '18px 22px', boxShadow: '0 5px 14px rgba(54,40,25,.13)', border: '1px solid #c4b69e', color: '#716653', fontFamily: 'Georgia,serif', fontSize: '17px', lineHeight: '1.45', letterSpacing: '2px', filter: 'grayscale(1)' }}>
-                  QVARTERLY REPORT · ARCHIVE 1894<br/>— — — — — — — — — — — —<br/>THE EVENING REGISTER<br/>— — — — — — — — — — — —<br/>•••  •••  •••  •••  •••  •••
+                  QXRV ·· 19/04 ·· N° 7<br/>— — — — — — — — — — — —<br/>VVRN / K—L / 08:31<br/>— — — — — — — — — — — —<br/>•••  ••  •••  ••  •••  ••
                 </div>
               </div>
               <div style={{ position: 'absolute', left: '-42px', top: '205px', transform: 'rotate(-8deg)', color: 'rgba(103,73,44,.55)', fontFamily: 'cursive', fontSize: '26px', lineHeight: '1.7', letterSpacing: '2px', pointerEvents: 'none' }}>
