@@ -273,6 +273,7 @@ export default function App() {
   );
 
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showAvatarStylePreview, setShowAvatarStylePreview] = useState(false);
 
   // Authentication States
   const [passwordInput, setPasswordInput] = useState('');
@@ -1202,6 +1203,59 @@ export default function App() {
 
       {/* MAIN CONTAINER */}
       <main className="max-w-4xl mx-auto p-4 md:p-8">
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={() => setShowAvatarStylePreview((open) => !open)}
+            className="text-[10px] font-extrabold uppercase tracking-widest text-[#E9DFC9] bg-[#49382D] hover:bg-[#6B1820] border border-[#C9A96B]/60 rounded-lg px-3 py-2 transition-colors"
+          >
+            {showAvatarStylePreview ? 'Hide avatar style preview' : 'Preview avatar styles'}
+          </button>
+          {showAvatarStylePreview && (
+            <section className="mt-4 rounded-2xl border-2 border-[#C9A96B] bg-[#E9DFC9] p-4 sm:p-5 shadow-lg">
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <h2 className="text-sm font-black uppercase tracking-widest text-[#14251F]">Avatar style comparison</h2>
+                  <p className="text-xs text-[#49382D] mt-1">Same member names and seeds across every style. This is only a preview; your current avatars are unchanged.</p>
+                </div>
+                <span className="text-[10px] font-bold text-[#6B1820] whitespace-nowrap">DICEBEAR 10.x</span>
+              </div>
+              {leaderboard.length === 0 ? (
+                <p className="text-sm text-[#49382D]">Member names will appear here once the leaderboard has loaded.</p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { id: 'adventurer', label: 'Adventurer' },
+                    { id: 'lorelei', label: 'Lorelei' },
+                    { id: 'pixel-art', label: 'Pixel Art' },
+                    { id: 'bottts', label: 'Bottts' },
+                    { id: 'fun-emoji', label: 'Fun Emoji' },
+                    { id: 'thumbs', label: 'Thumbs' },
+                    { id: 'shapes', label: 'Shapes' },
+                    { id: 'identicon', label: 'Identicon' },
+                  ].map((style) => (
+                    <div key={style.id} className="rounded-xl border border-[#C9A96B]/70 bg-[#E9DFC9] p-3">
+                      <h3 className="text-xs font-black uppercase tracking-wider text-[#6B1820] mb-3">{style.label}</h3>
+                      <div className="flex flex-wrap gap-3">
+                        {leaderboard.slice(0, 6).map((member) => (
+                          <div key={member.name} className="flex flex-col items-center gap-1 w-14">
+                            <img
+                              src={`https://api.dicebear.com/10.x/${style.id}/svg?seed=${encodeURIComponent(`spooky-${member.name.trim().toLowerCase()}`)}&backgroundColor=e9dfc9&radius=50`}
+                              alt={`${member.name} - ${style.label}`}
+                              className="w-11 h-11 rounded-full border border-[#C9A96B]/70 bg-[#E9DFC9] p-0.5 object-cover"
+                              loading="lazy"
+                            />
+                            <span className="w-full text-[9px] font-semibold text-[#49382D] text-center truncate">{member.name}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+        </div>
         {currentPage === 'public' && (
           <div className="space-y-16">
             {/* MYSTERY MONTH THEME BANNER */}
