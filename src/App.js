@@ -273,7 +273,6 @@ export default function App() {
   );
 
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showAvatarStylePreview, setShowAvatarStylePreview] = useState(false);
 
   // Authentication States
   const [passwordInput, setPasswordInput] = useState('');
@@ -1141,8 +1140,10 @@ export default function App() {
           </div>
 
           <div className="w-12 h-12 rounded-xl bg-[#E9DFC9] border border-[#C9A96B]/70 flex items-center justify-center p-2">
-            <svg viewBox="0 0 100 100" className="w-full h-full fill-[#6B1820]">
-              <path d="M50 15c-3 0-5 2-5 5v5c-15 1-28 12-30 27-2 15 6 28 20 33v-5c0-2 2-4 4-4s4 2 4 4v5c2 0 5 0 7 0s5 0 7 0v-5c0-2 2-4 4-4s4 2 4 4v5c14-5 22-18 20-33-2-15-15-26-30-27v-5c0-3-2-5-5-5zM35 48c3 0 5 3 5 6s-2 6-5 6-6-3-6-6 3-6 6-6zm30 0c3 0 6 3 6 6s-3 6-6 6-5-3-5-6 2-6 5-6zm-23 24l4-8 4 8 4-8 4 8 4-8 4 8h-24z" />
+            <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-[#6B1820]" strokeWidth="9" strokeLinecap="round">
+              <circle cx="43" cy="42" r="25" />
+              <path d="M61 61L84 84" />
+              <path d="M34 42h18M43 33v18" strokeWidth="5" />
             </svg>
           </div>
         </div>
@@ -1156,7 +1157,7 @@ export default function App() {
                     onClick={() => setCurrentPage('admin')}
                     className="text-[10px] font-bold tracking-widest uppercase text-[#14251F] hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
                   >
-                    PANEL 🎃
+                    PANEL ⌕
                   </button>
                   <button
                     onClick={handleAdminLogout}
@@ -1175,7 +1176,7 @@ export default function App() {
                   }}
                   className="text-[10px] font-bold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] border border-[#C9A96B]/60 bg-[#6B1820]/10 px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
-                  ADMIN 🎃
+                  ADMIN ⌕
                 </button>
               )}
             </div>
@@ -1203,83 +1204,17 @@ export default function App() {
 
       {/* MAIN CONTAINER */}
       <main className="max-w-4xl mx-auto p-4 md:p-8">
-        <div className="mb-6">
-          <button
-            type="button"
-            onClick={() => setShowAvatarStylePreview((open) => !open)}
-            className="text-[10px] font-extrabold uppercase tracking-widest text-[#E9DFC9] bg-[#49382D] hover:bg-[#6B1820] border border-[#C9A96B]/60 rounded-lg px-3 py-2 transition-colors"
-          >
-            {showAvatarStylePreview ? 'Hide avatar style preview' : 'Preview avatar styles'}
-          </button>
-          {showAvatarStylePreview && (
-            <section className="mt-4 rounded-2xl border-2 border-[#C9A96B] bg-[#E9DFC9] p-4 sm:p-5 shadow-lg">
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <div>
-                  <h2 className="text-sm font-black uppercase tracking-widest text-[#14251F]">Avatar style comparison</h2>
-                  <p className="text-xs text-[#49382D] mt-1">Same member names and seeds across every style. This is only a preview; your current avatars are unchanged.</p>
-                </div>
-                <span className="text-[10px] font-bold text-[#6B1820] whitespace-nowrap">DICEBEAR 10.x</span>
-              </div>
-              {leaderboard.length === 0 ? (
-                <p className="text-sm text-[#49382D]">Member names will appear here once the leaderboard has loaded.</p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {[
-                    { id: 'adventurer', label: 'Adventurer' },
-                    { id: 'lorelei', label: 'Lorelei' },
-                    { id: 'pixel-art', label: 'Pixel Art' },
-                    { id: 'bottts', label: 'Bottts' },
-                    { id: 'fun-emoji', label: 'Fun Emoji' },
-                    { id: 'thumbs', label: 'Thumbs' },
-                    { id: 'shapes', label: 'Shapes' },
-                    { id: 'identicon', label: 'Identicon' },
-                  ].map((style) => (
-                    <div key={style.id} className="rounded-xl border border-[#C9A96B]/70 bg-[#E9DFC9] p-3">
-                      <h3 className="text-xs font-black uppercase tracking-wider text-[#6B1820] mb-3">{style.label}</h3>
-                      <div className="flex flex-wrap gap-3">
-                        {leaderboard.slice(0, 6).map((member) => (
-                          <div key={member.name} className="flex flex-col items-center gap-1 w-14">
-                            <img
-                              src={`https://api.dicebear.com/10.x/${style.id}/svg?seed=${encodeURIComponent(`spooky-${member.name.trim().toLowerCase()}`)}&backgroundColor=e9dfc9&radius=50`}
-                              alt={`${member.name} - ${style.label}`}
-                              className="w-11 h-11 rounded-full border border-[#C9A96B]/70 bg-[#E9DFC9] p-0.5 object-cover"
-                              loading="lazy"
-                            />
-                            <span className="w-full text-[9px] font-semibold text-[#49382D] text-center truncate">{member.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                  <div className="sm:col-span-2 rounded-xl border-2 border-[#6B1820]/50 bg-[#E9DFC9] p-3">
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <div>
-                        <h3 className="text-xs font-black uppercase tracking-wider text-[#6B1820]">RoboHash · Kitten avatars</h3>
-                        <p className="text-[10px] text-[#49382D] mt-1">A different cat illustration for each member, generated from their name.</p>
-                      </div>
-                      <span className="text-[10px] font-bold text-[#6B1820]">ROBOHASH SET 4</span>
-                    </div>
-                    <div className="flex flex-wrap gap-4">
-                      {leaderboard.slice(0, 12).map((member) => (
-                        <div key={member.name} className="flex flex-col items-center gap-1 w-16">
-                          <img
-                            src={`https://robohash.org/${encodeURIComponent(`mystery-month-${member.name.trim().toLowerCase()}`)}?set=set4&size=120x120`}
-                            alt={`${member.name} - RoboHash kitten avatar`}
-                            className="w-14 h-14 rounded-full border border-[#C9A96B]/70 bg-[#E9DFC9] object-contain"
-                            loading="lazy"
-                          />
-                          <span className="w-full text-[9px] font-semibold text-[#49382D] text-center truncate">{member.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </section>
-          )}
-        </div>
         {currentPage === 'public' && (
           <div className="space-y-16">
+            {/* REPLACEABLE MYSTERY MONTH BANNER IMAGE: upload a new file as public/mystery-month-banner.jpg */}
+            <div className="mb-4 overflow-hidden rounded-2xl border border-[#C9A96B]/70 bg-[#14251F]">
+              <img
+                src="/mystery-month-banner.jpg"
+                alt="Mystery Month banner"
+                className="block w-full max-h-64 object-cover"
+                onError={(event) => { event.currentTarget.style.display = 'none'; }}
+              />
+            </div>
             {/* MYSTERY MONTH THEME BANNER */}
             <div className="text-left py-4 border-b border-[#C9A96B]/70">
               <div
@@ -1377,7 +1312,7 @@ export default function App() {
                             <span
                               className={`w-6 h-6 sm:w-7 sm:h-7 rounded flex items-center justify-center font-black text-xs sm:text-sm shrink-0 ${
                                 idx === 0
-                                  ? 'bg-[#6B1820] text-[#49382D] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
+                                  ? 'bg-[#C9A96B] text-[#14251F] shadow-[0_0_10px_rgba(201, 169, 107,0.35)]'
                                   : 'bg-[#E9DFC9] text-[#6B1820] border border-[#C9A96B]/40'
                               }`}
                             >
@@ -1701,7 +1636,7 @@ export default function App() {
               <div className="border-b border-[#C9A96B]/60 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-[#49382D] tracking-tight flex items-center gap-2">
-                    <span>💀</span> October Admin Panel
+                    <span>⌕</span> Mystery Month Admin Panel
                   </h2>
                   <p className="text-xs text-[#6B1820]/80 mt-0.5">
                     Paste IMDb Link or Title ➔ Auto-Populates Bonuses (+2 Each) & Streaming
@@ -2177,7 +2112,7 @@ export default function App() {
               return (
                 <div className="flex items-center gap-2 flex-wrap">
                   {isChamp && (
-                    <span className="text-xs font-black px-3 py-1 rounded-full bg-[#C9A96B]/20 text-[#6B1820] border border-[#C9A96B] flex items-center gap-1">
+                    <span className="text-xs font-black px-3 py-1 rounded-full bg-[#C9A96B]/20 text-[#E9DFC9] border border-[#C9A96B] flex items-center gap-1">
                       👑 CHAMPION
                     </span>
                   )}
