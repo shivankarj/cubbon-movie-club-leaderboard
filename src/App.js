@@ -1140,11 +1140,7 @@ export default function App() {
           </div>
 
           <div className="w-12 h-12 rounded-xl bg-[#E9DFC9] border border-[#C9A96B]/70 flex items-center justify-center p-2">
-            <svg viewBox="0 0 24 24" className="w-full h-full" aria-hidden="true">
-              <circle cx="9.5" cy="9.5" r="6.5" fill="#6B1820" stroke="#C9A96B" strokeWidth="1.8" />
-              <path d="M14.5 14.5L21 21" stroke="#C9A96B" strokeWidth="3" strokeLinecap="round" />
-              <path d="M7 7l2.5-2.5L12 7l-2.5 2.5z" fill="#E9DFC9" />
-            </svg>
+            <span className="text-3xl leading-none" role="img" aria-label="Detective">🕵️</span>
           </div>
         </div>
 
@@ -1157,11 +1153,7 @@ export default function App() {
                     onClick={() => setCurrentPage('admin')}
                     className="text-[10px] font-bold tracking-widest uppercase text-[#14251F] hover:text-[#6B1820] border border-[#6B1820] bg-[#6B1820]/20 px-3 py-1.5 rounded-xl transition-all shadow-sm"
                   >
-                    <span className="inline-flex items-center gap-1.5">PANEL <svg viewBox="0 0 24 24" className="w-4 h-4 inline-block align-middle" aria-hidden="true">
-                      <circle cx="9.5" cy="9.5" r="6.5" fill="#6B1820" stroke="#C9A96B" strokeWidth="1.8" />
-                      <path d="M14.5 14.5L21 21" stroke="#C9A96B" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M7 7l2.5-2.5L12 7l-2.5 2.5z" fill="#E9DFC9" />
-                    </svg></span>
+                    <span className="inline-flex items-center gap-1.5">PANEL <span className="text-base leading-none" role="img" aria-label="Magnifying glass">🔍</span></span>
                   </button>
                   <button
                     onClick={handleAdminLogout}
@@ -1180,11 +1172,7 @@ export default function App() {
                   }}
                   className="text-[10px] font-bold tracking-widest uppercase text-[#6B1820] hover:text-[#6B1820] border border-[#C9A96B]/60 bg-[#6B1820]/10 px-3.5 py-2 rounded-xl transition-all shadow-sm"
                 >
-                  <span className="inline-flex items-center gap-1.5">ADMIN <svg viewBox="0 0 24 24" className="w-4 h-4 inline-block align-middle" aria-hidden="true">
-                      <circle cx="9.5" cy="9.5" r="6.5" fill="#6B1820" stroke="#C9A96B" strokeWidth="1.8" />
-                      <path d="M14.5 14.5L21 21" stroke="#C9A96B" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M7 7l2.5-2.5L12 7l-2.5 2.5z" fill="#E9DFC9" />
-                    </svg></span>
+                  <span className="inline-flex items-center gap-1.5">ADMIN <span className="text-base leading-none" role="img" aria-label="Magnifying glass">🔍</span></span>
                 </button>
               )}
             </div>
@@ -1645,11 +1633,7 @@ export default function App() {
               <div className="border-b border-[#C9A96B]/60 pb-3 mb-6 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-black text-[#49382D] tracking-tight flex items-center gap-2">
-                    <span className="inline-flex items-center"><svg viewBox="0 0 24 24" className="w-4 h-4 inline-block align-middle" aria-hidden="true">
-                      <circle cx="9.5" cy="9.5" r="6.5" fill="#6B1820" stroke="#C9A96B" strokeWidth="1.8" />
-                      <path d="M14.5 14.5L21 21" stroke="#C9A96B" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M7 7l2.5-2.5L12 7l-2.5 2.5z" fill="#E9DFC9" />
-                    </svg></span> Mystery Month Admin Panel
+                    <span className="inline-flex items-center"><span className="text-base leading-none" role="img" aria-label="Magnifying glass">🔍</span></span> Mystery Month Admin Panel
                   </h2>
                   <p className="text-xs text-[#6B1820]/80 mt-0.5">
                     Paste IMDb Link or Title ➔ Auto-Populates Bonuses (+2 Each) & Streaming
