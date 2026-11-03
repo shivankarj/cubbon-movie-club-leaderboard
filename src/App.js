@@ -1251,6 +1251,28 @@ export default function App() {
                       </div>
                     </div>
                   ))}
+                  <div className="sm:col-span-2 rounded-xl border-2 border-[#6B1820]/50 bg-[#E9DFC9] p-3">
+                    <div className="flex items-center justify-between gap-3 mb-3">
+                      <div>
+                        <h3 className="text-xs font-black uppercase tracking-wider text-[#6B1820]">RoboHash · Kitten avatars</h3>
+                        <p className="text-[10px] text-[#49382D] mt-1">A different cat illustration for each member, generated from their name.</p>
+                      </div>
+                      <span className="text-[10px] font-bold text-[#6B1820]">ROBOHASH SET 4</span>
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      {leaderboard.slice(0, 12).map((member) => (
+                        <div key={member.name} className="flex flex-col items-center gap-1 w-16">
+                          <img
+                            src={`https://robohash.org/${encodeURIComponent(`mystery-month-${member.name.trim().toLowerCase()}`)}?set=set4&size=120x120`}
+                            alt={`${member.name} - RoboHash kitten avatar`}
+                            className="w-14 h-14 rounded-full border border-[#C9A96B]/70 bg-[#E9DFC9] object-contain"
+                            loading="lazy"
+                          />
+                          <span className="w-full text-[9px] font-semibold text-[#49382D] text-center truncate">{member.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </section>
