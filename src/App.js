@@ -1431,13 +1431,13 @@ export default function App() {
                           </div>
 
                           {/* 1. LOGGED BY */}
-                          <div className="flex items-center flex-wrap gap-2 pt-1">
-                            <span className="text-[11px] font-extrabold text-[#6B1820] uppercase tracking-[0.18em]">
+                          <div className="inline-flex items-center flex-wrap gap-2 pt-1">
+                            <span className="text-[11px] font-extrabold leading-6 text-[#6B1820] uppercase tracking-[0.18em]">
                               LOGGED BY
                             </span>
                             <button
                               onClick={() => setSelectedUser(log.name)}
-                              className="text-base font-black text-[#14251F] hover:text-[#6B1820] tracking-wide transition-colors"
+                              className="text-base font-black leading-6 text-[#14251F] hover:text-[#6B1820] tracking-wide transition-colors"
                             >
                               {log.name}
                             </button>
@@ -1509,7 +1509,7 @@ export default function App() {
                             <MoviePoster
                               src={log.poster}
                               title={log.movie}
-                              className="block w-auto max-w-full h-auto max-h-[520px] object-contain"
+                              className="block h-[520px] max-h-[520px] w-auto max-w-full object-contain"
                             />
                           </div>
 
