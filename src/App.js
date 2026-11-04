@@ -2652,7 +2652,7 @@ export default function App() {
                         borderRadius: '2px',
                         boxShadow: '0 2px 4px rgba(71,52,29,.08)',
                       }}>
-                        <div style={{ width: '52px', height: '52px', borderRadius: '2px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                        <div style={{ width: '52px', height: '52px', borderRadius: '8px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
