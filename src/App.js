@@ -853,7 +853,16 @@ export default function App() {
       if (img.complete && img.naturalWidth > 0) return Promise.resolve();
       return new Promise((resolve) => {
         img.onload = resolve;
-        img.onerror = resolve;
+        img.onerror = () => {
+          console.error('[Leaderboard export] An inline image failed before capture:', {
+            alt: img.alt,
+            src: img.getAttribute('src'),
+            currentSrc: img.currentSrc,
+            complete: img.complete,
+            naturalWidth: img.naturalWidth,
+          });
+          resolve();
+        };
       });
     }));
     const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\(["']?(.*?)["']?\)/);
@@ -861,7 +870,10 @@ export default function App() {
       await new Promise((resolve) => {
         const bg = new Image();
         bg.onload = resolve;
-        bg.onerror = resolve;
+        bg.onerror = () => {
+          console.error('[Leaderboard export] CSS background failed before capture:', backgroundMatch[1]);
+          resolve();
+        };
         bg.src = backgroundMatch[1];
         if (bg.complete) resolve();
       });
@@ -869,14 +881,33 @@ export default function App() {
 
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
     if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
-      return await window.htmlToImage.toJpeg(element, {
-        quality: 0.96,
-        pixelRatio: 2,
-        cacheBust: true,
-        skipAutoScale: false,
-        // Avoid cross-origin Google Fonts CSS access during export.
-        skipFonts: true,
-      });
+      // Capture image errors raised by html-to-image's temporary cloned nodes.
+      const captureImageError = (event) => {
+        const img = event.target;
+        if (img instanceof HTMLImageElement) {
+          console.error('[Leaderboard export] Image failed during html-to-image capture:', {
+            alt: img.alt,
+            src: img.getAttribute('src'),
+            currentSrc: img.currentSrc,
+            connected: img.isConnected,
+            complete: img.complete,
+            naturalWidth: img.naturalWidth,
+          });
+        }
+      };
+      document.addEventListener('error', captureImageError, true);
+      try {
+        return await window.htmlToImage.toJpeg(element, {
+          quality: 0.96,
+          pixelRatio: 2,
+          cacheBust: true,
+          skipAutoScale: false,
+          // Avoid cross-origin Google Fonts CSS access during export.
+          skipFonts: true,
+        });
+      } finally {
+        document.removeEventListener('error', captureImageError, true);
+      }
     }
     throw new Error('Image exporter could not be initialized.');
   };
