@@ -2612,7 +2612,7 @@ export default function App() {
               }}
             >
               
-              <div style={{ position: 'relative', zIndex: 1 }}>
+              <div style={{ position: 'relative', zIndex: 1, minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '40px' }}>
                   <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '27px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
                     CUBBON<br/><span style={{ color: '#6B1820' }}>MOVIE</span><br/>CLUB
@@ -2652,7 +2652,7 @@ export default function App() {
                         borderRadius: '2px',
                         boxShadow: '0 2px 4px rgba(71,52,29,.08)',
                       }}>
-                        <div style={{ width: '52px', height: '52px', borderRadius: '8px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
+                        <div style={{ width: '52px', height: '52px', justifySelf: 'center', borderRadius: '8px', border: '1px solid #c9b98f', background: rank === 1 ? '#c9a96b' : 'rgba(233,223,201,.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontSize: '23px', fontWeight: 800 }}>
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
