@@ -2648,7 +2648,7 @@ export default function App() {
                         position: 'relative',
                         boxSizing: 'border-box',
                         background: 'rgba(255,250,237,.78)',
-                        border: '1px solid rgba(157,132,91,.8)',
+                        border: '1px solid transparent',
                         borderRadius: '2px',
                         boxShadow: '0 2px 4px rgba(71,52,29,.08)',
                       }}>
