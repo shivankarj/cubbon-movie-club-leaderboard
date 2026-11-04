@@ -846,7 +846,7 @@ export default function App() {
   const captureElementToJpeg = async (element) => {
     if (!element) return null;
 
-    // Wait for web fonts, inline images and CSS background images before capture.
+    // Wait for web fonts and inline images before capture.
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     const inlineImages = Array.from(element.querySelectorAll('img'));
     await Promise.all(inlineImages.map((img) => {
@@ -865,51 +865,67 @@ export default function App() {
         };
       });
     }));
-    const backgroundMatch = (window.getComputedStyle(element).backgroundImage || '').match(/url\(["']?(.*?)["']?\)/);
-    if (backgroundMatch && backgroundMatch[1]) {
-      await new Promise((resolve) => {
-        const bg = new Image();
-        bg.onload = resolve;
-        bg.onerror = () => {
-          console.error('[Leaderboard export] CSS background failed before capture:', backgroundMatch[1]);
-          resolve();
-        };
-        bg.src = backgroundMatch[1];
-        if (bg.complete) resolve();
-      });
-    }
 
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
-    if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
-      // Capture image errors raised by html-to-image's temporary cloned nodes.
-      const captureImageError = (event) => {
-        const img = event.target;
-        if (img instanceof HTMLImageElement) {
-          console.error('[Leaderboard export] Image failed during html-to-image capture:', {
-            alt: img.alt,
-            src: img.getAttribute('src'),
-            currentSrc: img.currentSrc,
-            connected: img.isConnected,
-            complete: img.complete,
-            naturalWidth: img.naturalWidth,
-          });
-        }
-      };
-      document.addEventListener('error', captureImageError, true);
+    // Embed the CSS background as a data URL so html-to-image does not need
+    // to fetch the background a second time while cloning the export element.
+    const originalBackgroundImage = element.style.backgroundImage;
+    const computedBackgroundImage = window.getComputedStyle(element).backgroundImage || '';
+    const backgroundMatch = computedBackgroundImage.match(/url\(["']?(.*?)["']?\)/);
+    if (backgroundMatch && backgroundMatch[1]) {
       try {
-        return await window.htmlToImage.toJpeg(element, {
-          quality: 0.96,
-          pixelRatio: 2,
-          cacheBust: true,
-          skipAutoScale: false,
-          // Avoid cross-origin Google Fonts CSS access during export.
-          skipFonts: true,
+        const backgroundResponse = await fetch(backgroundMatch[1], { cache: 'no-store' });
+        if (!backgroundResponse.ok) {
+          throw new Error(`Background request returned HTTP ${backgroundResponse.status}`);
+        }
+        const backgroundBlob = await backgroundResponse.blob();
+        const backgroundDataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error || new Error('Could not read background image.'));
+          reader.readAsDataURL(backgroundBlob);
         });
-      } finally {
-        document.removeEventListener('error', captureImageError, true);
+        element.style.backgroundImage = `url("${backgroundDataUrl}")`;
+      } catch (error) {
+        console.error('[Leaderboard export] Could not embed CSS background; trying original background:', error);
       }
     }
-    throw new Error('Image exporter could not be initialized.');
+
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
+      if (typeof window !== 'undefined' && window.htmlToImage && window.htmlToImage.toJpeg) {
+        // Capture image errors raised by html-to-image's temporary cloned nodes.
+        const captureImageError = (event) => {
+          const img = event.target;
+          if (img instanceof HTMLImageElement) {
+            console.error('[Leaderboard export] Image failed during html-to-image capture:', {
+              alt: img.alt,
+              src: img.getAttribute('src'),
+              currentSrc: img.currentSrc,
+              connected: img.isConnected,
+              complete: img.complete,
+              naturalWidth: img.naturalWidth,
+            });
+          }
+        };
+        document.addEventListener('error', captureImageError, true);
+        try {
+          return await window.htmlToImage.toJpeg(element, {
+            quality: 0.96,
+            pixelRatio: 2,
+            cacheBust: true,
+            skipAutoScale: false,
+            // Avoid cross-origin Google Fonts CSS access during export.
+            skipFonts: true,
+          });
+        } finally {
+          document.removeEventListener('error', captureImageError, true);
+        }
+      }
+      throw new Error('Image exporter could not be initialized.');
+    } finally {
+      // Restore the page's original CSS background after capture.
+      element.style.backgroundImage = originalBackgroundImage;
+    }
   };
 
   const handleDownloadLeaderboardImage = async (mode = 'points') => {
