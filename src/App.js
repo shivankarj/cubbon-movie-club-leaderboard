@@ -849,19 +849,44 @@ export default function App() {
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
     const inlineImages = Array.from(element.querySelectorAll('img'));
     await Promise.all(inlineImages.map((img) => {
-      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-      return new Promise((resolve) => {
-        img.onload = resolve;
-        img.onerror = () => {
-          console.error('[Leaderboard export] An inline image failed before capture:', {
+      // A completed image is settled even when it failed (naturalWidth === 0).
+      // Do not wait for an error event that may already have fired.
+      if (img.complete) {
+        if (img.naturalWidth === 0) {
+          console.warn('[Leaderboard export] Skipping an image that failed to load:', {
             alt: img.alt,
             src: img.getAttribute('src'),
             currentSrc: img.currentSrc,
-            complete: img.complete,
-            naturalWidth: img.naturalWidth,
           });
+        }
+        return Promise.resolve();
+      }
+
+      return new Promise((resolve) => {
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          img.removeEventListener('load', finish);
+          img.removeEventListener('error', onError);
           resolve();
         };
+        const onError = () => {
+          console.warn('[Leaderboard export] An inline image failed before capture:', {
+            alt: img.alt,
+            src: img.getAttribute('src'),
+            currentSrc: img.currentSrc,
+          });
+          finish();
+        };
+        const timeoutId = setTimeout(() => {
+          console.warn('[Leaderboard export] Timed out waiting for an image:', img.getAttribute('src'));
+          finish();
+        }, 10000);
+
+        img.addEventListener('load', finish, { once: true });
+        img.addEventListener('error', onError, { once: true });
       });
     }));
 
