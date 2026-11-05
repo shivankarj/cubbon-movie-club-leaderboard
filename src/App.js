@@ -2223,11 +2223,11 @@ export default function App() {
       {/* MEMBER PROFILE STORY EXPORTS */}
       {selectedUser && selectedMemberLogs.length > 0 && (() => {
         const pageCount = Math.ceil(selectedMemberLogs.length / 9);
-        const tier = getMemberTier(selectedMemberLogs.length);
-        const isChamp = leaderboard[0] && leaderboard[0].name === selectedUser;
 
         return Array.from({ length: pageCount }, (_, pageIndex) => {
           const pageLogs = selectedMemberLogs.slice(pageIndex * 9, (pageIndex + 1) * 9);
+          const firstFilm = pageIndex * 9 + 1;
+          const lastFilm = pageIndex * 9 + pageLogs.length;
 
           return (
             <div key={`member-profile-export-${pageIndex}`} style={{ position: 'fixed', left: '-12000px', top: 0, width: '1080px', height: '1920px', pointerEvents: 'none' }}>
@@ -2243,79 +2243,60 @@ export default function App() {
                   backgroundSize: '100% 100%',
                   backgroundPosition: 'center',
                   color: '#14251F',
-                  padding: '60px',
+                  padding: '48px 58px',
                   fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
                   boxSizing: 'border-box',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                  <div>
-                    <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '38px', letterSpacing: '3px', lineHeight: 1.15, color: '#14251F' }}>
-                      CUBBON <span style={{ color: '#6B1820' }}>MOVIE</span> CLUB
-                    </div>
-                    <div style={{ marginTop: '10px', fontFamily: "'Syncopate', sans-serif", fontSize: '19px', fontWeight: 700, letterSpacing: '2.5px', color: '#6B1820' }}>
-                      FRIGHT NIGHTS <span style={{ color: '#49382D' }}>OCTOBER</span>
-                    </div>
+                <div style={{ textAlign: 'center', marginBottom: '30px', flexShrink: 0 }}>
+                  <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '39px', letterSpacing: '2.5px', lineHeight: 1.2, color: '#14251F' }}>
+                    CUBBON <span style={{ color: '#6B1820' }}>MOVIE</span> CLUB
                   </div>
-                  <div style={{ textAlign: 'right', paddingTop: '6px', fontFamily: 'Georgia, serif', color: '#49382D', fontSize: '15px', letterSpacing: '2px', lineHeight: 1.8 }}>
-                    THE CLUB RECORD<br />
-                    MEMBER FILM ARCHIVE<br />
-                    EDITION {String(pageIndex + 1).padStart(2, '0')} / {String(pageCount).padStart(2, '0')}
+                  <div style={{ marginTop: '12px', fontFamily: "'Syncopate', sans-serif", fontSize: '21px', fontWeight: 700, letterSpacing: '3px', color: '#6B1820' }}>
+                    MYSTERY MONTH <span style={{ color: '#49382D' }}>NOVEMBER</span>
                   </div>
                 </div>
 
                 <div style={{
-                  minHeight: '142px',
-                  marginTop: '8px',
-                  marginBottom: '22px',
-                  padding: '18px 24px',
+                  minHeight: '238px',
+                  marginBottom: '28px',
+                  padding: '28px 38px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '18px',
+                  gap: '34px',
                   boxSizing: 'border-box',
                   background: 'rgba(255, 250, 237, 0.88)',
-                  border: '2px solid rgba(107, 24, 32, 0.55)',
+                  border: '2px solid rgba(107, 24, 32, 0.72)',
+                  borderRadius: '22px',
                   boxShadow: '0 5px 16px rgba(73, 56, 45, 0.12)',
+                  flexShrink: 0,
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
-                    <img
-                      src={getMemberAvatar(selectedUser)}
-                      alt={selectedUser}
-                      style={{ width: '88px', height: '88px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
-                    />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: '38px', fontWeight: 900, color: '#14251F', lineHeight: 1.1, letterSpacing: '-0.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {selectedUser}
-                      </div>
-                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820', marginTop: '8px' }}>
-                        {memberStats[selectedUser]?.points || 0} POINTS&nbsp; · &nbsp;{selectedMemberLogs.length} FILMS LOGGED
-                      </div>
+                  <img
+                    src={getMemberAvatar(selectedUser)}
+                    alt={selectedUser}
+                    style={{ width: '158px', height: '158px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '5px solid #c9a96b', padding: '4px', objectFit: 'cover' }}
+                  />
+                  <div style={{ minWidth: 0, borderLeft: '2px solid rgba(107, 24, 32, 0.65)', paddingLeft: '34px' }}>
+                    <div style={{ fontSize: '66px', fontWeight: 900, color: '#14251F', lineHeight: 1.08, letterSpacing: '-1.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {selectedUser}
                     </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexShrink: 0 }}>
-                    {isChamp && (
-                      <div style={{ padding: '12px 16px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '14px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
-                        👑 CHAMPION
-                      </div>
-                    )}
-                    <div style={{ padding: '12px 16px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '14px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
-                      {tier.icon} {tier.label}
+                    <div style={{ fontSize: '28px', fontWeight: 900, color: '#6B1820', marginTop: '14px', letterSpacing: '0.2px' }}>
+                      {memberStats[selectedUser]?.points || 0} POINTS&nbsp; · &nbsp;{selectedMemberLogs.length} FILMS LOGGED
                     </div>
                   </div>
                 </div>
 
                 <div style={{
-                  height: '1420px',
+                  height: '1338px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                  gridTemplateRows: 'repeat(3, 450px)',
+                  gridTemplateRows: 'repeat(3, 430px)',
                   gap: '24px',
                   width: '100%',
                   boxSizing: 'border-box',
+                  flexShrink: 0,
                 }}>
                   {pageLogs.map((log, idx) => (
                     <div
@@ -2323,21 +2304,21 @@ export default function App() {
                       style={{
                         background: 'rgba(255, 250, 237, 0.91)',
                         border: '1.5px solid rgba(73, 56, 45, 0.34)',
-                        borderRadius: '5px',
+                        borderRadius: '9px',
                         padding: '16px',
                         textAlign: 'center',
                         boxSizing: 'border-box',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        height: '450px',
+                        height: '430px',
                         boxShadow: '0 4px 12px rgba(73, 56, 45, 0.10)',
                       }}
                     >
                       <MoviePoster
                         src={log.poster}
                         title={log.movie}
-                        style={{ width: '100%', borderRadius: '3px', height: '340px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
+                        style={{ width: '100%', borderRadius: '3px', height: '320px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
                       />
                       <div style={{
                         fontSize: '18px',
@@ -2353,7 +2334,7 @@ export default function App() {
                       }}>
                         {log.movie}
                       </div>
-                      <div style={{ fontSize: '17px', color: '#6B1820', fontWeight: 900, display: 'flex', justifyContent: 'center' }}>
+                      <div style={{ fontSize: '20px', color: '#6B1820', fontWeight: 900, display: 'flex', justifyContent: 'center' }}>
                         <span>★ {log.rating || '—'}</span>
                       </div>
                     </div>
@@ -2361,21 +2342,18 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  height: '100px',
-                  marginTop: '12px',
-                  borderTop: '2px solid rgba(107, 24, 32, 0.35)',
+                  marginTop: 'auto',
+                  paddingTop: '12px',
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
-                  textAlign: 'center',
-                  fontSize: '17px',
+                  fontSize: '16px',
                   fontWeight: 700,
                   fontFamily: 'Georgia, serif',
-                  color: '#49382D',
-                  letterSpacing: '2px',
+                  color: '#75604a',
+                  letterSpacing: '1px',
                 }}>
-                  <span>CUBBON MOVIE CLUB · MYSTERY MONTH</span>
-                  <span>FILMS {pageIndex * 9 + 1}–{pageIndex * 9 + pageLogs.length} OF {selectedMemberLogs.length}</span>
+                  <span>{firstFilm}–{lastFilm} / {selectedMemberLogs.length}</span>
                 </div>
               </div>
             </div>
@@ -2383,7 +2361,6 @@ export default function App() {
         });
       })()}
 
-      
       {/* MYSTERY MONTH VINTAGE NEWSPAPER LEADERBOARD EXPORTS */}
       {(() => {
         const renderLeaderboardExport = (ref, members, mode, part) => (
