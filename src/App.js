@@ -346,7 +346,7 @@ export default function App() {
   useEffect(() => {
     if (typeof document !== 'undefined') {
       // Set Halloween Page Title
-      document.title = 'Cubbon Movie Club | Fright Nights October 💀';
+      document.title = 'Cubbon Movie Club | Mystery Month November';
 
       // Perfectly centered Jack-o'-lantern with padding so edges never get clipped
       const pumpkinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="54%" dominant-baseline="central" text-anchor="middle" font-size="76">🎃</text></svg>`;
@@ -401,7 +401,7 @@ export default function App() {
   async function fetchLiveLogs() {
     try {
       setLoading(true);
-      const { data, error } = await supabase.from('movie_logs_october').select('*');
+      const { data, error } = await supabase.from('movie_logs_november').select('*');
 
       if (error) {
         console.error('Supabase query error:', error.message);
@@ -1060,13 +1060,13 @@ export default function App() {
     try {
       setIsPublishing(true);
 
-      const fetchedGenre = scannedMovieData?.genre || 'October Horror Selection';
+      const fetchedGenre = scannedMovieData?.genre || 'Mystery Month Selection';
       const fetchedDirector = scannedMovieData?.director || 'Production Syncing';
       const fetchedStars = scannedMovieData?.stars || 'Cast Populating';
       const fetchedRating = scannedMovieData?.rating || '★ —';
       const fetchedPoster = customPosterUrl.trim() || scannedMovieData?.poster || '';
       const fetchedPlot =
-        scannedMovieData?.plot || 'This horror selection was freshly logged by the club curator.';
+        scannedMovieData?.plot || 'This mystery selection was freshly logged by the club curator.';
       const autoImdbLink = scannedMovieData?.imdb || '#';
       const detectedImdbId = scannedMovieData?.imdbID || null;
 
@@ -1111,7 +1111,7 @@ export default function App() {
         created_at: new Date().toISOString(),
       };
 
-      const { error } = await supabase.from('movie_logs_october').insert([newLogEntry]);
+      const { error } = await supabase.from('movie_logs_november').insert([newLogEntry]);
       if (error) throw error;
 
       // Reset form states
@@ -1142,10 +1142,10 @@ export default function App() {
   const handleDeleteLog = (logId, title) => {
     setConfirmDialog({
       title: 'Delete Horror Entry?',
-      message: `Are you sure you want to remove "${title}" from the October logs?`,
+      message: `Are you sure you want to remove "${title}" from the November logs?`,
       onConfirm: async () => {
         try {
-          const { error } = await supabase.from('movie_logs_october').delete().eq('id', logId);
+          const { error } = await supabase.from('movie_logs_november').delete().eq('id', logId);
           if (error) throw error;
           await fetchLiveLogs();
           showToast(`Deleted "${title}".`, 'info');
@@ -1385,7 +1385,7 @@ export default function App() {
 
                   {leaderboard.length === 0 ? (
                     <div className="text-sm text-[#49382D] bg-[#E9DFC9] border border-[#C9A96B]/60 p-8 rounded-xl text-center">
-                      The Halloween crypt is silent. Unlock the Admin gate to log October horror films!
+                      The mystery remains unsolved. Unlock the Admin gate to log November films!
                     </div>
                   ) : (
                     <div className="bg-[#E9DFC9] border border-[#C9A96B] rounded-2xl divide-y divide-[#C9A96B]/60 overflow-hidden shadow-md">
