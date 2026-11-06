@@ -259,6 +259,7 @@ const MoviePoster = ({ src, title, className, style }) => {
 
   return (
     <img
+      crossOrigin="anonymous"
       src={src}
       alt={title}
       className={className}
@@ -1406,6 +1407,7 @@ export default function App() {
                             </span>
 
                             <img
+                              crossOrigin="anonymous"
                               src={getMemberAvatar(member.name)}
                               alt={member.name}
                               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-contain shrink-0"
@@ -1533,7 +1535,8 @@ export default function App() {
                               LOGGED BY
                             </span>
                             <img
-                              src={getMemberAvatar(log.name)}
+                              crossOrigin="anonymous"
+                            src={getMemberAvatar(log.name)}
                               alt=""
                               className="w-8 h-8 rounded-full bg-[#E9DFC9] border border-[#C9A96B]/70 p-0.5 object-contain shrink-0"
                             />
@@ -2163,6 +2166,7 @@ export default function App() {
             <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-4">
               <div className="flex items-center gap-3.5">
                 <img
+                  crossOrigin="anonymous"
                   src={getMemberAvatar(selectedUser)}
                   alt={selectedUser}
                   className="w-12 h-12 rounded-full bg-[#E9DFC9] border-2 border-[#6B1820] p-0.5 object-cover"
@@ -2308,7 +2312,8 @@ export default function App() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
                     <img
-                      src={getMemberAvatar(selectedUser)}
+                      crossOrigin="anonymous"
+                  src={getMemberAvatar(selectedUser)}
                       alt={selectedUser}
                       style={{ width: '124px', height: '124px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
                     />
@@ -2478,7 +2483,7 @@ export default function App() {
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
-                          <img src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <img crossOrigin="anonymous" src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
                           <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', border: '1px solid transparent', padding: '14px 16px', background: 'rgba(233,223,201,.32)', letterSpacing: '1px' }}>{member.name}</div>
                         </div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
