@@ -2317,7 +2317,7 @@ export default function App() {
                   />
                   <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '18px' }}>
                     <div style={{
-                      fontSize: `${Math.max(22, Math.min(48, 48 * (30 / Math.max(selectedUser.length, 1)))}px`,
+                      fontSize: `${Math.max(22, Math.min(48, 1440 / Math.max(selectedUser.length, 1)))}px`,
                       fontWeight: 900,
                       color: '#14251F',
                       lineHeight: 1.1,
