@@ -206,7 +206,7 @@ export const MYSTERY_TIERS = {
   SERIAL_KILLER: { label: 'SERIAL KILLER', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
   MURDERER: { label: 'MURDERER', icon: '🔪', min: 10, color: '#6B1820', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
   SUSPECT: { label: 'SUSPECT', icon: '🕵️', min: 5, color: '#6B1820', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
-  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#14251F', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
+  EYE_WITNESS: { label: 'EYEWITNESS', icon: '👁️', min: 0, color: '#14251F', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
 export const getMemberTier = (filmCount) => {
@@ -2297,43 +2297,47 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  minHeight: '142px',
-                  marginTop: '8px',
+                  minHeight: '220px',
+                  marginTop: '0px',
                   marginBottom: '22px',
-                  padding: '18px 24px',
+                  padding: '20px 28px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '18px',
+                  gap: '24px',
                   boxSizing: 'border-box',
                   background: 'rgba(255, 250, 237, 0.88)',
                   border: '2px solid rgba(107, 24, 32, 0.55)',
                   boxShadow: '0 5px 16px rgba(73, 56, 45, 0.12)',
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: 0 }}>
-                    <img
-                      crossOrigin="anonymous"
-                  src={getMemberAvatar(selectedUser)}
-                      alt={selectedUser}
-                      style={{ width: '124px', height: '124px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
-                    />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: '48px', fontWeight: 900, color: '#14251F', lineHeight: 1.1, letterSpacing: '-0.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {selectedUser}
-                      </div>
-                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820', marginTop: '8px' }}>
+                  <img
+                    crossOrigin="anonymous"
+                    src={getMemberAvatar(selectedUser)}
+                    alt={selectedUser}
+                    style={{ width: '132px', height: '132px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
+                  />
+                  <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '18px' }}>
+                    <div style={{
+                      fontSize: `${Math.max(22, Math.min(48, 48 * (30 / Math.max(selectedUser.length, 1)))}px`,
+                      fontWeight: 900,
+                      color: '#14251F',
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.5px',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      {selectedUser}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'nowrap', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820' }}>
                         {memberStats[selectedUser]?.points || 0} POINTS&nbsp; · &nbsp;{selectedMemberLogs.length} FILMS LOGGED
                       </div>
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexShrink: 0 }}>
-                    {isChamp && (
-                      <div style={{ padding: '16px 22px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '20px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
-                        👑 CHAMPION
+                      {isChamp && (
+                        <div style={{ padding: '12px 18px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '18px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
+                          👑 CHAMPION
+                        </div>
+                      )}
+                      <div style={{ padding: '12px 18px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '18px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
+                        {tier.icon} {tier.label}
                       </div>
-                    )}
-                    <div style={{ padding: '16px 22px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '20px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
-                      {tier.icon} {tier.label}
                     </div>
                   </div>
                 </div>
