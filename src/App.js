@@ -2334,12 +2334,10 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  height: '1248px',
-                  position: 'relative',
-                  top: '80px',
+                  height: '1338px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                  gridTemplateRows: 'repeat(3, 400px)',
+                  gridTemplateRows: 'repeat(3, 430px)',
                   gap: '24px',
                   width: '100%',
                   boxSizing: 'border-box',
@@ -2357,14 +2355,14 @@ export default function App() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        height: '400px',
+                        height: '430px',
                         boxShadow: '0 4px 12px rgba(73, 56, 45, 0.10)',
                       }}
                     >
                       <MoviePoster
                         src={log.poster}
                         title={log.movie}
-                        style={{ width: '100%', borderRadius: '3px', height: '290px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
+                        style={{ width: '100%', borderRadius: '3px', height: '320px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
                       />
                       <div style={{
                         fontSize: '18px',
