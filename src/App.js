@@ -2297,10 +2297,10 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  minHeight: '220px',
-                  marginTop: '0px',
-                  marginBottom: '22px',
-                  padding: '20px 28px',
+                  minHeight: '190px',
+                  marginTop: '24px',
+                  marginBottom: '0px',
+                  padding: '22px 28px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '24px',
@@ -2315,7 +2315,7 @@ export default function App() {
                     alt={selectedUser}
                     style={{ width: '132px', height: '132px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
                   />
-                  <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '18px' }}>
+                  <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '16px' }}>
                     <div style={{
                       fontSize: `${Math.max(22, Math.min(48, 1440 / Math.max(selectedUser.length, 1)))}px`,
                       fontWeight: 900,
@@ -2326,21 +2326,20 @@ export default function App() {
                     }}>
                       {selectedUser}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', width: '100%', whiteSpace: 'nowrap' }}>
-                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820', flexShrink: 0 }}>
-                        {memberStats[selectedUser]?.points || 0} POINTS&nbsp; · &nbsp;{selectedMemberLogs.length} FILMS LOGGED
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px', flexShrink: 0 }}>
-                        {isChamp && (
-                          <div style={{ padding: '12px 18px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '18px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
-                            👑 CHAMPION
-                          </div>
-                        )}
-                        <div style={{ padding: '12px 18px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '18px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
-                          {tier.icon} {tier.label}
-                        </div>
-                      </div>
+                    <div style={{ fontSize: '23px', fontWeight: 900, color: '#6B1820', whiteSpace: 'nowrap' }}>
+                      {memberStats[selectedUser]?.points || 0} {(memberStats[selectedUser]?.points || 0) === 1 ? 'POINT' : 'POINTS'}&nbsp; · &nbsp;{selectedMemberLogs.length} {selectedMemberLogs.length === 1 ? 'FILM' : 'FILMS'} LOGGED
                     </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '12px', marginTop: '16px', marginBottom: '0px', minHeight: '58px' }}>
+                  {isChamp && (
+                    <div style={{ padding: '12px 20px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '19px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
+                      👑 CHAMPION
+                    </div>
+                  )}
+                  <div style={{ padding: '12px 20px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '19px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
+                    {tier.icon} {tier.label}
                   </div>
                 </div>
 
