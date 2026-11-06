@@ -2385,10 +2385,10 @@ export default function App() {
                   ))}
                 </div>
 
-                <div style={{
+                <div aria-hidden="true" style={{
                   height: '100px',
                   marginTop: '12px',
-                  borderTop: '2px solid rgba(107, 24, 32, 0.35)',
+                  borderTop: '2px solid transparent',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
@@ -2396,11 +2396,11 @@ export default function App() {
                   fontSize: '17px',
                   fontWeight: 700,
                   fontFamily: 'Georgia, serif',
-                  color: '#49382D',
+                  color: 'transparent',
                   letterSpacing: '2px',
                 }}>
-                  <span>CUBBON MOVIE CLUB · MYSTERY MONTH</span>
-                  <span>FILMS {pageIndex * 9 + 1}–{pageIndex * 9 + pageLogs.length} OF {selectedMemberLogs.length}</span>
+                  <span>&nbsp;</span>
+                  <span>&nbsp;</span>
                 </div>
               </div>
             </div>
