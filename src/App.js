@@ -2378,7 +2378,7 @@ export default function App() {
                       }}>
                         {log.movie}
                       </div>
-                      <div style={{ fontSize: '17px', color: '#6B1820', fontWeight: 900, display: 'flex', justifyContent: 'center' }}>
+                      <div style={{ fontSize: '20px', color: '#6B1820', fontWeight: 900, display: 'flex', justifyContent: 'center' }}>
                         <span>★ {log.rating || '—'}</span>
                       </div>
                     </div>
