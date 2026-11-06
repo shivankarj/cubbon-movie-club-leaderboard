@@ -2334,7 +2334,7 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  height: '1420px',
+                  height: '1338px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                   gridTemplateRows: 'repeat(3, 430px)',
