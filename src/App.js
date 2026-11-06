@@ -2310,10 +2310,10 @@ export default function App() {
                     <img
                       src={getMemberAvatar(selectedUser)}
                       alt={selectedUser}
-                      style={{ width: '88px', height: '88px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
+                      style={{ width: '124px', height: '124px', flexShrink: 0, borderRadius: '50%', backgroundColor: '#e9dfc9', border: '3px solid #c9a96b', padding: '3px', objectFit: 'cover' }}
                     />
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: '38px', fontWeight: 900, color: '#14251F', lineHeight: 1.1, letterSpacing: '-0.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '48px', fontWeight: 900, color: '#14251F', lineHeight: 1.1, letterSpacing: '-0.5px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {selectedUser}
                       </div>
                       <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820', marginTop: '8px' }}>
