@@ -2437,14 +2437,12 @@ export default function App() {
               
               <div style={{ position: 'relative', zIndex: 1, minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '18px', marginBottom: '40px' }}>
-                  <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '27px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
+                  <div style={{ fontFamily: "'Syncopate', sans-serif", fontSize: '34px', lineHeight: '1.12', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase', color: '#14251F' }}>
                     CUBBON<br/><span style={{ color: '#6B1820' }}>MOVIE</span><br/>CLUB
                   </div>
                   <div style={{ width: '2px', height: '82px', background: '#8b795c' }} />
                   <div style={{ width: '76px', height: '76px', borderRadius: '17px', background: '#e5d9bd', border: '1px solid #c4ad7c', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '43px' }}>🕵️</div>
-                  <div style={{ marginLeft: 'auto', textAlign: 'right', color: '#75654f', fontFamily: 'Georgia,serif', fontSize: '14px', letterSpacing: '2px' }}>
-                    THE CLUB RECORD<br/><span style={{ fontSize: '12px' }}>MYSTERY MONTH EDITION · NO. {String(part).padStart(2, '0')}</span>
-                  </div>
+                  
                 </div>
 
                 <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '59px', lineHeight: 1.18, letterSpacing: '5px', textTransform: 'uppercase', color: '#6B1820', marginLeft: '8px' }}>
@@ -2491,8 +2489,8 @@ export default function App() {
               </div>
 
               {/* Parchment background supplies the archival details; keep the lower corners uncluttered. */}
-              <div style={{ position: 'absolute', left: '54px', bottom: '38px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '13px', letterSpacing: '2px' }}>
-                CUBBON MOVIE CLUB · MYSTERY MONTH
+              <div style={{ position: 'absolute', left: '54px', bottom: '38px', color: '#78684f', fontFamily: 'Georgia,serif', fontSize: '18px', letterSpacing: '1px' }}>
+                {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
               </div>
             </div>
           </div>
