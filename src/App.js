@@ -2362,7 +2362,7 @@ export default function App() {
                       <MoviePoster
                         src={log.poster}
                         title={log.movie}
-                        style={{ width: '100%', borderRadius: '3px', height: '340px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
+                        style={{ width: '100%', borderRadius: '3px', height: '320px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
                       />
                       <div style={{
                         fontSize: '18px',
