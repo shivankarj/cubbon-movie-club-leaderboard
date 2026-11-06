@@ -2276,16 +2276,16 @@ export default function App() {
                   justifyContent: 'space-between',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                  <div>
+                <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '100%', textAlign: 'center' }}>
                     <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '38px', letterSpacing: '3px', lineHeight: 1.15, color: '#14251F' }}>
                       CUBBON <span style={{ color: '#6B1820' }}>MOVIE</span> CLUB
                     </div>
                     <div style={{ marginTop: '10px', fontFamily: "'Syncopate', sans-serif", fontSize: '19px', fontWeight: 700, letterSpacing: '2.5px', color: '#6B1820' }}>
-                      FRIGHT NIGHTS <span style={{ color: '#49382D' }}>OCTOBER</span>
+                      MYSTERY MONTH <span style={{ color: '#49382D' }}>NOVEMBER</span>
                     </div>
                   </div>
-                  <div aria-hidden="true" style={{ width: '236px', visibility: 'hidden', textAlign: 'right', paddingTop: '6px', fontFamily: 'Georgia, serif', color: '#49382D', fontSize: '15px', letterSpacing: '2px', lineHeight: 1.8 }}>
+                  <div aria-hidden="true" style={{ position: 'absolute', right: 0, top: 0, width: '236px', visibility: 'hidden', textAlign: 'right', paddingTop: '6px', fontFamily: 'Georgia, serif', color: '#49382D', fontSize: '15px', letterSpacing: '2px', lineHeight: 1.8 }}>
                     THE CLUB RECORD<br />
                     MEMBER FILM ARCHIVE<br />
                     EDITION {String(pageIndex + 1).padStart(2, '0')} / {String(pageCount).padStart(2, '0')}
