@@ -2326,17 +2326,19 @@ export default function App() {
                     }}>
                       {selectedUser}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'nowrap', whiteSpace: 'nowrap' }}>
-                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', width: '100%', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '19px', fontWeight: 800, color: '#6B1820', flexShrink: 0 }}>
                         {memberStats[selectedUser]?.points || 0} POINTS&nbsp; · &nbsp;{selectedMemberLogs.length} FILMS LOGGED
                       </div>
-                      {isChamp && (
-                        <div style={{ padding: '12px 18px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '18px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
-                          👑 CHAMPION
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px', flexShrink: 0 }}>
+                        {isChamp && (
+                          <div style={{ padding: '12px 18px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '18px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
+                            👑 CHAMPION
+                          </div>
+                        )}
+                        <div style={{ padding: '12px 18px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '18px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
+                          {tier.icon} {tier.label}
                         </div>
-                      )}
-                      <div style={{ padding: '12px 18px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '18px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
-                        {tier.icon} {tier.label}
                       </div>
                     </div>
                   </div>
