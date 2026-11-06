@@ -2285,7 +2285,7 @@ export default function App() {
                       FRIGHT NIGHTS <span style={{ color: '#49382D' }}>OCTOBER</span>
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right', paddingTop: '6px', fontFamily: 'Georgia, serif', color: '#49382D', fontSize: '15px', letterSpacing: '2px', lineHeight: 1.8 }}>
+                  <div aria-hidden="true" style={{ width: '236px', visibility: 'hidden', textAlign: 'right', paddingTop: '6px', fontFamily: 'Georgia, serif', color: '#49382D', fontSize: '15px', letterSpacing: '2px', lineHeight: 1.8 }}>
                     THE CLUB RECORD<br />
                     MEMBER FILM ARCHIVE<br />
                     EDITION {String(pageIndex + 1).padStart(2, '0')} / {String(pageCount).padStart(2, '0')}
