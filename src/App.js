@@ -2332,14 +2332,16 @@ export default function App() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '12px', marginTop: '16px', marginBottom: '0px', minHeight: '58px' }}>
-                  {isChamp && (
-                    <div style={{ padding: '12px 20px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '19px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
-                      👑 CHAMPION
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop: '16px', marginBottom: '0px', minHeight: '58px' }}>
+                  <div style={{ display: 'flex', flex: '0 0 100%', width: '100%', justifyContent: 'center', alignItems: 'center', gap: '12px', minHeight: '58px' }}>
+                    {isChamp && (
+                      <div style={{ padding: '12px 20px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '19px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
+                        👑 CHAMPION
+                      </div>
+                    )}
+                    <div style={{ padding: '12px 20px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '19px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
+                      {tier.icon} {tier.label}
                     </div>
-                  )}
-                  <div style={{ padding: '12px 20px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '19px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
-                    {tier.icon} {tier.label}
                   </div>
                 </div>
 
