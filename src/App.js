@@ -2337,7 +2337,7 @@ export default function App() {
                   height: '1420px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                  gridTemplateRows: 'repeat(3, 450px)',
+                  gridTemplateRows: 'repeat(3, 430px)',
                   gap: '24px',
                   width: '100%',
                   boxSizing: 'border-box',
@@ -2355,7 +2355,7 @@ export default function App() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        height: '450px',
+                        height: '430px',
                         boxShadow: '0 4px 12px rgba(73, 56, 45, 0.10)',
                       }}
                     >
