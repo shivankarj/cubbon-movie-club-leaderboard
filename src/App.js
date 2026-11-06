@@ -202,11 +202,11 @@ const isForeignCinema = (languageStr = '', countryStr = '', originalLanguage = '
 };
 
 export const MYSTERY_TIERS = {
-  MASTERMIND: { label: 'MASTERMIND', icon: '🧠', min: 20, color: '#C9A96B', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
+  MASTERMIND: { label: 'MASTERMIND', icon: '🧠', min: 20, color: '#6B1820', border: '#6B1820', bg: 'rgba(126, 34, 206, 0.2)' },
   SERIAL_KILLER: { label: 'SERIAL KILLER', icon: '🩸', min: 15, color: '#6B1820', border: '#6B1820', bg: 'rgba(107, 24, 32, 0.14)' },
-  MURDERER: { label: 'MURDERER', icon: '🔪', min: 10, color: '#C9A96B', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
-  SUSPECT: { label: 'SUSPECT', icon: '🕵️', min: 5, color: '#C9A96B', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
-  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#E9DFC9', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
+  MURDERER: { label: 'MURDERER', icon: '🔪', min: 10, color: '#6B1820', border: '#49382D', bg: 'rgba(34, 197, 94, 0.2)' },
+  SUSPECT: { label: 'SUSPECT', icon: '🕵️', min: 5, color: '#6B1820', border: '#C9A96B', bg: 'rgba(201, 169, 107, 0.2)' },
+  EYE_WITNESS: { label: 'EYE WITNESS', icon: '👁️', min: 0, color: '#14251F', border: '#49382D', bg: 'rgba(71, 85, 105, 0.2)' },
 };
 
 export const getMemberTier = (filmCount) => {
@@ -2323,7 +2323,7 @@ export default function App() {
                   </div>
                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexShrink: 0 }}>
                     {isChamp && (
-                      <div style={{ padding: '12px 16px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '14px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
+                      <div style={{ padding: '16px 22px', border: '1.5px solid #c9a96b', background: 'rgba(201,169,107,.18)', color: '#6B1820', fontSize: '20px', fontWeight: 900, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
                         👑 CHAMPION
                       </div>
                     )}
@@ -2402,7 +2402,7 @@ export default function App() {
                   letterSpacing: '2px',
                 }}>
                   <span>&nbsp;</span>
-                  <span>&nbsp;</span>
+                  <span style={{ color: '#6B1820', fontSize: '18px', letterSpacing: '2px' }}>{pageCount > 1 ? `${String(pageIndex + 1).padStart(2, '0')} / ${String(pageCount).padStart(2, '0')}` : ''}</span>
                 </div>
               </div>
             </div>
