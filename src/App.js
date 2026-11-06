@@ -2206,7 +2206,7 @@ export default function App() {
                   )}
                   <span
                     className="text-xs font-black px-3 py-1 rounded-full flex items-center gap-1.5"
-                    style={{ backgroundColor: tier.bg, borderColor: tier.border, color: tier.color, borderWidth: 1 }}
+                    style={{ backgroundColor: tier.bg, borderColor: tier.border, color: '#E9DFC9', borderWidth: 1 }}
                   >
                     <span>{tier.icon}</span>
                     <span>{tier.label}</span>
@@ -2334,12 +2334,12 @@ export default function App() {
                 </div>
 
                 <div style={{
-                  height: '1338px',
+                  height: '1248px',
                   position: 'relative',
                   top: '80px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                  gridTemplateRows: 'repeat(3, 430px)',
+                  gridTemplateRows: 'repeat(3, 400px)',
                   gap: '24px',
                   width: '100%',
                   boxSizing: 'border-box',
@@ -2357,14 +2357,14 @@ export default function App() {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
-                        height: '430px',
+                        height: '400px',
                         boxShadow: '0 4px 12px rgba(73, 56, 45, 0.10)',
                       }}
                     >
                       <MoviePoster
                         src={log.poster}
                         title={log.movie}
-                        style={{ width: '100%', borderRadius: '3px', height: '320px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
+                        style={{ width: '100%', borderRadius: '3px', height: '290px', objectFit: 'contain', backgroundColor: 'rgba(20,37,31,.08)' }}
                       />
                       <div style={{
                         fontSize: '18px',
@@ -2388,13 +2388,16 @@ export default function App() {
                 </div>
 
                 <div aria-hidden="true" style={{
-                  height: '100px',
-                  marginTop: '12px',
-                  borderTop: '2px solid transparent',
+                  height: '36px',
+                  position: 'absolute',
+                  right: '60px',
+                  bottom: '28px',
+                  marginTop: 0,
+                  borderTop: 'none',
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
-                  textAlign: 'center',
+                  textAlign: 'right',
                   fontSize: '17px',
                   fontWeight: 700,
                   fontFamily: 'Georgia, serif',
