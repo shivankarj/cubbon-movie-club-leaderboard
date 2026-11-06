@@ -2278,10 +2278,10 @@ export default function App() {
               >
                 <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                   <div style={{ width: '100%', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '38px', letterSpacing: '3px', lineHeight: 1.15, color: '#14251F' }}>
+                    <div style={{ fontFamily: "'Syncopate', sans-serif", fontWeight: 800, fontSize: '46px', letterSpacing: '3px', lineHeight: 1.15, color: '#14251F' }}>
                       CUBBON <span style={{ color: '#6B1820' }}>MOVIE</span> CLUB
                     </div>
-                    <div style={{ marginTop: '10px', fontFamily: "'Syncopate', sans-serif", fontSize: '19px', fontWeight: 700, letterSpacing: '2.5px', color: '#6B1820' }}>
+                    <div style={{ marginTop: '10px', fontFamily: "'Syncopate', sans-serif", fontSize: '24px', fontWeight: 700, letterSpacing: '2.5px', color: '#6B1820' }}>
                       MYSTERY MONTH <span style={{ color: '#49382D' }}>NOVEMBER</span>
                     </div>
                   </div>
@@ -2327,7 +2327,7 @@ export default function App() {
                         👑 CHAMPION
                       </div>
                     )}
-                    <div style={{ padding: '12px 16px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '14px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
+                    <div style={{ padding: '16px 22px', border: `1.5px solid ${tier.border}`, background: tier.bg, color: tier.color, fontSize: '20px', fontWeight: 900, letterSpacing: '0.7px', whiteSpace: 'nowrap' }}>
                       {tier.icon} {tier.label}
                     </div>
                   </div>
@@ -2335,6 +2335,8 @@ export default function App() {
 
                 <div style={{
                   height: '1338px',
+                  position: 'relative',
+                  top: '80px',
                   display: 'grid',
                   gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                   gridTemplateRows: 'repeat(3, 430px)',
