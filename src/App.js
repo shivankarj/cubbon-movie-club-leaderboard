@@ -983,7 +983,7 @@ export default function App() {
       showToast(`🎃 Downloaded ${tagLabel} Leaderboard story slides!`, 'success');
     } catch (err) {
       console.error('Multi-Slide Generation Error:', err);
-      showToast('Failed to generate story slide series.', 'error');
+      showToast(`Story slide export failed: ${err?.message || 'Unknown error'}`, 'error');
     } finally {
       setIsExporting(false);
       setExportType(null);
@@ -1019,7 +1019,7 @@ export default function App() {
       showToast(`💀 Generated ${pageCount} profile slide${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
     } catch (err) {
       console.error('Member Image Generation Error:', err);
-      showToast('Failed to generate personal card.', 'error');
+      showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
     } finally {
       setIsMemberExporting(false);
     }
