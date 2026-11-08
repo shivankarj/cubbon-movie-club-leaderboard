@@ -1294,7 +1294,7 @@ export default function App() {
         {currentPage === 'public' && (
           <div className="space-y-6">
             {/* REPLACEABLE MYSTERY MONTH BANNER IMAGE: upload a new file as public/mystery-month-banner.jpg */}
-            <div className="mb-0 overflow-hidden rounded-2xl border border-[#C9A96B]/70 bg-[#14251F]">
+            <div className="mb-0 overflow-hidden border border-[#C9A96B]/70 bg-[#14251F]">
               <img
                 src="/mystery-month-banner.jpg"
                 alt="Mystery Month banner"
@@ -1473,12 +1473,12 @@ export default function App() {
                         onClick={() => setSortByRating(!sortByRating)}
                         className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
                           sortByRating
-                            ? 'bg-[#6B1820] text-[#49382D] border-[#6B1820]'
+                            ? 'bg-[#6B1820] text-[#E9DFC9] border-[#6B1820]'
                             : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
                         }`}
                       >
                         <span>★</span>
-                        <span className="truncate">{sortByRating ? 'Sorted by Rating' : 'Sort Rating'}</span>
+                        <span className="truncate">Sort by Rating</span>
                       </button>
 
                       <div className="relative w-full sm:w-48">
@@ -1487,7 +1487,7 @@ export default function App() {
                           onChange={(e) => setSelectedMemberFilter(e.target.value)}
                           className="w-full bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl px-3 py-2 pr-7 text-xs text-[#49382D] focus:outline-none focus:border-[#6B1820] font-medium cursor-pointer appearance-none truncate"
                         >
-                          <option value="">Filter Member</option>
+                          <option value="">Filter by Member</option>
                           {uniqueMembers.map((name) => (
                             <option key={name} value={name} className="bg-[#E9DFC9] text-[#49382D]">
                               {name}
