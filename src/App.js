@@ -1331,35 +1331,33 @@ export default function App() {
                 {/* 🏆 LEADERBOARD VIEW BLOCK */}
                 <section id="leaderboard" className="space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black pb-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F] uppercase" style={{ fontFamily: "'Syncopate', sans-serif" }}>
-                        LEADERBOARD
-                      </h2>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F] uppercase" style={{ fontFamily: "'Syncopate', sans-serif" }}>
+                      LEADERBOARD
+                    </h2>
 
-                      <div className="inline-flex items-center p-1 bg-[#E9DFC9] border border-[#C9A96B]/60 rounded-xl shrink-0 self-start sm:self-auto shadow-inner ml-0 sm:ml-2">
-                        <button
-                          type="button"
-                          onClick={() => setLeaderboardSort('points')}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                            leaderboardSort === 'points'
-                              ? 'bg-[#6B1820] text-[#E9DFC9] shadow-[0_0_10px_rgba(107, 24, 32,0.25)]'
-                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
-                          }`}
-                        >
-                          <span>🔥</span> By Points
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setLeaderboardSort('films')}
-                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                            leaderboardSort === 'films'
-                              ? 'bg-[#6B1820] text-white shadow-[0_0_10px_rgba(107, 24, 32,0.5)]'
-                              : 'text-[#6B1820]/80 hover:text-[#14251F]'
-                          }`}
-                        >
-                          <span>🎞️</span> By Films
-                        </button>
-                      </div>
+                    <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto sm:ml-auto">
+                      <button
+                        type="button"
+                        onClick={() => setLeaderboardSort('points')}
+                        className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
+                          leaderboardSort === 'points'
+                            ? 'bg-[#E9DFC9] text-[#6B1820] border-[#C9A96B]/60'
+                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
+                        }`}
+                      >
+                        <span>🔥</span> By Points
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setLeaderboardSort('films')}
+                        className={`text-xs font-bold px-3 py-2 rounded-xl border transition-all flex items-center justify-center gap-1.5 ${
+                          leaderboardSort === 'films'
+                            ? 'bg-[#E9DFC9] text-[#6B1820] border-[#C9A96B]/60'
+                            : 'bg-[#E9DFC9] text-[#49382D] border-[#C9A96B]/60 hover:text-[#6B1820] hover:border-[#6B1820]'
+                        }`}
+                      >
+                        <span>🎞️</span> By Films
+                      </button>
                     </div>
 
                     {isAuthenticated && (
