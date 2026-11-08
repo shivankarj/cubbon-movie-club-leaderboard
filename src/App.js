@@ -349,9 +349,9 @@ export default function App() {
       // Set Halloween Page Title
       document.title = 'Cubbon Movie Club | Mystery Month November';
 
-      // Perfectly centered Jack-o'-lantern with padding so edges never get clipped
-      const pumpkinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="54%" dominant-baseline="central" text-anchor="middle" font-size="76">🎃</text></svg>`;
-      const faviconUrl = `data:image/svg+xml,${encodeURIComponent(pumpkinSvg)}`;
+      // Mystery Month detective favicon
+      const detectiveSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="82">🕵️‍♂️</text></svg>`;
+      const faviconUrl = `data:image/svg+xml,${encodeURIComponent(detectiveSvg)}`;
 
       const icons = document.querySelectorAll("link[rel*='icon']");
       if (icons.length > 0) {
