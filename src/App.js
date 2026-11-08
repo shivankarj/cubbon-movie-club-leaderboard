@@ -1332,7 +1332,7 @@ export default function App() {
                 <section id="leaderboard" className="space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black pb-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F] uppercase">
+                      <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F] uppercase" style={{ fontFamily: "'Syncopate', sans-serif" }}>
                         LEADERBOARD
                       </h2>
 
@@ -1464,7 +1464,7 @@ export default function App() {
                 {/* 🎬 LOGGED HORROR FEED */}
                 <section id="movie-log" className="space-y-7 pt-4">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b-2 border-black pb-4">
-                    <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F]">
+                    <h2 className="text-2xl md:text-3xl font-black tracking-[-0.04em] text-[#14251F]" style={{ fontFamily: "'Syncopate', sans-serif" }}>
                       LOGGED ({logs.length})
                     </h2>
 
