@@ -1219,7 +1219,7 @@ export default function App() {
       )}
 
       {/* SPOOKY HEADER & NAVBAR */}
-      <header className="max-w-4xl mx-auto px-4 pt-8 flex items-center justify-between border-b-2 border-black pb-6">
+      <header className="max-w-4xl mx-auto px-4 pt-8 flex flex-wrap items-center justify-between gap-y-4 border-b-2 border-black pb-6">
         <div className="flex items-center gap-4">
           <div
             className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
@@ -1235,7 +1235,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex w-full sm:w-auto items-center justify-end gap-2 sm:gap-3">
           {currentPage === 'public' ? (
             <div className="flex items-center gap-2">
               {isAuthenticated ? (
@@ -1504,11 +1504,11 @@ export default function App() {
                       {selectedMemberFilter ? `No horror entries found for ${selectedMemberFilter}.` : 'No movies logged yet.'}
                     </div>
                   ) : (
-                    <div className="divide-y divide-[#C9A96B]/50 space-y-12">
+                    <div className="divide-y divide-[#C9A96B]/50 space-y-8 sm:space-y-12">
                       {processedLogs.map((log) => (
                         <div
                           key={`${log.name}-${log.movie}-${Math.random()}`}
-                          className="flex flex-col space-y-4 pt-10 first:pt-0"
+                          className="flex flex-col space-y-3 sm:space-y-4 pt-8 sm:pt-10 first:pt-0"
                         >
                           <div>
                             <h3 className="text-2xl sm:text-3xl font-black text-[#14251F] tracking-tight">
@@ -1609,7 +1609,7 @@ export default function App() {
                           </div>
 
                           {/* Movie Poster */}
-                          <div className="w-full max-w-md">
+                          <div className="w-full max-w-md -mt-1">
                             <MoviePoster
                               src={log.poster}
                               title={log.movie}
@@ -1618,7 +1618,7 @@ export default function App() {
                           </div>
 
                           {/* Metadata Details & Review */}
-                          <div className="space-y-4 max-w-md sm:max-xl">
+                          <div className="space-y-3 sm:space-y-4 max-w-md sm:max-xl">
                             <div className="space-y-1 text-sm text-[#49382D] font-medium">
                               <p>
                                 <span className="text-[#49382D]/75 font-bold uppercase tracking-wider text-[11px] mr-1.5">
@@ -2161,8 +2161,8 @@ export default function App() {
       {selectedUser && (
         <div className="fixed inset-0 z-50 bg-[#14251F]/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-[#14251F] border-2 border-[#6B1820] rounded-2xl max-w-2xl w-full p-6 shadow-[0_0_35px_rgba(107, 24, 32,0.35)] relative max-h-[90vh] overflow-y-auto flex flex-col space-y-6">
-            <div className="flex items-center justify-between border-b border-[#C9A96B]/60 pb-4">
-              <div className="flex items-center gap-3.5">
+            <div className="flex flex-col gap-4 border-b border-[#C9A96B]/60 pb-4 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3.5">
                 <img
                   crossOrigin="anonymous"
                   src={getMemberAvatar(selectedUser)}
@@ -2178,11 +2178,11 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
                 <button
                   onClick={handleDownloadMemberImage}
                   disabled={isMemberExporting || selectedMemberLogs.length === 0}
-                  className="text-xs font-black tracking-wider uppercase bg-[#6B1820] hover:bg-[#49382D] text-slate-950 px-3.5 py-2 rounded-xl transition-all shadow-md disabled:opacity-50 flex items-center gap-1.5"
+                  className="text-xs font-black tracking-wider uppercase bg-[#6B1820] hover:bg-[#49382D] text-[#E9DFC9] px-3.5 py-2 rounded-xl transition-all shadow-md disabled:opacity-50 flex items-center gap-1.5"
                 >
                   <span>📸</span>
                   <span>{isMemberExporting ? 'Generating...' : 'Export Story Badge'}</span>
