@@ -1235,7 +1235,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex w-full sm:w-auto items-center justify-end gap-2 sm:gap-3">
+        <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-2 sm:gap-3">
           {currentPage === 'public' ? (
             <div className="flex items-center gap-2">
               {isAuthenticated ? (
