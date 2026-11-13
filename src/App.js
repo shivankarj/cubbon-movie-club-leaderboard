@@ -1219,7 +1219,7 @@ export default function App() {
       )}
 
       {/* SPOOKY HEADER & NAVBAR */}
-      <header className="max-w-4xl mx-auto px-4 pt-8 flex flex-wrap items-center justify-between gap-y-4 border-b-2 border-black pb-6">
+      <header className="max-w-4xl mx-auto px-4 pt-5 sm:pt-8 flex items-center justify-between gap-3 border-b-2 border-black pb-4 sm:pb-6">
         <div className="flex items-center gap-4">
           <div
             className="flex flex-col text-sm font-bold tracking-widest leading-tight uppercase select-none"
@@ -1235,7 +1235,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex w-full sm:w-auto items-center justify-center sm:justify-end gap-2 sm:gap-3">
+        <div className="flex w-auto shrink-0 items-center justify-end gap-2 sm:gap-3 ml-auto">
           {currentPage === 'public' ? (
             <div className="flex items-center gap-2">
               {isAuthenticated ? (
