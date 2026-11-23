@@ -220,10 +220,10 @@ export const getMemberTier = (filmCount) => {
 
 const getMemberAvatarForExport = (name) => {
   const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
-  const avatarPath = `robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
-  // Use a distinct, fully-qualified origin URL as the image-proxy cache key.
-  // This keeps each member's deterministic RoboHash separate during JPG capture.
-  return `https://images.weserv.nl/?url=${encodeURIComponent(avatarPath)}&w=120&h=120&fit=cover`;
+  // weserv requires an absolute source URL. Passing a hostname-only path can
+  // make the proxy resolve/cache the same fallback image for different seeds.
+  const sourceUrl = `https://robohash.org/${encodeURIComponent(safeSeed)}.png?set=set4&size=120x120`;
+  return `https://images.weserv.nl/?url=${encodeURIComponent(sourceUrl)}&w=120&h=120&fit=cover`;
 };
 
 const getMemberAvatar = (name) => {
