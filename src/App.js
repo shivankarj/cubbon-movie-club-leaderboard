@@ -936,7 +936,7 @@ export default function App() {
     if (isMemberExporting || !selectedUser || userLogs.length === 0) return;
 
     const pageCount = Math.ceil(userLogs.length / 9);
-    const safeFileName = selectedUser.replace(/[\\/:*?"<>|]/g, '-').trim();
+    const safeFileName = selectedUser.replaceAll('/', '-').replaceAll('\\\\', '-').replaceAll(':', '-').replaceAll('*', '-').replaceAll('?', '-').replaceAll('"', '-').replaceAll('<', '-').replaceAll('>', '-').replaceAll('|', '-').trim();
 
     try {
       setIsMemberExporting(true);
