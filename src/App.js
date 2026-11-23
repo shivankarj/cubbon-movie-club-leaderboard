@@ -223,7 +223,7 @@ const getMemberAvatar = (name) => {
   return `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(safeSeed)}&backgroundColor=180202,09030a&radius=50`;
 };
 
-const MoviePoster = ({ src, title, className, style }) => {
+const MoviePoster = ({ src, title, className, style, loading = 'lazy' }) => {
   const [imgError, setImgError] = useState(false);
 
   if (!src || src === 'N/A' || imgError) {
@@ -259,7 +259,7 @@ const MoviePoster = ({ src, title, className, style }) => {
       className={className}
       style={style}
       onError={() => setImgError(true)}
-      loading="lazy"
+      loading={loading}
     />
   );
 };
@@ -846,6 +846,44 @@ export default function App() {
     throw new Error('Image exporter could not be initialized.');
   };
 
+  const captureMemberCardToJpeg = async (element) => {
+    if (!element) return null;
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+    // Profile cards are rendered off-screen, so force their poster/avatar
+    // images to load instead of relying on the browser's lazy-load threshold.
+    const images = Array.from(element.querySelectorAll('img'));
+    images.forEach((img) => { img.loading = 'eager'; });
+    await Promise.all(images.map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          img.removeEventListener('load', finish);
+          img.removeEventListener('error', finish);
+          resolve();
+        };
+        const timeoutId = setTimeout(finish, 12000);
+        img.addEventListener('load', finish, { once: true });
+        img.addEventListener('error', finish, { once: true });
+      });
+    }));
+
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
+    if (window.htmlToImage && window.htmlToImage.toJpeg) {
+      return await window.htmlToImage.toJpeg(element, {
+        quality: 0.95,
+        pixelRatio: 2,
+        cacheBust: true,
+        skipFonts: true,
+      });
+    }
+    throw new Error('Image exporter could not be initialized.');
+  };
+
   const handleDownloadLeaderboardImage = async (mode = 'points') => {
     const targetBoard = mode === 'points' ? leaderboardByPoints : leaderboardByFilms;
     if (isExporting || targetBoard.length === 0) return;
@@ -910,7 +948,7 @@ export default function App() {
         }
 
         if (pageIndex > 0) await new Promise((resolve) => setTimeout(resolve, 600));
-        const dataUrl = await captureElementToJpeg(exportElement);
+        const dataUrl = await captureMemberCardToJpeg(exportElement);
         if (!dataUrl) throw new Error(`Image conversion returned no image for slide ${pageIndex + 1}.`);
 
         const link = document.createElement('a');
@@ -2302,6 +2340,7 @@ export default function App() {
                   }}
                 >
                   <MoviePoster
+                    loading="eager"
                     src={log.poster}
                     title={log.movie}
                     style={{ width: '100%', borderRadius: '10px', height: '340px', objectFit: 'cover' }}
