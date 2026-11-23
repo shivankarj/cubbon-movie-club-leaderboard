@@ -2296,9 +2296,7 @@ export default function App() {
                           </text>
                         </svg>
                       </div>
-                        );
-        });
-      })()}
+                    )}
                     <div style={{ width: '175px', height: '52px', position: 'relative' }}>
                       <svg width="175" height="52" viewBox="0 0 175 52">
                         <rect width="175" height="52" rx="26" fill={tier.bg} stroke={tier.border} strokeWidth="2.5" />
