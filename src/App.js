@@ -994,6 +994,20 @@ export default function App() {
     const userLogs = selectedMemberLogs;
     if (isMemberExporting || !selectedUser || userLogs.length === 0) return;
 
+    let exportStage = 'starting export';
+    let activePage = 0;
+    const describeExportError = (error) => {
+      if (error && typeof error.message === 'string' && error.message.trim()) return error.message;
+      if (typeof error === 'string' && error.trim()) return error;
+      try {
+        const serialized = JSON.stringify(error);
+        if (serialized && serialized !== '{}') return serialized;
+      } catch (_) {
+        // Fall through to a safe string representation.
+      }
+      return String(error || 'No error details were provided by the browser.');
+    };
+
     const pageCount = Math.ceil(userLogs.length / 9);
     const safeFileName = selectedUser
       .replaceAll('/', '-').replaceAll('\\', '-').replaceAll(':', '-')
@@ -1004,16 +1018,23 @@ export default function App() {
       setIsMemberExporting(true);
 
       for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
+        activePage = pageIndex + 1;
+        exportStage = 'locating the profile slide';
         const exportElement = memberExportCardRefs.current[pageIndex];
         if (!exportElement) {
           throw new Error(`Could not find profile slide ${pageIndex + 1} of ${pageCount}.`);
         }
 
-        if (pageIndex > 0) await new Promise((resolve) => setTimeout(resolve, 600));
+        if (pageIndex > 0) {
+          exportStage = 'waiting between downloads';
+          await new Promise((resolve) => setTimeout(resolve, 800));
+        }
+        exportStage = 'waiting for fonts';
         if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
         // The profile cards are rendered far off-screen. Force poster/avatar
         // images to load before capture so lazy loading doesn't leave blanks.
+        exportStage = 'loading poster and profile images';
         const images = Array.from(exportElement.querySelectorAll('img'));
         images.forEach((img) => { img.loading = 'eager'; });
         await Promise.all(images.map((img) => {
@@ -1036,9 +1057,11 @@ export default function App() {
 
         // Use the existing Mystery Month capture routine, which also embeds
         // its newspaper CSS background for reliable cross-origin capture.
+        exportStage = 'rendering JPG';
         const dataUrl = await captureElementToJpeg(exportElement);
         if (!dataUrl) throw new Error(`Image conversion returned no image for slide ${pageIndex + 1}.`);
 
+        exportStage = 'starting the JPG download';
         const link = document.createElement('a');
         link.href = dataUrl;
         link.download = `${safeFileName}-Cubbon-Mystery-Stats-Nov-Part${pageIndex + 1}.jpg`;
@@ -1049,8 +1072,18 @@ export default function App() {
 
       showToast(`Generated ${pageCount} JPG${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
     } catch (err) {
-      console.error('Member Image Generation Error:', err);
-      showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
+      const detail = describeExportError(err);
+      const message = `Slide ${activePage}/${pageCount}, while ${exportStage}: ${detail}`;
+      console.error('[Mystery Month profile JPG export] Failed:', {
+        member: selectedUser,
+        filmCount: userLogs.length,
+        page: activePage,
+        pageCount,
+        stage: exportStage,
+        error: err,
+        detail,
+      });
+      showToast(`Profile JPG export failed. ${message}`, 'error');
     } finally {
       setIsMemberExporting(false);
     }
