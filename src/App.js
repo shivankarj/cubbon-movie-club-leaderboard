@@ -223,7 +223,7 @@ const getMemberAvatar = (name) => {
   return `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(safeSeed)}&backgroundColor=180202,09030a&radius=50`;
 };
 
-const MoviePoster = ({ src, title, className, style }) => {
+const MoviePoster = ({ src, title, className, style, loading = 'lazy' }) => {
   const [imgError, setImgError] = useState(false);
 
   if (!src || src === 'N/A' || imgError) {
@@ -259,7 +259,7 @@ const MoviePoster = ({ src, title, className, style }) => {
       className={className}
       style={style}
       onError={() => setImgError(true)}
-      loading="lazy"
+      loading={loading}
     />
   );
 };
@@ -310,8 +310,7 @@ export default function App() {
   const exportPointsRefPart2 = useRef(null);
   const exportFilmsRefPart1 = useRef(null);
   const exportFilmsRefPart2 = useRef(null);
-  const memberExportCardRefPart1 = useRef(null);
-  const memberExportCardRefPart2 = useRef(null);
+  const memberExportCardRefs = useRef([]);
   const [isExporting, setIsExporting] = useState(false);
   const [exportType, setExportType] = useState(null);
   const [isMemberExporting, setIsMemberExporting] = useState(false);
@@ -847,6 +846,44 @@ export default function App() {
     throw new Error('Image exporter could not be initialized.');
   };
 
+  const captureMemberCardToJpeg = async (element) => {
+    if (!element) return null;
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+    // Profile cards are rendered off-screen, so force their poster/avatar
+    // images to load instead of relying on the browser's lazy-load threshold.
+    const images = Array.from(element.querySelectorAll('img'));
+    images.forEach((img) => { img.loading = 'eager'; });
+    await Promise.all(images.map((img) => {
+      if (img.complete) return Promise.resolve();
+      return new Promise((resolve) => {
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          img.removeEventListener('load', finish);
+          img.removeEventListener('error', finish);
+          resolve();
+        };
+        const timeoutId = setTimeout(finish, 12000);
+        img.addEventListener('load', finish, { once: true });
+        img.addEventListener('error', finish, { once: true });
+      });
+    }));
+
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js');
+    if (window.htmlToImage && window.htmlToImage.toJpeg) {
+      return await window.htmlToImage.toJpeg(element, {
+        quality: 0.95,
+        pixelRatio: 2,
+        cacheBust: true,
+        skipFonts: true,
+      });
+    }
+    throw new Error('Image exporter could not be initialized.');
+  };
+
   const handleDownloadLeaderboardImage = async (mode = 'points') => {
     const targetBoard = mode === 'points' ? leaderboardByPoints : leaderboardByFilms;
     if (isExporting || targetBoard.length === 0) return;
@@ -898,37 +935,34 @@ export default function App() {
     const userLogs = selectedMemberLogs;
     if (isMemberExporting || !selectedUser || userLogs.length === 0) return;
 
+    const pageCount = Math.ceil(userLogs.length / 9);
+    const safeFileName = selectedUser.replaceAll('/', '-').replaceAll('\\', '-').replaceAll(':', '-').replaceAll('*', '-').replaceAll('?', '-').replaceAll('"', '-').replaceAll('<', '-').replaceAll('>', '-').replaceAll('|', '-').trim();
+
     try {
       setIsMemberExporting(true);
 
-      if (memberExportCardRefPart1.current) {
-        const dataUrl1 = await captureElementToJpeg(memberExportCardRefPart1.current);
-        if (dataUrl1) {
-          const link1 = document.createElement('a');
-          link1.href = dataUrl1;
-          link1.download = `${selectedUser}-Cubbon-Horror-Stats-Oct-Part1.jpg`;
-          document.body.appendChild(link1);
-          link1.click();
-          document.body.removeChild(link1);
+      for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
+        const exportElement = memberExportCardRefs.current[pageIndex];
+        if (!exportElement) {
+          throw new Error(`Could not find profile slide ${pageIndex + 1} of ${pageCount}.`);
         }
+
+        if (pageIndex > 0) await new Promise((resolve) => setTimeout(resolve, 600));
+        const dataUrl = await captureMemberCardToJpeg(exportElement);
+        if (!dataUrl) throw new Error(`Image conversion returned no image for slide ${pageIndex + 1}.`);
+
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${safeFileName}-Cubbon-Horror-Stats-Oct-Part${pageIndex + 1}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
-      if (userLogs.length > 9 && memberExportCardRefPart2.current) {
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        const dataUrl2 = await captureElementToJpeg(memberExportCardRefPart2.current);
-        if (dataUrl2) {
-          const link2 = document.createElement('a');
-          link2.href = dataUrl2;
-          link2.download = `${selectedUser}-Cubbon-Horror-Stats-Oct-Part2.jpg`;
-          document.body.appendChild(link2);
-          link2.click();
-          document.body.removeChild(link2);
-        }
-      }
-      showToast(`💀 Generated horror badge for ${selectedUser}!`, 'success');
+      showToast(`💀 Generated ${pageCount} JPG${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
     } catch (err) {
       console.error('Member Image Generation Error:', err);
-      showToast('Failed to generate personal card.', 'error');
+      showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
     } finally {
       setIsMemberExporting(false);
     }
@@ -2147,10 +2181,14 @@ export default function App() {
       )}
 
       {/* MEMBER HALLOWEEN BADGE EXPORT (PART 1) */}
-      {selectedUser && (
+      {selectedUser && selectedMemberLogs.length > 0 && (() => {
+        const pageCount = Math.ceil(selectedMemberLogs.length / 9);
+        return Array.from({ length: pageCount }, (_, pageIndex) => {
+          const pageLogs = selectedMemberLogs.slice(pageIndex * 9, (pageIndex + 1) * 9);
+          return (
         <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
           <div
-            ref={memberExportCardRefPart1}
+            ref={(node) => { memberExportCardRefs.current[pageIndex] = node; }}
             style={{
               width: '1080px',
               height: '1920px',
@@ -2198,7 +2236,7 @@ export default function App() {
                   color: '#ffffff',
                 }}
               >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀
+                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 {pageIndex > 0 && `(PART ${pageIndex + 1})`}
               </div>
             </div>
 
@@ -2283,7 +2321,7 @@ export default function App() {
                 boxSizing: 'border-box',
               }}
             >
-              {selectedMemberLogs.slice(0, 9).map((log, idx) => (
+              {pageLogs.map((log, idx) => (
                 <div
                   key={`${log.movie}-${idx}`}
                   style={{
@@ -2300,6 +2338,7 @@ export default function App() {
                   }}
                 >
                   <MoviePoster
+                    loading="eager"
                     src={log.poster}
                     title={log.movie}
                     style={{ width: '100%', borderRadius: '10px', height: '340px', objectFit: 'cover' }}
@@ -2348,211 +2387,9 @@ export default function App() {
             </div>
           </div>
         </div>
-      )}
-
-      {/* MEMBER HALLOWEEN BADGE EXPORT (PART 2) */}
-      {selectedUser && selectedMemberLogs.length > 9 && (
-        <div style={{ position: 'fixed', left: '-9999px', top: 0, width: '1080px' }}>
-          <div
-            ref={memberExportCardRefPart2}
-            style={{
-              width: '1080px',
-              height: '1920px',
-              backgroundColor: '#040507',
-              backgroundImage: `
-                linear-gradient(rgba(255, 51, 0, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 51, 0, 0.08) 1px, transparent 1px)
-              `,
-              backgroundSize: '28px 28px',
-              color: '#ffffff',
-              padding: '60px 60px 40px 60px',
-              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-              boxSizing: 'border-box',
-              border: '12px solid #FF3300',
-              boxShadow: '0 0 60px rgba(255, 51, 0, 0.35) inset, 0 0 30px rgba(255, 51, 0, 0.4)',
-              borderRadius: '0px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div style={{ marginBottom: '16px', boxSizing: 'border-box' }}>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '800',
-                  fontSize: '42px',
-                  letterSpacing: '4px',
-                  lineHeight: '1.1',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.35)',
-                }}
-              >
-                CUBBON <span style={{ color: '#FF3300', textShadow: '0 0 25px #FF3300, 0 0 50px rgba(255, 51, 0, 0.85)' }}>MOVIE</span> CLUB
-              </div>
-              <div
-                style={{
-                  fontFamily: "'Syncopate', sans-serif",
-                  fontWeight: '700',
-                  fontSize: '22px',
-                  letterSpacing: '3px',
-                  marginTop: '8px',
-                  textTransform: 'uppercase',
-                  color: '#ffffff',
-                }}
-              >
-                <span style={{ color: '#FF3300', textShadow: '0 0 15px rgba(255, 51, 0, 0.7)' }}>FRIGHT NIGHTS</span> OCTOBER 💀 (PART 2)
-              </div>
-            </div>
-
-            <div
-              style={{
-                height: '130px',
-                marginTop: '10px',
-                marginBottom: '20px',
-                backgroundColor: '#120406',
-                border: '3px solid #FF3300',
-                borderRadius: '0px',
-                padding: '0 28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                boxSizing: 'border-box',
-                boxShadow: '0 0 25px rgba(255, 51, 0, 0.25)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
-                <img
-                  src={getMemberAvatar(selectedUser)}
-                  alt={selectedUser}
-                  style={{
-                    width: '76px',
-                    height: '76px',
-                    borderRadius: '50%',
-                    backgroundColor: '#000000',
-                    border: '3px solid #FF3300',
-                    padding: '3px',
-                    objectFit: 'cover',
-                  }}
-                />
-                <div>
-                  <div style={{ fontSize: '40px', fontWeight: '900', color: '#ffffff', lineHeight: '1.1', letterSpacing: '-0.5px' }}>
-                    {selectedUser}
-                  </div>
-                  <div style={{ fontSize: '20px', fontWeight: '800', color: '#FF3300', marginTop: '6px' }}>
-                    {memberStats[selectedUser]?.points || 0} Points • {selectedMemberLogs.length} Horror Film
-                    {selectedMemberLogs.length !== 1 ? 's' : ''} Logged
-                  </div>
-                </div>
-              </div>
-
-              {(() => {
-                const tier = getMemberTier(selectedMemberLogs.length);
-                const isChamp = leaderboard[0] && leaderboard[0].name === selectedUser;
-
-                return (
-                  <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                    {isChamp && (
-                      <div style={{ width: '175px', height: '52px', position: 'relative' }}>
-                        <svg width="175" height="52" viewBox="0 0 175 52">
-                          <rect width="175" height="52" rx="26" fill="rgba(255, 51, 0, 0.25)" stroke="#FF3300" strokeWidth="2.5" />
-                          <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill="#FF3300" fontSize="14" fontWeight="900" fontFamily="sans-serif" letterSpacing="1px">
-                            👑 CHAMPION
-                          </text>
-                        </svg>
-                      </div>
-                    )}
-                    <div style={{ width: '175px', height: '52px', position: 'relative' }}>
-                      <svg width="175" height="52" viewBox="0 0 175 52">
-                        <rect width="175" height="52" rx="26" fill={tier.bg} stroke={tier.border} strokeWidth="2.5" />
-                        <text x="50%" y="52%" dominantBaseline="central" textAnchor="middle" fill={tier.color} fontSize="13.5" fontWeight="900" fontFamily="sans-serif" letterSpacing="0.8px">
-                          {tier.icon} {tier.label}
-                        </text>
-                      </svg>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-
-            <div
-              style={{
-                height: '1420px',
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gridTemplateRows: 'repeat(3, 450px)',
-                gap: '24px',
-                width: '100%',
-                boxSizing: 'border-box',
-              }}
-            >
-              {selectedMemberLogs.slice(9, 18).map((log, idx) => (
-                <div
-                  key={`${log.movie}-${idx + 9}`}
-                  style={{
-                    backgroundColor: '#0f0305',
-                    border: '2px solid #2a080c',
-                    borderRadius: '14px',
-                    padding: '16px',
-                    textAlign: 'center',
-                    boxSizing: 'border-box',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    height: '450px',
-                  }}
-                >
-                  <MoviePoster
-                    src={log.poster}
-                    title={log.movie}
-                    style={{ width: '100%', borderRadius: '10px', height: '340px', objectFit: 'cover' }}
-                  />
-                  <div
-                    style={{
-                      fontSize: '17px',
-                      fontWeight: '800',
-                      color: '#ffffff',
-                      lineHeight: '1.2',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '42px',
-                      overflow: 'hidden',
-                      padding: '0 4px',
-                    }}
-                  >
-                    {log.movie}
-                  </div>
-                  <div style={{ fontSize: '16px', color: '#FF3300', fontWeight: '900', display: 'flex', justifyContent: 'center' }}>
-                    <span>{log.rating || '★ —'}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div
-              style={{
-                height: '100px',
-                marginTop: '10px',
-                borderTop: '3px solid rgba(255, 51, 0, 0.3)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-                fontSize: '28px',
-                fontWeight: '800',
-                fontFamily: 'monospace',
-                color: '#FF3300',
-                letterSpacing: '3px',
-                textShadow: '0 0 14px rgba(255, 51, 0, 0.6)',
-              }}
-            >
-              STATUS: ONLINE // ARCHIVE: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase()}
-            </div>
-          </div>
-        </div>
-      )}
+          );
+        });
+      })()}
 
       {/* 1A. STORY BY POINTS — SLIDE 1 (RANKS 1 TO 10) */}
       <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
