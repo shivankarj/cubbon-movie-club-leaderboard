@@ -915,7 +915,7 @@ export default function App() {
 
         const link = document.createElement('a');
         link.href = dataUrl;
-        link.download = `${safeFileName}-Cubbon-Horror-Stats-Oct-Part${pageIndex + 1} .jpg`.replace(' .jpg', '.jpg');
+        link.download = `${safeFileName}-Cubbon-Horror-Stats-Oct-Part${pageIndex + 1}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -924,7 +924,7 @@ export default function App() {
       showToast(`💀 Generated ${pageCount} JPG${pageCount === 1 ? '' : 's} for ${selectedUser}!`, 'success');
     } catch (err) {
       console.error('Member Image Generation Error:', err);
-      showToast(`Profile JPG export failed: ${err?.message || 'Unknown error}`, 'error');
+      showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
     } finally {
       setIsMemberExporting(false);
     }
@@ -2350,7 +2350,9 @@ export default function App() {
             </div>
           </div>
         </div>
-      )}
+          );
+        });
+      })()}
 
       {/* 1A. STORY BY POINTS — SLIDE 1 (RANKS 1 TO 10) */}
       <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
