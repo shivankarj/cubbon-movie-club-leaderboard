@@ -994,9 +994,14 @@ export default function App() {
     const userLogs = selectedMemberLogs;
     if (isMemberExporting || !selectedUser || userLogs.length === 0) return;
 
+    const pageCount = Math.ceil(userLogs.length / 9);
+    const safeFileName = selectedUser
+      .replaceAll('/', '-').replaceAll('\\\\', '-').replaceAll(':', '-')
+      .replaceAll('*', '-').replaceAll('?', '-').replaceAll('"', '-')
+      .replaceAll('<', '-').replaceAll('>', '-').replaceAll('|', '-').trim();
+
     try {
       setIsMemberExporting(true);
-      const pageCount = Math.ceil(userLogs.length / 9);
 
       for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
         const exportElement = memberExportCardRefs.current[pageIndex];
@@ -1004,19 +1009,45 @@ export default function App() {
           throw new Error(`Could not find profile slide ${pageIndex + 1} of ${pageCount}.`);
         }
 
-        if (pageIndex > 0) await new Promise((resolve) => setTimeout(resolve, 500));
+        if (pageIndex > 0) await new Promise((resolve) => setTimeout(resolve, 600));
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+        // The profile cards are rendered far off-screen. Force poster/avatar
+        // images to load before capture so lazy loading doesn't leave blanks.
+        const images = Array.from(exportElement.querySelectorAll('img'));
+        images.forEach((img) => { img.loading = 'eager'; });
+        await Promise.all(images.map((img) => {
+          if (img.complete) return Promise.resolve();
+          return new Promise((resolve) => {
+            let settled = false;
+            const finish = () => {
+              if (settled) return;
+              settled = true;
+              clearTimeout(timeoutId);
+              img.removeEventListener('load', finish);
+              img.removeEventListener('error', finish);
+              resolve();
+            };
+            const timeoutId = setTimeout(finish, 12000);
+            img.addEventListener('load', finish, { once: true });
+            img.addEventListener('error', finish, { once: true });
+          });
+        }));
+
+        // Use the existing Mystery Month capture routine, which also embeds
+        // its newspaper CSS background for reliable cross-origin capture.
         const dataUrl = await captureElementToJpeg(exportElement);
-        if (dataUrl) {
-          const link = document.createElement('a');
-          link.href = dataUrl;
-          link.download = `${selectedUser}-Cubbon-Horror-Stats-Oct-Part${pageIndex + 1}.jpg`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
+        if (!dataUrl) throw new Error(`Image conversion returned no image for slide ${pageIndex + 1}.`);
+
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${safeFileName}-Cubbon-Mystery-Stats-Nov-Part${pageIndex + 1}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
 
-      showToast(`💀 Generated ${pageCount} profile slide${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
+      showToast(`Generated ${pageCount} JPG${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
     } catch (err) {
       console.error('Member Image Generation Error:', err);
       showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
