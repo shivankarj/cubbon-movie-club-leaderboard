@@ -996,7 +996,7 @@ export default function App() {
 
     const pageCount = Math.ceil(userLogs.length / 9);
     const safeFileName = selectedUser
-      .replaceAll('/', '-').replaceAll('\\\\', '-').replaceAll(':', '-')
+      .replaceAll('/', '-').replaceAll('\\', '-').replaceAll(':', '-')
       .replaceAll('*', '-').replaceAll('?', '-').replaceAll('"', '-')
       .replaceAll('<', '-').replaceAll('>', '-').replaceAll('|', '-').trim();
 
