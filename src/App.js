@@ -220,10 +220,10 @@ export const getMemberTier = (filmCount) => {
 
 const getMemberAvatarForExport = (name) => {
   const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
-  const avatarUrl = `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
-  // Route the export-only image through a CORS-enabled image fetcher.
-  // The normal visible avatar still uses the original RoboHash URL.
-  return `https://proxy.cors.dev/?url=${encodeURIComponent(avatarUrl)}`;
+  const avatarPath = `robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
+  // Use a distinct, fully-qualified origin URL as the image-proxy cache key.
+  // This keeps each member's deterministic RoboHash separate during JPG capture.
+  return `https://images.weserv.nl/?url=${encodeURIComponent(avatarPath)}&w=120&h=120&fit=cover`;
 };
 
 const getMemberAvatar = (name) => {
