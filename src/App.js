@@ -959,7 +959,7 @@ export default function App() {
         document.body.removeChild(link);
       }
 
-      showToast(`💀 Generated ${pageCount} JPG${pageCount === 1 ? '' : 's} for ${selectedUser}!`, 'success');
+      showToast(`💀 Generated ${pageCount} JPG${pageCount === 1 ? '' : 's'} for ${selectedUser}!`, 'success');
     } catch (err) {
       console.error('Member Image Generation Error:', err);
       showToast(`Profile JPG export failed: ${err?.message || 'Unknown error'}`, 'error');
