@@ -231,19 +231,6 @@ const getMemberAvatar = (name) => {
   return `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
 };
 
-// Self-contained, deterministic avatar used only if the remote export avatar fails.
-// It keeps the circular avatar treatment and varies the colour/features by member.
-const makeLocalAvatarFallback = (name) => {
-  const seed = String(name || 'mystery member');
-  let hash = 2166136261;
-  for (let i = 0; i < seed.length; i += 1) hash = Math.imul(hash ^ seed.charCodeAt(i), 16777619);
-  const hue = Math.abs(hash % 360);
-  const eye = (Math.abs(hash >>> 7) % 3) + 1;
-  const mouth = Math.abs(hash >>> 12) % 3;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" rx="60" fill="hsl(${hue},35%,78%)"/><circle cx="60" cy="61" r="42" fill="#e9dfc9" stroke="#49382d" stroke-width="4"/><path d="M25 49 Q60 8 95 49" fill="#6b1820" stroke="#49382d" stroke-width="4"/><rect x="35" y="48" width="50" height="23" rx="9" fill="#14251f" stroke="#c9a96b" stroke-width="3"/><circle cx="45" cy="59" r="${eye + 3}" fill="#e9dfc9"/><circle cx="75" cy="59" r="${eye + 3}" fill="#e9dfc9"/><path d="${mouth === 0 ? 'M43 82 Q60 91 77 82' : mouth === 1 ? 'M45 84 L75 84' : 'M43 86 Q60 76 77 86'}" fill="none" stroke="#6b1820" stroke-width="5" stroke-linecap="round"/><path d="M60 19 V8 M53 8 H67" stroke="#49382d" stroke-width="4" stroke-linecap="round"/></svg>`;
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-};
-
 const MoviePoster = ({ src, title, className, style }) => {
   const [imgError, setImgError] = useState(false);
 
@@ -913,19 +900,21 @@ export default function App() {
     for (const img of element.querySelectorAll('img[data-export-avatar="true"]')) {
       const originalSrc = img.getAttribute('src');
       avatarSrcRestores.push({ img, src: originalSrc });
-      // If the image host fails for an individual member, use a unique local
-      // SVG avatar rather than failing the entire story export.
+      // Keep the established RoboHash cat avatar. If the export proxy failed,
+      // retry the member's original RoboHash URL instead of substituting artwork.
       if (!img.complete || img.naturalWidth === 0) {
-        img.src = makeLocalAvatarFallback(img.alt);
+        const memberName = img.alt || '';
+        const safeSeed = memberName ? `mystery-month-${memberName.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
+        img.src = `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
         await new Promise((resolve) => {
           if (img.complete && img.naturalWidth > 0) return resolve();
-          const timeout = setTimeout(resolve, 2500);
+          const timeout = setTimeout(resolve, 4000);
           img.onload = () => { clearTimeout(timeout); resolve(); };
           img.onerror = () => { clearTimeout(timeout); resolve(); };
         });
       }
       if (!img.complete || img.naturalWidth === 0) {
-        throw new Error(`Could not render a local fallback avatar for "${img.alt || 'member'}".`);
+        throw new Error(`Original cat avatar could not be loaded for "${img.alt || 'member'}".`);
       }
       const canvas = document.createElement('canvas');
       canvas.width = img.naturalWidth;
