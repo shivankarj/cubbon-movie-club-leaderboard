@@ -218,15 +218,12 @@ export const getMemberTier = (filmCount) => {
   return MYSTERY_TIERS.EYE_WITNESS;
 };
 
-const getMemberInitialsForExport = (name) => {
-  const initials = (name || '')
-    .trim()
-    .split(/\\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join('');
-  return initials || 'MM';
+const getMemberAvatarForExport = (name) => {
+  const safeSeed = name ? `mystery-month-${name.trim().toLowerCase()}` : 'mystery-month-jack-o-lantern';
+  const avatarUrl = `https://robohash.org/${encodeURIComponent(safeSeed)}?set=set4&size=120x120`;
+  // Route the export-only image through a CORS-enabled image fetcher.
+  // The normal visible avatar still uses the original RoboHash URL.
+  return `https://proxy.cors.dev/?url=${encodeURIComponent(avatarUrl)}`;
 };
 
 const getMemberAvatar = (name) => {
@@ -2558,7 +2555,7 @@ export default function App() {
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
-                          <div aria-hidden="true" style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B1820', fontFamily: 'Georgia, serif', fontSize: '32px', fontWeight: 800, letterSpacing: '1px' }}>{getMemberInitialsForExport(member.name)}</div>
+                          <img crossOrigin="anonymous" src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
                           <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', border: '1px solid transparent', padding: '14px 16px', background: 'rgba(233,223,201,.32)', letterSpacing: '1px' }}>{member.name}</div>
                         </div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
