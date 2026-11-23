@@ -894,6 +894,29 @@ export default function App() {
       });
     }));
 
+    // Inline each export avatar before html-to-image clones the slide.
+    // This avoids cross-slide URL/cache collisions in its cloned image nodes.
+    const avatarSrcRestores = [];
+    for (const img of element.querySelectorAll('img[data-export-avatar="true"]')) {
+      if (!img.complete || img.naturalWidth === 0) {
+        throw new Error(`Export avatar failed to load for "${img.alt || 'member'}".`);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('Could not prepare an avatar for JPG export.');
+      context.drawImage(img, 0, 0);
+      let avatarDataUrl;
+      try {
+        avatarDataUrl = canvas.toDataURL('image/png');
+      } catch (error) {
+        throw new Error(`Could not inline export avatar "${img.alt || 'member'}": ${error.message || error}`);
+      }
+      avatarSrcRestores.push({ img, src: img.getAttribute('src') });
+      img.src = avatarDataUrl;
+    }
+
     // Embed the CSS background as a data URL so html-to-image does not need
     // to fetch the background a second time while cloning the export element.
     const originalBackgroundImage = element.style.backgroundImage;
@@ -951,7 +974,10 @@ export default function App() {
       }
       throw new Error('Image exporter could not be initialized.');
     } finally {
-      // Restore the page's original CSS background after capture.
+      // Restore temporary export-only image sources and the original background.
+      avatarSrcRestores.forEach(({ img, src }) => {
+        if (src !== null) img.setAttribute('src', src);
+      });
       element.style.backgroundImage = originalBackgroundImage;
     }
   };
@@ -2555,7 +2581,7 @@ export default function App() {
                           {rank}
                         </div>
                         <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: '20px', paddingRight: '10px' }}>
-                          <img crossOrigin="anonymous" src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
+                          <img data-export-avatar="true" crossOrigin="anonymous" src={getMemberAvatarForExport(member.name)} alt={member.name} style={{ width: '108px', height: '108px', flex: '0 0 108px', borderRadius: '50%', border: '2px solid #c9b98f', padding: '2px', background: '#e9dfc9', objectFit: 'cover' }} />
                           <div title={member.name} style={{ minWidth: 0, width: '100%', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', fontSize: '38px', lineHeight: 1.12, fontWeight: 800, color: '#302a22', border: '1px solid transparent', padding: '14px 16px', background: 'rgba(233,223,201,.32)', letterSpacing: '1px' }}>{member.name}</div>
                         </div>
                         <div style={{ borderLeft: '1px solid rgba(177,145,96,.65)', minHeight: '126px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '31px', fontWeight: 800, color: '#6B1820', fontVariantNumeric: 'tabular-nums' }}>{member.points}</div>
